@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="一般透過使用者的操作進一步更改介面資料是非常普遍的行為，這一章節將透過 click event 來了解 Component Function 是如何運作的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How Component Function Are Excuted">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220605/28796/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="一般透過使用者的操作進一步更改介面資料是非常普遍的行為，這一章節將透過 click event 來了解 Component Function 是如何運作的">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/react/20220605/28796/error-log.png">
+<meta property="article:published_time" content="2022-06-05T14:23:07.000Z">
+<meta property="article:modified_time" content="2022-06-06T14:56:44.046Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/react/20220605/28796/error-log.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220605/28796/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220605/28796/","path":"react/20220605/28796/","title":"How Component Function Are Excuted"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>How Component Function Are Excuted | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-%E2%80%9CState%E2%80%9D-useState"><span class="nav-number">1.</span> <span class="nav-text">Working with “State” (useState)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Closer-Look-at-the-%E2%80%9CuseState%E2%80%9D-Hook"><span class="nav-number">2.</span> <span class="nav-text">A Closer Look at the “useState” Hook</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#const"><span class="nav-number">2.1.</span> <span class="nav-text">const</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220605/28796/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How Component Function Are Excuted
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-06-05 22:23:07" itemprop="dateCreated datePublished" datetime="2022-06-05T22:23:07+08:00">2022-06-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-06-06 22:56:44" itemprop="dateModified" datetime="2022-06-06T22:56:44+08:00">2022-06-06</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一般透過使用者的操作進一步更改介面資料是非常普遍的行為，這一章節將透過 click event 來了解 Component Function 是如何運作的 </p>
+<span id="more"></span>
+
+<p>首先，我們將傳進 Component 的資料 <code>props.title</code> 透過一個變數存起來，接著再透過一個 button click event 來更改這筆資料，如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseDate <span class="keyword">from</span> <span class="string">&quot;./ExpenseDate&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Card <span class="keyword">from</span> <span class="string">&#x27;../UI/Card&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ExpenseItem = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> title = props.title;</span><br><span class="line">  <span class="keyword">const</span> clickHandler = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    title = <span class="string">&#x27;Updated !!!&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(title);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Card className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseDate date=&#123;props.date&#125; /&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">        &lt;button onClick=&#123;clickHandler&#125;&gt;Change Title&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/Card&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<p>然後我們嘗試透過點擊 button 來觸發資料更新，會發現 <code>console.log</code> 中的值有被印出來，但畫面上的資料並未被更改，為什麼會發生這樣的情況呢 ?</p>
+<p>讓我們進一步了解 Component Function 的觸發方式，首先，會從最根本的檔案 (index.js) 開始運作，再從被指定做為 Root Component (App.js) 依序沿著被引入的 Component (Expenses.js -&gt; ExpenseItem.js -&gt; ExpenseDate.js) 所回傳的 JSX 取得頁面所需元件，最後再將它們渲染成瀏覽器可以讀取的 HTML 和 JavaScript，所有渲染的動作就到這裡為止，之後使用者所點擊的 click event 也只是呼叫我們所撰寫的 function，並不會再次渲染頁面，這也就是為什麼 <code>console.log</code> 中有印出資料，而頁面沒有跟著改變的原因了。</p>
+<h2 id="Working-with-“State”-useState"><a href="#Working-with-“State”-useState" class="headerlink" title="Working with “State” (useState)"></a>Working with “State” (useState)</h2><p>為了解決資料改動後，需重新渲染畫面的問題，React 提供了一個名為 <code>State</code> 的 React Hook，在使用上，React 會在前方加上 use (useState)，我們只需要透過 import react 來取得這個 function，而這個 function 只能在 Component Function 內”直接”被使用，不能在它之外，也不能在它的 method 之內</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseDate <span class="keyword">from</span> <span class="string">&quot;./ExpenseDate&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Card <span class="keyword">from</span> <span class="string">&quot;../UI/Card&quot;</span>;</span><br><span class="line"></span><br><span class="line">useState();   <span class="comment">// Error</span></span><br><span class="line"><span class="keyword">const</span> ExpenseItem = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> title = props.title;</span><br><span class="line">  useState();   <span class="comment">// Currect</span></span><br><span class="line">  <span class="keyword">const</span> clickHandler = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    useState();   <span class="comment">// Error</span></span><br><span class="line">    title = <span class="string">&quot;Updated !!!&quot;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(title);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Card className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseDate date=&#123;props.date&#125; /&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">        &lt;button onClick=&#123;clickHandler&#125;&gt;Change Title&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/Card&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<p>否則會出現以下 error log</p>
+<p><img src="error-log.png"></p>
+<p>當我們呼叫 <code>useState</code> 時，它會回傳一個 array，其中包含兩個值，分別為:</p>
+<ul>
+<li>第一個 variable: 用來存放值的變數，以上方範例就是存放 <code>props.title</code> 這個傳進 Component 的值</li>
+<li>第二個 function: 需要更改第一個變數的值時，可以透過呼叫它來改動，並在它的第一個參數代入要改動的值</li>
+</ul>
+<p>那為什麼我們不能直接單純透過一個等號 = 賦予新的值呢 ? 原因是如果這麼做，又會回到一開始的狀況，值被更改但 React 並沒有重新渲染畫面，需要透過呼叫這個 function 更新，React 才會知道要重新呼叫 Component Function 以渲染畫面</p>
+<p>既然回傳的是一個 array，這裡可以直接使用 ES6 Array Distructuring 來建立回傳 array 中的兩個參數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseDate <span class="keyword">from</span> <span class="string">&quot;./ExpenseDate&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Card <span class="keyword">from</span> <span class="string">&quot;../UI/Card&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ExpenseItem = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [title, setTitle] = useState(props.title);</span><br><span class="line">  <span class="keyword">const</span> clickHandler = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    setTitle(<span class="string">&quot;Updated !!!&quot;</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(title);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Card className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseDate date=&#123;props.date&#125; /&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">        &lt;button onClick=&#123;clickHandler&#125;&gt;Change Title&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/Card&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="A-Closer-Look-at-the-“useState”-Hook"><a href="#A-Closer-Look-at-the-“useState”-Hook" class="headerlink" title="A Closer Look at the “useState” Hook"></a>A Closer Look at the “useState” Hook</h2><p>即使是同一個 Component 在多處被重複使用，其內部的 State 都是獨立運作的彼此並不會互相干擾，否則我們當我們只是要操作單一 Component 的時候，所有使用到地方都同步更新就不符合我們期待的效果了，我們可透過在 child component 中加入 <code>console.log(&#39;ExpenseItem evaluated by React!&#39;)</code> 來判斷被呼叫的時機，從這點可以發現，只有在一次首次建立頁面時，被呼叫了 4 次，之後透過 button click event 觸發時都會只有一次</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Expenses.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ExpenseItem <span class="keyword">from</span> <span class="string">&quot;./ExpenseItem&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./Expenses.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Card <span class="keyword">from</span> <span class="string">&#x27;../UI/Card&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Expense = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Card className=<span class="string">&quot;expenses&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseItem</span><br><span class="line">        title=&#123;props.items[<span class="number">0</span>].title&#125;</span><br><span class="line">        amount=&#123;props.items[<span class="number">0</span>].amount&#125;</span><br><span class="line">        date=&#123;props.items[<span class="number">0</span>].date&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">      &lt;ExpenseItem</span><br><span class="line">        title=&#123;props.items[<span class="number">1</span>].title&#125;</span><br><span class="line">        amount=&#123;props.items[<span class="number">1</span>].amount&#125;</span><br><span class="line">        date=&#123;props.items[<span class="number">1</span>].date&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">      &lt;ExpenseItem</span><br><span class="line">        title=&#123;props.items[<span class="number">2</span>].title&#125;</span><br><span class="line">        amount=&#123;props.items[<span class="number">2</span>].amount&#125;</span><br><span class="line">        date=&#123;props.items[<span class="number">2</span>].date&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">      &lt;ExpenseItem</span><br><span class="line">        title=&#123;props.items[<span class="number">3</span>].title&#125;</span><br><span class="line">        amount=&#123;props.items[<span class="number">3</span>].amount&#125;</span><br><span class="line">        date=&#123;props.items[<span class="number">3</span>].date&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    &lt;/Card&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Expense;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseDate <span class="keyword">from</span> <span class="string">&quot;./ExpenseDate&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Card <span class="keyword">from</span> <span class="string">&quot;../UI/Card&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ExpenseItem = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [title, setTitle] = useState(props.title);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;ExpenseItem evaluated by React!&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> clickHandler = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    setTitle(<span class="string">&quot;Updated !!!&quot;</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(title);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Card className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseDate date=&#123;props.date&#125; /&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">        &lt;button onClick=&#123;clickHandler&#125;&gt;Change Title&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/Card&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><p>那麼這裡又有另一個疑問了，既然透過 <code>useState</code> 所建立的變數是可以被更改的，那為什麼會使用 <code>const</code> 來建立呢 ?</p>
+<p>原因是 React 在更新透過 <code>useState</code> 所建立的變數時，並不是單純透過等號 = 賦值，而是透過這個 Hook 對 React 進行註冊，所以當我們透過 <code>setTitle</code> 來更新時，React 會整個重新呼叫 Component Function，包含註冊變數這一行也會</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [title, setTitle] = useState(props.title);</span><br></pre></td></tr></table></figure>
+
+<p>而 <code>props.title</code> 這個預設值並不會在更新時再次以它為預設值，只有第一次建立時才會，React 會對每次更新都透過 snapshot 的方式記錄，並在我們呼叫時回傳最新的值，藉此達到使用者與頁面互動的目的。</p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/react-complete-guide/commit/63ec319041dd1185e4f343c216cf66854cec40a2">Github</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220605/41269/" rel="prev" title="Listening to Events & Working with Event Handlers">
+                  <i class="fa fa-chevron-left"></i> Listening to Events & Working with Event Handlers
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220606/31080/" rel="next" title="Form Inputs">
+                  Form Inputs <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

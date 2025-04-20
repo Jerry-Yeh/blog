@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言隨著網站逐漸開發，CSS 的程式碼也會越來越繁雜，如果沒有一套方法來管理 CSS，不僅在維護上不方便，程式碼也會變得難以重複使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 設計模式">
+<meta property="og:url" content="https://jerry-yeh.github.io/css/20190927/6900c966/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="前言隨著網站逐漸開發，CSS 的程式碼也會越來越繁雜，如果沒有一套方法來管理 CSS，不僅在維護上不方便，程式碼也會變得難以重複使用">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/css/20190927/6900c966/block.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/css/20190927/6900c966/element.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/css/20190927/6900c966/modifier.png">
+<meta property="article:published_time" content="2019-09-27T14:05:42.000Z">
+<meta property="article:modified_time" content="2019-09-27T14:06:21.672Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/css/20190927/6900c966/block.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/css/20190927/6900c966/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/css/20190927/6900c966/","path":"css/20190927/6900c966/","title":"CSS 設計模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSS 設計模式 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E5%80%91%E9%9C%80%E8%A6%81-CSS-%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼我們需要 CSS 設計模式 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS-%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%89%B9%E8%89%B2"><span class="nav-number">1.2.</span> <span class="nav-text">CSS 設計模式的特色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%89%AF%E5%A5%BD%E7%9A%84-CSS-%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">良好的 CSS 設計模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMACSS-Scalable-and-Modular-Architecture-for-CSS"><span class="nav-number">2.</span> <span class="nav-text">SMACSS (Scalable and Modular Architecture for CSS)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMACSS-%E4%BB%8B%E7%B4%B9"><span class="nav-number">2.1.</span> <span class="nav-text">SMACSS 介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMACSS-%E5%88%86%E9%A1%9E"><span class="nav-number">2.2.</span> <span class="nav-text">SMACSS 分類</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Base-%E5%85%A8%E7%AB%99%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.2.1.</span> <span class="nav-text">Base : 全站設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Layout-%E7%B6%B2%E7%AB%99%E5%B8%83%E5%B1%80"><span class="nav-number">2.2.2.</span> <span class="nav-text">Layout : 網站布局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Module-%E6%A8%A1%E7%B5%84%E5%8C%96"><span class="nav-number">2.2.3.</span> <span class="nav-text">Module : 模組化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#State-%E7%8B%80%E6%85%8B"><span class="nav-number">2.2.4.</span> <span class="nav-text">State : 狀態</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Theme-%E4%B8%BB%E9%A1%8C"><span class="nav-number">2.2.5.</span> <span class="nav-text">Theme : 主題</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Typography-%E6%96%87%E5%AD%97%E6%8E%92%E7%89%88"><span class="nav-number">2.2.6.</span> <span class="nav-text">Typography : 文字排版</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOCSS-Object-Oriented-CSS"><span class="nav-number">3.</span> <span class="nav-text">OOCSS (Object Oriented CSS)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E6%A7%8B%E8%88%87%E6%A8%A3%E5%BC%8F%E5%88%86%E9%9B%A2-Separate-Structure-and-Skin"><span class="nav-number">3.1.</span> <span class="nav-text">結構與樣式分離 (Separate Structure and Skin)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E8%88%87%E5%85%A7%E5%AE%B9%E5%88%86%E9%9B%A2-Separate-Container-and-Content"><span class="nav-number">3.2.</span> <span class="nav-text">容器與內容分離 (Separate Container and Content)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">3.3.</span> <span class="nav-text">結論</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BEM-Block-Element-Modifier"><span class="nav-number">4.</span> <span class="nav-text">BEM (Block Element Modifier)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BEM%E7%B5%90%E6%A7%8B"><span class="nav-number">4.1.</span> <span class="nav-text">BEM結構</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Block-%E5%8D%80%E5%A1%8A"><span class="nav-number">4.1.1.</span> <span class="nav-text">Block (區塊)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Element-%E5%85%83%E7%B4%A0"><span class="nav-number">4.1.2.</span> <span class="nav-text">Element (元素)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Modifier-%E4%BF%AE%E9%A3%BE%E7%AC%A6"><span class="nav-number">4.1.3.</span> <span class="nav-text">Modifier (修飾符)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E7%AC%A6"><span class="nav-number">4.2.</span> <span class="nav-text">連接符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BEM-%E5%B8%B8%E8%A6%8B%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-number">4.3.</span> <span class="nav-text">BEM 常見的問題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#guideline-%E6%8C%87%E5%8D%97"><span class="nav-number">5.</span> <span class="nav-text">guideline (指南)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A6%8B%E7%9A%84%E8%A8%AD%E8%A8%88%E8%A6%8F%E7%AF%84"><span class="nav-number">5.1.</span> <span class="nav-text">常見的設計規範</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sass-7-1-%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">sass 7+1 設計模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E7%B4%8D"><span class="nav-number">5.3.</span> <span class="nav-text">收納</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">6.</span> <span class="nav-text">總結</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/css/20190927/6900c966/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSS 設計模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-09-27 22:05:42 / 修改時間：22:06:21" itemprop="dateCreated datePublished" datetime="2019-09-27T22:05:42+08:00">2019-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/css/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>隨著網站逐漸開發，CSS 的程式碼也會越來越繁雜，如果沒有一套方法來管理 CSS，不僅在維護上不方便，程式碼也會變得難以重複使用</p>
+<span id="more"></span>
+
+<h3 id="為什麼我們需要-CSS-設計模式"><a href="#為什麼我們需要-CSS-設計模式" class="headerlink" title="為什麼我們需要 CSS 設計模式 ?"></a>為什麼我們需要 CSS 設計模式 ?</h3><p>如同收納術一般，當我們生活用品越積越多時，我們就需要一些收納的方法來管理，以便在尋找需要的用品時更容易<br>同樣的，在開發一個網站時，CSS 也會越寫越多，甚至是多人一起偕同開發，這時候如果沒有一套共同的方法或標準來管理我們的 CSS，就會使的開發與維護上效率低落，合作上也不容易快速理解別人的程式，甚至是之後自己看自己的程式碼也無法快速的理解當初的思考邏輯</p>
+<h3 id="CSS-設計模式的特色"><a href="#CSS-設計模式的特色" class="headerlink" title="CSS 設計模式的特色"></a>CSS 設計模式的特色</h3><p>常見的 CSS 設計模式有 SMACSS、OOCSS 和 BEM，其目的都是為了達到命名語意化、可重用性高、後期維護容易和加載渲染快等優點</p>
+<p>但方法是死的，提高工作效率才是唯一目的，如同我們不會為了整理好一個桌面而運用到畢生所學的 20 種收納方法吧 ?同樣的在運用 css 設計模式時，也是視各個專案的狀況來選擇要使用的模式，而非一味遵守這些方法使開發效率未獲提升</p>
+<h3 id="良好的-CSS-設計模式"><a href="#良好的-CSS-設計模式" class="headerlink" title="良好的 CSS 設計模式"></a>良好的 CSS 設計模式</h3><p>一個良好的 CSS 設計模式會具備以下特質</p>
+<ul>
+<li>預測性 - Predictable</li>
+<li>複用性 - Reusable</li>
+<li>維護性 - Maintainable</li>
+<li>延展性 - Scalable</li>
+</ul>
+<h2 id="SMACSS-Scalable-and-Modular-Architecture-for-CSS"><a href="#SMACSS-Scalable-and-Modular-Architecture-for-CSS" class="headerlink" title="SMACSS (Scalable and Modular Architecture for CSS)"></a>SMACSS (Scalable and Modular Architecture for CSS)</h2><h3 id="SMACSS-介紹"><a href="#SMACSS-介紹" class="headerlink" title="SMACSS 介紹"></a>SMACSS 介紹</h3><p>SMACSS 顧名思義是將 CSS 模組化並提高可重用性，被模組化的 CSS 是獨立的，不會被父元素或是 ID 選擇器、標籤選擇器所綁定，能夠活用在頁面上各個地方，並將 CSS 結構分類</p>
+<h3 id="SMACSS-分類"><a href="#SMACSS-分類" class="headerlink" title="SMACSS 分類"></a>SMACSS 分類</h3><p>SMACSS 分類會使用每個類別的前綴詞加以區分，例如 layout 裡面的 list 會寫成 <code>.l-list</code>，以提高辨識度快速搜尋相關 CSS</p>
+<ul>
+<li><h4 id="Base-全站設定"><a href="#Base-全站設定" class="headerlink" title="Base : 全站設定"></a>Base : 全站設定</h4><p>定義大部分的 CSS ，避免一直重複撰寫相同的 CSS 樣式，包含 CSS Reset、Reboot，以下為常見的全站設定<br>注意 Base 的 CSS 絕對不能使用 <code>!important</code> ，以免後續新增的 CSS 無法覆蓋</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">html&#123;font-family:sans-serif&#125;</span><br><span class="line">a &#123;<span class="attr">color</span>: red;&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+<li><h4 id="Layout-網站布局"><a href="#Layout-網站布局" class="headerlink" title="Layout : 網站布局"></a>Layout : 網站布局</h4><p>所有頁面都會用到的內容，例如 header 與 footer，重複出現的內容以 “功能” 取代 “語意”，例如 書籍列表 與 DVD列表不會個別是 <code>.bookList</code> 與 <code>.dvdList</code>，而是統一為 <code>.list</code></p>
+</li>
+<li><h4 id="Module-模組化"><a href="#Module-模組化" class="headerlink" title="Module : 模組化"></a>Module : 模組化</h4><p>Module 是一個獨立的 CSS 組件，可以靈活運用在頁面的任何地方，不會綁定父元素、ID 選擇器和 HTML 標籤，直接將所有 CSS 寫在 class 上，不論要更動 HTML或新增 CSS 都會更有彈性<br>如下為一個名為 <code>.fld</code> 的模組，而兩個 <code>span</code> 隸屬於 <code>.fld</code> ，所以都以 <code>.fld-</code>做為開頭，在依據不同的需求各別寫入不同的 CSS，因為不是直接寫成 <code>.fld &gt; span</code> 所以後續新增的 <code>span</code> ，也不會受到影響而需要用更高的權重覆蓋</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;fld&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;fld-name&quot;</span>&gt;</span>Folder Name<span class="tag">&lt;/<span class="name">span</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;fld-items&quot;</span>&gt;</span>(32 items)<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>為了方便 HTML 語意化調整，CSS 盡量不指定 HTML tag，以下為常見寫法</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.l-grid</span> &#123;</span><br><span class="line">  <span class="selector-class">.l-gird</span> <span class="selector-tag">h2</span> &#123;...&#125;</span><br><span class="line">  <span class="selector-class">.l-gird</span> <span class="selector-tag">ul</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以寫成</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.l-grid</span> &#123;</span><br><span class="line">  <span class="selector-class">.l-gird-title</span> &#123;...&#125;</span><br><span class="line">  <span class="selector-class">.l-gird-list</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此做法也可以優化 SEO，如下 <code>article</code> 的權重會大於 <code>div</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">article</span> <span class="attr">class</span>=<span class="string">&quot;.l-gird&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;l-gide-title&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;l-gird&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;l-gide-title&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="State-狀態"><a href="#State-狀態" class="headerlink" title="State : 狀態"></a>State : 狀態</h4><p>State 表達的是一個狀態，與 layout、 module 搭配，也常常利用 JavaScript 動態改變狀態，加上 <code>!important</code> 是因為有時候模組會有好幾層架構，防止 State 權重不足無法覆蓋</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.is-error</span>&#123;<span class="attribute">display</span>: block <span class="meta">!important</span>&#125;  </span><br><span class="line"><span class="selector-class">.is-hidden</span>&#123;<span class="attribute">display</span>:none <span class="meta">!important</span>&#125;</span><br></pre></td></tr></table></figure></li>
+<li><h4 id="Theme-主題"><a href="#Theme-主題" class="headerlink" title="Theme : 主題"></a>Theme : 主題</h4><p>運用在網站結構相同，但有多種的主題樣式時，Theme 不會在核心 CSS(all.css) 內，通常都會將其抽離(theme.css)，常見的變動有 color、background-color、border …等</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//in html</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;all.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;theme.css&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//in all<span class="selector-class">.css</span></span><br><span class="line"><span class="selector-class">.mod</span> &#123;<span class="attribute">border</span>: <span class="number">1px</span> solid&#125;</span><br><span class="line"></span><br><span class="line">//in theme<span class="selector-class">.css</span></span><br><span class="line"><span class="selector-class">.mod</span> &#123;<span class="attribute">border</span>: red&#125;</span><br></pre></td></tr></table></figure></li>
+<li><h4 id="Typography-文字排版"><a href="#Typography-文字排版" class="headerlink" title="Typography : 文字排版"></a>Typography : 文字排版</h4><p>建議不要超過 6 種文字大小，以免網站失焦，在建立全域變數(Base)，可以將文字納入規則</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in base</span></span><br><span class="line"><span class="variable">$font-size-base</span>: <span class="number">14px</span> !default;</span><br><span class="line"><span class="variable">$font-l</span>: (<span class="variable">$font-size-base</span>) * <span class="number">1.25</span>;</span><br><span class="line"><span class="variable">$font-m</span>: <span class="variable">$font-size-base</span>;</span><br><span class="line"><span class="variable">$font-s</span>: (<span class="variable">$font-size-base</span>) * <span class="number">0.75</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="OOCSS-Object-Oriented-CSS"><a href="#OOCSS-Object-Oriented-CSS" class="headerlink" title="OOCSS (Object Oriented CSS)"></a>OOCSS (Object Oriented CSS)</h2><p>為鼓勵開發者使 CSS 複用性達到最高，用一套 CSS 即可持續開發，不需要隨著開發新增 CSS</p>
+<h3 id="結構與樣式分離-Separate-Structure-and-Skin"><a href="#結構與樣式分離-Separate-Structure-and-Skin" class="headerlink" title="結構與樣式分離 (Separate Structure and Skin)"></a>結構與樣式分離 (Separate Structure and Skin)</h3><p>以 bootstrap 為例，<code>btn</code> 只包含結構，<code>btn-primary</code>提供顏色，<code>btn-lg</code> 增加大小，這樣的好處在於不用重複寫結構，只需要依據開發需求新增樣式即可</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-primary btn-lg&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>或是常用到小技巧也可以使它成為獨立的樣式</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.clearfix &#123;overflow: hidden;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器與內容分離-Separate-Container-and-Content"><a href="#容器與內容分離-Separate-Container-and-Content" class="headerlink" title="容器與內容分離 (Separate Container and Content)"></a>容器與內容分離 (Separate Container and Content)</h3><p>常見的容器有 <code>header</code>、<code>footer</code>和格線系統等，與內容分離的好處在於內容不只能使用在特定容器，可以提高內容的複用性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><ul>
+<li>使用 OOCSS 時，盡量不要用後代選擇器 (.header ul)，以免無法活用到其他 <code>html tag</code></li>
+<li>網站規模小時不建議使用，因為設立各個獨立功能會消耗許多時間，後續開發沒有重複用到便失去它的意義</li>
+</ul>
+<h2 id="BEM-Block-Element-Modifier"><a href="#BEM-Block-Element-Modifier" class="headerlink" title="BEM (Block Element Modifier)"></a>BEM (Block Element Modifier)</h2><p><code>BEM</code> 由 <code>Block</code> (區塊)、<code>Element</code> (元素)、<code>Modifier</code> (修飾符)三者所構成，主義的功能是瀏覽 <code>HTML CODE</code> 時，可以透過 <code>class</code> 直接了解 CSS 架構與彼此的關係，不用去細看 CSS 才能了解</p>
+<h3 id="BEM結構"><a href="#BEM結構" class="headerlink" title="BEM結構"></a>BEM結構</h3><ul>
+<li><h4 id="Block-區塊"><a href="#Block-區塊" class="headerlink" title="Block (區塊)"></a>Block (區塊)</h4><p>Block 是模組的名稱，位於模組的最外層，為模組的容器，在設計網站時，我們會先設計出幾個區塊，再對其命名對應的語意</p>
+<ul>
+<li>不能使用 html tag 和 ID 選擇器，否則難以複用到其他地方</li>
+<li>Block 名稱能清楚表達含意，使用 “功能” 取代 “語意”</li>
+<li>每個 Block 獨立運作，不能依附在其他的 Block</li>
+<li>不要定義過多影響外部的樣式 (如 margin)，因為複用到其他地方時不一定有相同的外部樣式</li>
+<li>Block 可以複製到頁面上任何位位置，甚至互相嵌套，但不互相依賴</li>
+</ul>
+<p><img src="block.png"></p>
+</li>
+<li><h4 id="Element-元素"><a href="#Element-元素" class="headerlink" title="Element (元素)"></a>Element (元素)</h4><p><code>Block</code> 內部會有許多 <code>Element</code> (元素)，在區塊的後方加入雙下底線 <code>__</code> 以辨識此為該去塊內的元素</p>
+<p>基本原則 :</p>
+<ul>
+<li>如果無法拿到 <code>Block</code> 外單獨使用，就應該為 <code>Element</code>，且不能相依於其他的 <code>Block</code></li>
+<li><code>Element</code> 能簡單的表達出其結構、布局和意義，在語意上與 <code>Block</code> 相呼應</li>
+<li>同一個 <code>Block</code> 的內 <code>Element</code> 與 <code>Element</code> 可以互相嵌套，靈活運用</li>
+</ul>
+<p><img src="element.png"></p>
+</li>
+<li><h4 id="Modifier-修飾符"><a href="#Modifier-修飾符" class="headerlink" title="Modifier (修飾符)"></a>Modifier (修飾符)</h4><p><code>Modifier</code> (修飾符)的觀念和 <code>SMACSS</code> 的 <code>State</code>、<code>OOCSS</code> 的樣式很類似，在區塊或元素後方加上雙中線 <code>--</code> 以辨識此為該區塊或元素的修飾符，修飾符改變的可以是狀態或是樣式，圖中 Tab3 具有不同的 modifier</p>
+<p>基本原則 :</p>
+<ul>
+<li>能直觀的表達出其所代表的外觀和狀態</li>
+<li>無法脫離 <code>Block</code> 和 <code>Element</code> 單獨使用，因為本身不具備結構</li>
+<li>改變的僅是外觀和狀態，並不是替換結構</li>
+<li>不會同時使用一個以上不同值的相同 Modifier，例如: <code>--red</code> 和 <code>--green</code></li>
+</ul>
+<p><img src="modifier.png"></p>
+<p>常見表狀態的用法，此用法為布林值(boolean)，拿掉即是原始狀態</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;btn btn--active&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>另一種常見表樣式的用法</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 顏色樣式</span><br><span class="line"><span class="selector-class">.btn--primary</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.btn--secondary</span> &#123;...&#125;</span><br><span class="line">// 大小樣式</span><br><span class="line"><span class="selector-class">.btn-lg</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.btn-m</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不同值的樣式可以同時使用</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-primary btn-lg&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="連接符"><a href="#連接符" class="headerlink" title="連接符"></a>連接符</h3><ul>
+<li><code>-</code> 中線 : 僅連接區塊的多單詞</li>
+<li><code>__</code> 雙底線 : 用來連接 <code>Block</code> (區塊)與 <code>Element</code> (元素)</li>
+<li><code>--</code> 雙中線 : 用來描述 <code>Block</code> (區塊)或 <code>Element</code> (元素)的狀態 (Modifier)</li>
+</ul>
+<h3 id="BEM-常見的問題"><a href="#BEM-常見的問題" class="headerlink" title="BEM 常見的問題"></a>BEM 常見的問題</h3><ul>
+<li><p>可以單獨使用到的功能就不需要 BEM，例如:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//清除浮動</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;over-flow: hidden&#125;</span><br><span class="line">//隱藏文字</span><br><span class="line"><span class="selector-class">.text-hide</span> &#123;</span><br><span class="line">  <span class="attribute">text-indent</span>: <span class="number">101%</span>;</span><br><span class="line">  over-flow: hidden;</span><br><span class="line">  text-trap: no-wrap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>如果沒有直接的關係，Element 可以不用重複嵌套，盡量避免超過四層，以免降低網頁渲染速度，例如:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;menu&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;menu__list&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;menu__list__item&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;menu__list__item__link&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以寫成</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;menu&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;menu__list&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;menu__item&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;menu__link&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>沒有直接關係且會複用到頁面其他地方的 Block 應該獨立出來</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content__menu&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以獨立成</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;menu&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>增加 <code>Element</code> 和 <code>Modifier</code> 時需要重複撰寫前面的 <code>Block</code> 與 <code>Element</code> 很麻煩 ?</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.menu</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.menu__list</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.menu__item--active</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Sass3 開始支援 <code>&amp;</code> 連接字串可以解決這個問題</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.menu</span> &#123;</span><br><span class="line">&amp;__list &#123;...&#125;</span><br><span class="line">  &amp;__item &#123;</span><br><span class="line">    &amp;--active &#123;...&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="guideline-指南"><a href="#guideline-指南" class="headerlink" title="guideline (指南)"></a>guideline (指南)</h2><p>當網站架構越來越大或多人協作時，我們就需要一套規範指南來使大家的程式碼具有一致性，以減少不必要的溝通與衝突，提高開發效率</p>
+<h3 id="常見的設計規範"><a href="#常見的設計規範" class="headerlink" title="常見的設計規範"></a>常見的設計規範</h3><p>並非每次專案都要遵守所有設計規範，回歸設計規範的目的在於提升加載渲染、開發與維護效率，所以每次的 <code>guideline</code> 都不盡相同，而是視各個專案的複雜程度與參與的開發人員互相溝通而訂</p>
+<ul>
+<li><p>類別階層不超過 “四” 層為原則</p>
+</li>
+<li><p>不使用 <code>ID</code>，一律使用 <code>class</code></p>
+</li>
+<li><p>使用 <code>OOCSS</code> 建立類別工具庫</p>
+</li>
+<li><p>使用 <code>SMACSS</code> 來建立 Sass 結構</p>
+</li>
+<li><p>排版結構以 <code>BEM</code> 來開發</p>
+</li>
+<li><p>導入 BS4 的 <code>Grid System</code></p>
+</li>
+<li><p>使用 <code>Sass for</code> 來管理擴充元件</p>
+</li>
+<li><p>一率採用駝峰式命名，利用大小寫區分單詞</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 小駝峰式 (開頭小寫)</span><br><span class="line"><span class="selector-class">.listTitle</span> &#123;...&#125;</span><br><span class="line">// 大駝峰式(開頭大寫)</span><br><span class="line"><span class="selector-class">.ListTitle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>導入第三方插件在 <code>Sass import vendor</code></p>
+</li>
+<li><p>使用 <code>REM</code> 單位</p>
+</li>
+<li><p>佈局使用 <code>flexbox</code> 進行元件設計</p>
+</li>
+</ul>
+<h3 id="sass-7-1-設計模式"><a href="#sass-7-1-設計模式" class="headerlink" title="sass 7+1 設計模式"></a>sass 7+1 設計模式</h3><ul>
+<li><p>base : 全站設定</p>
+<p>定義大部分的 CSS ，避免一直重複撰寫相同的 CSS 樣式，概念同於 SMACSS 的 Base<br>注意 base 的 CSS 絕對不能使用 <code>!important</code> ，以免後續新增的 CSS 無法覆蓋</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_reset.scss      # Reset&#x2F;normalize 樣式重製</span><br><span class="line">_reboot.scss     # 重製部分樣式</span><br><span class="line">_typography.scss # 文字規範</span><br></pre></td></tr></table></figure></li>
+<li><p>components : 組件</p>
+<p>為獨立的組件，放到頁面上任何位置、容器都可以自適應延伸，概念同於 bootstrap 中的 component</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_button.scss  # 按鈕</span><br><span class="line">_menu.scss    # 選單</span><br></pre></td></tr></table></figure></li>
+<li><p>layout : 排版</p>
+<p>控制頁面的版型，彼此具備獨立性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_grid.scss   # 格線系統</span><br><span class="line">_header.scss # 表頭</span><br><span class="line">_footer.scss # 表尾</span><br></pre></td></tr></table></figure></li>
+<li><p>pages : 個頁設定</p>
+<p>當個別頁面出現唯一且複雜的內容時，就可以單獨切分出來管理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_index.scss # 首頁</span><br><span class="line">_cart.scss  # 購物車頁</span><br></pre></td></tr></table></figure></li>
+<li><p>themes : 主題</p>
+<p>工具型的 CSS，例如，<code>.clearfix</code> (清除浮動)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_variables.scss  # Sass variables</span><br><span class="line">_functions.scss  # Sass function</span><br><span class="line">_minin.scss      # Sass mixin</span><br><span class="line">_helper.scss     # 工具型的 CSS</span><br></pre></td></tr></table></figure></li>
+<li><p>vendors : 套件</p>
+<p>如果網站有載入其他外掛套件，可以統一放到這個資料夾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_bootstrap.scss  # Bootstrap</span><br><span class="line">_jquery-ui.scss   # jQuery 套件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="收納"><a href="#收納" class="headerlink" title="收納"></a>收納</h3><p>當網站的 CSS 眾多且複雜，我們使用 Sass 7+1 進行管理時，可以將每個分類建立一個資料夾，將檔案個別放入，並建立一個名為 <code>all.scss</code> 的檔案載入其他所有檔案</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//in all.scss</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// utils</span></span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;utils/_variables.scss&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;utils/_mixin.scss&quot;</span>;</span><br><span class="line"><span class="comment">// base</span></span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;base/_reset.scss&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;base/_typography.scss&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>所有規範都不是構成網站的必要條件，設計規範的目的終究還是為了提高開發與維護的效率，並讓其他共同開發者能對彼此的程式碼一目了然，如果專案使用到 <code>Sass 7+1</code> ，甚至依照需求可以對分類自行新增或修改，同理其他的規範如 <code>SMACSS</code>、<code>OOCSS</code> 或 <code>BEM</code>，都可以只擷取部分概念使用，再次強調規範是死的，效率才是最終目的 !</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/css/" rel="tag"># CSS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/json/20190927/b2a33033/" rel="prev" title="JSON概述">
+                  <i class="fa fa-chevron-left"></i> JSON概述
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20190928/32632/" rel="next" title="瀏覽器裡的 JavaScript">
+                  瀏覽器裡的 JavaScript <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

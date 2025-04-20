@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="這堂課將加上圖表來統計每個月份的總開銷，並根據資料動態改變 CSS Style">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Adding a Chart">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220612/34522/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="這堂課將加上圖表來統計每個月份的總開銷，並根據資料動態改變 CSS Style">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-06-12T07:25:47.000Z">
+<meta property="article:modified_time" content="2022-06-12T07:30:49.927Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220612/34522/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220612/34522/","path":"react/20220612/34522/","title":"Adding a Chart"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Adding a Chart | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-Dynamic-Styles"><span class="nav-number">1.</span> <span class="nav-text">Adding Dynamic Styles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wrap-Up-amp-Next-Steps"><span class="nav-number">2.</span> <span class="nav-text">Wrap Up &amp; Next Steps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220612/34522/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Adding a Chart
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2022-06-12 15:25:47 / 修改時間：15:30:49" itemprop="dateCreated datePublished" datetime="2022-06-12T15:25:47+08:00">2022-06-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>這堂課將加上圖表來統計每個月份的總開銷，並根據資料動態改變 CSS Style</p>
+<span id="more"></span>
+
+<p>首先，新增一組 Component Bar.js，並加上基本結構如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bar.js</span></span><br><span class="line"><span class="keyword">const</span> Chart = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;chart&quot;</span>&gt;</span><br><span class="line">      &#123;props.dataPoints.map(<span class="function">(<span class="params">dataPoint</span>) =&gt;</span> (</span><br><span class="line">        &lt;ChartBar</span><br><span class="line">          key=&#123;dataPoint.label&#125;</span><br><span class="line">          value=&#123;dataPoint.value&#125;</span><br><span class="line">          label=&#123;dataPoint.label&#125;</span><br><span class="line">          maxValue=&#123;<span class="literal">null</span>&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">      ))&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adding-Dynamic-Styles"><a href="#Adding-Dynamic-Styles" class="headerlink" title="Adding Dynamic Styles"></a>Adding Dynamic Styles</h2><p>接著新增一組 Component ChartBar.js，其基本結構如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ChartBar = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;chart-bar&quot;</span>&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;chart-bar__inner&quot;</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;chart-bar__fill&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;chart-bar__label&quot;</span>&gt;&#123;props.label&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>接著我們需要計算 props 進來的值，藉此動態顯示對應的 CSS Style ; 在 React 中，如果要在 JSX 加上 <code>style</code>，其中的值為一個 object {}</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ChartBar = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> barFillHeight = <span class="string">&#x27;0%&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (props.max &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    barFillHeight = <span class="built_in">Math</span>.round((props.value / props.max) * <span class="number">100</span>) + <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;chart-bar&quot;</span>&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;chart-bar__inner&quot;</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;chart-bar__fill&quot;</span> style=&#123;&#123;<span class="attr">height</span>: barFillHeight&#125;&#125;&gt;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;chart-bar__label&quot;</span>&gt;&#123;props.label&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果遇到 <code>background-color</code> 這種多字元的屬性，則須要透過引號 ‘’ 來包住它，或是透過駝峰式 Camel Case 來表示</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Quatation Marks</span></span><br><span class="line">&lt;div className=<span class="string">&quot;chart-bar__fill&quot;</span> style=&#123;&#123;<span class="string">&#x27;background-color&#x27;</span>: <span class="string">&#x27;red&#x27;</span>&#125;&#125;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Camel Case</span></span><br><span class="line">&lt;div className=<span class="string">&quot;chart-bar__fill&quot;</span> style=&#123;&#123;<span class="attr">backgroundColor</span>: <span class="string">&#x27;red&#x27;</span>&#125;&#125;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Wrap-Up-amp-Next-Steps"><a href="#Wrap-Up-amp-Next-Steps" class="headerlink" title="Wrap Up &amp; Next Steps"></a>Wrap Up &amp; Next Steps</h2><p>接著，我們可以在 Expense 資料節中新增一個 Component ExpenseChar 來導入 Component Chart，並帶入過濾後的資料</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Expenses.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line">  &lt;ExpenseChart expenses=&#123;filteredExpenses&#125;&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>有了這些資料後，便可以對資料進行加總統計，並將資料整理成 Component Chart 需要的格式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseChart.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ExpenseChart = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> chartDataPoints = [</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Jan&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Feb&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Mar&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Apr&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;May&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Jun&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Jul&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Aug&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Sep&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Oct&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Nov&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="string">&quot;Dec&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> expense <span class="keyword">of</span> props.expenses) &#123;</span><br><span class="line">    <span class="keyword">const</span> expenseMonth = expense.date.getMonth(); <span class="comment">// starting at 0 =&gt; January =&gt; 0</span></span><br><span class="line">    chartDataPoints[expenseMonth].value += expense.amount; </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Chart</span> <span class="attr">dataPoints</span>=<span class="string">&#123;chartDataPoints&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>最後就可藉由這些資料取得最大值作為 100% 的基準了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Chart.js</span></span><br><span class="line"><span class="keyword">const</span> Chart = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> dataPointValues = props.dataPoints.map(<span class="function"><span class="params">dataPoint</span> =&gt;</span> dataPoint.value);</span><br><span class="line">  <span class="keyword">const</span> totalMaximum = <span class="built_in">Math</span>.max(...dataPointValues);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;chart&quot;</span>&gt;</span><br><span class="line">      &#123;props.dataPoints.map(<span class="function">(<span class="params">dataPoint</span>) =&gt;</span> (</span><br><span class="line">        &lt;ChartBar</span><br><span class="line">          key=&#123;dataPoint.label&#125;</span><br><span class="line">          value=&#123;dataPoint.value&#125;</span><br><span class="line">          label=&#123;dataPoint.label&#125;</span><br><span class="line">          maxValue=&#123;totalMaximum&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">      ))&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/react-complete-guide/commit/d1a9c9979618b9f30b7e8a19c956a9b6de0f384a">Github</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220611/42263/" rel="prev" title="Outputting Conditional Content">
+                  <i class="fa fa-chevron-left"></i> Outputting Conditional Content
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220612/18219/" rel="next" title="Setting Dynamic Inline Styles">
+                  Setting Dynamic Inline Styles <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

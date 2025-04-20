@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="JavaScript 是一個事件驅動 Event-driven 的程式語言，當瀏覽器載入網頁開始讀取後，會馬上讀取 JS 事件的相關程式碼，但必須等到事件被觸發後，才會進行對應程式的執行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - 事件">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191003/52047/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="JavaScript 是一個事件驅動 Event-driven 的程式語言，當瀏覽器載入網頁開始讀取後，會馬上讀取 JS 事件的相關程式碼，但必須等到事件被觸發後，才會進行對應程式的執行">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191003/52047/event-flow.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191003/52047/event.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191003/52047/beforeunload.png">
+<meta property="article:published_time" content="2019-10-02T17:14:05.000Z">
+<meta property="article:modified_time" content="2019-10-02T18:19:36.615Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/javascript/20191003/52047/event-flow.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191003/52047/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191003/52047/","path":"javascript/20191003/52047/","title":"JavaScript - 事件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript - 事件 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E4%BB%8B%E7%B4%B9"><span class="nav-number">1.</span> <span class="nav-text">事件介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">事件流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%B5%81%E7%A8%8B%E4%BB%8B%E7%B4%B9"><span class="nav-number">2.1.</span> <span class="nav-text">事件流程介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1-Event-Bubbling"><span class="nav-number">2.2.</span> <span class="nav-text">事件冒泡 (Event Bubbling)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%8D%95%E7%8D%B2-Event-Capturing"><span class="nav-number">2.3.</span> <span class="nav-text">事件捕獲 (Event Capturing)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9A%84%E8%A8%BB%E5%86%8A%E7%B6%81%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">事件的註冊綁定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#on-event-%E8%99%95%E7%90%86%E5%99%A8-HTML-%E5%B1%AC%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">on-event 處理器 (HTML 屬性)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#on-event-%E8%99%95%E7%90%86%E5%99%A8-%E9%9D%9E-HTML-%E5%B1%AC%E6%80%A7"><span class="nav-number">3.2.</span> <span class="nav-text">on-event 處理器 (非 HTML 屬性)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%A3%E8%81%BD-EventTarget-addEventListener"><span class="nav-number">3.3.</span> <span class="nav-text">事件監聽 EventTarget.addEventListener()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%99%A4%E4%BA%8B%E4%BB%B6%E8%A8%BB%E5%86%8A-EventTarget-removeEventListener"><span class="nav-number">3.4.</span> <span class="nav-text">解除事件註冊 EventTarget.removeEventListener()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E8%99%95%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">事件處理器中的事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E8%99%95%E7%90%86%E5%99%A8%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BB%8B%E7%B4%B9"><span class="nav-number">4.1.</span> <span class="nav-text">事件處理器中的事件介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E6%B6%88%E9%A0%90%E8%A8%AD%E8%A1%8C%E7%82%BA-event-preventDefault"><span class="nav-number">4.2.</span> <span class="nav-text">取消預設行為 event.preventDefault()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E6%93%8B%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E5%82%B3%E9%81%9E-enent-stopPropagation"><span class="nav-number">4.3.</span> <span class="nav-text">阻擋事件冒泡傳遞 enent.stopPropagation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E4%B8%AD%E7%9A%84%E8%87%AA%E5%B7%B1-this-%E8%88%87-e-target"><span class="nav-number">4.4.</span> <span class="nav-text">事件中的自己 this 與 e.target</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%8C%87%E6%B4%BE-Event-Delegation"><span class="nav-number">4.5.</span> <span class="nav-text">事件指派 Event Delegation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%A8%AE%E9%A1%9E"><span class="nav-number">5.</span> <span class="nav-text">事件的種類</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E9%9D%A2%E7%9B%B8%E9%97%9C%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.1.</span> <span class="nav-text">介面相關事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#load"><span class="nav-number">5.1.1.</span> <span class="nav-text">load</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unload-%E8%88%87-beforeunload"><span class="nav-number">5.1.2.</span> <span class="nav-text">unload 與 beforeunload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#error"><span class="nav-number">5.1.3.</span> <span class="nav-text">error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resize"><span class="nav-number">5.1.4.</span> <span class="nav-text">resize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scroll"><span class="nav-number">5.1.5.</span> <span class="nav-text">scroll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DOMContentLoaded"><span class="nav-number">5.1.6.</span> <span class="nav-text">DOMContentLoaded</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%91%E9%BC%A0%E7%9B%B8%E9%97%9C%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.2.</span> <span class="nav-text">滑鼠相關事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#click"><span class="nav-number">5.2.1.</span> <span class="nav-text">click</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dblclick"><span class="nav-number">5.2.2.</span> <span class="nav-text">dblclick</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mouseenter-mousemove-mouseleave-%E4%B8%8D%E6%94%AF%E6%8F%B4%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="nav-number">5.2.3.</span> <span class="nav-text">mouseenter&#x2F;mousemove&#x2F;mouseleave 不支援事件冒泡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mouseover-mouseout-%E6%94%AF%E6%8F%B4%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="nav-number">5.2.4.</span> <span class="nav-text">mouseover&#x2F;mouseout 支援事件冒泡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%8D%B5%E7%9B%A4%E7%9B%B8%E9%97%9C%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">鍵盤相關事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keydown"><span class="nav-number">5.3.1.</span> <span class="nav-text">keydown</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keypress"><span class="nav-number">5.3.2.</span> <span class="nav-text">keypress</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keyup"><span class="nav-number">5.3.3.</span> <span class="nav-text">keyup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keycode"><span class="nav-number">5.3.4.</span> <span class="nav-text">keycode</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E5%96%AE%E7%9B%B8%E9%97%9C%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.4.</span> <span class="nav-text">表單相關事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input"><span class="nav-number">5.4.1.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#change"><span class="nav-number">5.4.2.</span> <span class="nav-text">change</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit"><span class="nav-number">5.4.3.</span> <span class="nav-text">submit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#focus"><span class="nav-number">5.4.4.</span> <span class="nav-text">focus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blur"><span class="nav-number">5.4.5.</span> <span class="nav-text">blur</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.5.</span> <span class="nav-text">特殊事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Composition-Event-%E7%B5%84%E6%88%90%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.5.1.</span> <span class="nav-text">Composition Event 組成事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E8%A8%82%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.6.</span> <span class="nav-text">自訂事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.7.</span> <span class="nav-text">其他事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191003/52047/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript - 事件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-10-03 01:14:05 / 修改時間：02:19:36" itemprop="dateCreated datePublished" datetime="2019-10-03T01:14:05+08:00">2019-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>JavaScript 是一個事件驅動 <code>Event-driven</code> 的程式語言，當瀏覽器載入網頁開始讀取後，會馬上讀取 JS 事件的相關程式碼，但必須等到事件被觸發後，才會進行對應程式的執行</p>
+<span id="more"></span>
+
+<h2 id="事件介紹"><a href="#事件介紹" class="headerlink" title="事件介紹"></a>事件介紹</h2><p>以下方的 Bootstrap 按鈕為例，當使用者點擊這個按鈕，並跳出另一個視窗， “點擊按鈕” 這件事就是 “事件” Event，而負責處理事件的程式被稱為 事件處理者 <code>Event Handler</code>，也就是 “啟動另一個視窗的顯示” 這個動作</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/eYOqLaK?editors=1001">bootstrap button</a></p>
+<h2 id="事件流程"><a href="#事件流程" class="headerlink" title="事件流程"></a>事件流程</h2><h3 id="事件流程介紹"><a href="#事件流程介紹" class="headerlink" title="事件流程介紹"></a>事件流程介紹</h3><p>這裡有兩個 <code>div</code> 元素，外層是 <code>.outer</code>，內層是 <code>.inner</code>，當我們點擊 <code>.inner</code> 的時候，其實也同時在點擊 <code>.outer</code>，更廣義來說，其實也在點擊整個網頁</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;outer&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="event-flow.png"></p>
+<p>事件流程指的就是 “網頁元素接收事件的順序”，而事件流程分成兩種機制</p>
+<ul>
+<li>事件冒泡 (Event Bubbling)</li>
+<li>事件捕獲 (Event Capturing)</li>
+</ul>
+<h3 id="事件冒泡-Event-Bubbling"><a href="#事件冒泡-Event-Bubbling" class="headerlink" title="事件冒泡 (Event Bubbling)"></a>事件冒泡 (Event Bubbling)</h3><p>“事件冒泡” 指的就是從啟動的元素節點開始，逐漸 “由下而上” 傳遞，直到網頁的根節點 <code>document</code></p>
+<p>如下範例，當我們點擊 <code>&lt;div&gt;click&lt;/div&gt;</code>，在 “事件冒泡” 的機制下，觸發順序為:</p>
+<ol>
+<li><code>&lt;div&gt;click&lt;/div&gt;</code></li>
+<li><code>&lt;body&gt;</code></li>
+<li><code>&lt;html&gt;</code></li>
+<li><code>document</code></li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>click<span class="tag">&lt;/<span class="name">div</span>&gt;</span>   // 被點擊的元素</span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="事件捕獲-Event-Capturing"><a href="#事件捕獲-Event-Capturing" class="headerlink" title="事件捕獲 (Event Capturing)"></a>事件捕獲 (Event Capturing)</h3><p>“事件捕獲” 和 “事件冒泡” 相反，指的就是從啟動的元素節點開始，逐漸 “由上而下” 傳遞，從網頁的根節點 <code>document</code> 開始直到點擊的元素</p>
+<p>同以上範例，當我們點擊 <code>&lt;div&gt;click&lt;/div&gt;</code>，在 事件捕獲的機制下，觸發順序為:</p>
+<ol>
+<li><code>document</code></li>
+<li><code>&lt;html&gt;</code></li>
+<li><code>&lt;body&gt;</code></li>
+<li><code>&lt;div&gt;click&lt;/div&gt;</code></li>
+</ol>
+<h2 id="事件的註冊綁定"><a href="#事件的註冊綁定" class="headerlink" title="事件的註冊綁定"></a>事件的註冊綁定</h2><p>透過事件的綁定，可以指定 “事件處理器” <code>handler</code> 給事件，也就是當事件被觸發後會執行的動作</p>
+<p>事件的綁定可以分為以下三種:</p>
+<ul>
+<li><code>on-event</code> 處理器 (HTML 屬性)</li>
+<li><code>on-event</code> 處理器 (非 HTML 屬性)</li>
+<li>事件監聽 <code>EventTarget.addEventListener()</code></li>
+</ul>
+<h3 id="on-event-處理器-HTML-屬性"><a href="#on-event-處理器-HTML-屬性" class="headerlink" title="on-event 處理器 (HTML 屬性)"></a>on-event 處理器 (HTML 屬性)</h3><p>我們可以透過加上 <code>on</code> + 事件名稱 的屬性在 HTML 元素上來註冊事件，但基於使用性與維護性，不建議使用此方法來綁定事件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;alert(&#x27;Hello World&#x27;)&quot;</span>&gt;</span> click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="on-event-處理器-非-HTML-屬性"><a href="#on-event-處理器-非-HTML-屬性" class="headerlink" title="on-event 處理器 (非 HTML 屬性)"></a>on-event 處理器 (非 HTML 屬性)</h3><p>像是 <code>window</code> 或 <code>document</code> 這種沒有實體元素的情況，還是可以透過 <code>DOM API</code> 提供的 <code>on-event</code> 處理器 來處理事件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span>Click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line">          </span><br><span class="line">btn.onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Hi&#x27;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事件監聽-EventTarget-addEventListener"><a href="#事件監聽-EventTarget-addEventListener" class="headerlink" title="事件監聽 EventTarget.addEventListener()"></a>事件監聽 <code>EventTarget.addEventListener()</code></h3><p>事件監聽 <code>EventTarget.addEventListener()</code> 包含三個參數</p>
+<ul>
+<li>事件名稱</li>
+<li>事件的處理器 <code>event handler</code> (事件觸發時執行的 function )</li>
+<li>布林值 : 如果沒有寫預設值就是 <code>false</code> 代表 事件冒泡，反之，<code>true</code> 代表 事件捕獲</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventTarget.addEventListener(<span class="string">&#x27;事件名稱&#x27;</span>, <span class="string">&#x27;事件的處理器(function)&#x27;</span>, <span class="literal">true</span>/<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>指定多個 處理器 handler</strong></p>
+<p>事件監聽 .addEventListener 的好處事可以重複指定多個 事件處理器 event handler 給同一個元素的同一個事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line"></span><br><span class="line">btn.adaEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">btn.adaEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;World&#x27;</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// in console</span></span><br><span class="line"><span class="string">&quot;Hello&quot;</span></span><br><span class="line"><span class="string">&quot;World&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="解除事件註冊-EventTarget-removeEventListener"><a href="#解除事件註冊-EventTarget-removeEventListener" class="headerlink" title="解除事件註冊 EventTarget.removeEventListener()"></a>解除事件註冊 <code>EventTarget.removeEventListener()</code></h3><p>解除事件註冊 <code>removeEventListener</code> 與 事件監聽 <code>addEventListener</code> 一樣包含三個參數，分別是 “事件名稱”、”事件處理器” 和 “冒泡/捕獲”</p>
+<p>但要注意的是，<code>removeEventListener</code> 要移除的事件要確定是與 <code>addEventListener</code> 綁定的是同一個 實體，否則無法移除</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line"></span><br><span class="line">btn.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Hi&#x27;</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除事件，但沒有用</span></span><br><span class="line">btn.removeEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Hi&#x27;</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果是透過變數將 事件處理 <code>event handler</code> 拉出來，兩者就會指向 “同一個實體”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> clickHandler = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Hi&#x27;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">btn.addEventListener(<span class="string">&#x27;click&#x27;</span>, clickHandler, <span class="literal">false</span>);</span><br><span class="line">              </span><br><span class="line"><span class="comment">// 成功移除</span></span><br><span class="line">btn.removeEventListener(<span class="string">&#x27;click&#x27;</span>, clickHandler, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="事件處理器中的事件"><a href="#事件處理器中的事件" class="headerlink" title="事件處理器中的事件"></a>事件處理器中的事件</h2><p>當我們透過 <code>addEventListener</code> 來註冊事件時，會有三個參數，分別是 事件名稱、事件處理器 (Event Handler) 以及 捕獲/冒泡</p>
+<h3 id="事件處理器中的事件介紹"><a href="#事件處理器中的事件介紹" class="headerlink" title="事件處理器中的事件介紹"></a>事件處理器中的事件介紹</h3><p>同時，事件監聽器 <code>EventListener</code> 會建立一個事件物件 <code>Event Object</code>，這個物件包含所有與事件有關的屬性，並以 參數 的形式回傳給 <code>Event Handler</code></p>
+<p>如下範例，參數 <code>e</code> 就是 事件物件，透過 <code>console.log</code> 我們可以查看所有與事件有關的屬性，<code>e</code> 是參數，所以當然可以自定義名稱</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span>Click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line"></span><br><span class="line">btn.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="event.png"></p>
+<ul>
+<li><code>typeof</code> : 事件名稱</li>
+<li><code>target</code> : 觸發事件的元素</li>
+<li><code>bubbles</code> : 事件是否在冒泡階段觸發 ( true/false )</li>
+<li><code>pageX / page Y</code> : 事件觸發時，滑鼠座標在網頁上的相對位置</li>
+</ul>
+<h3 id="取消預設行為-event-preventDefault"><a href="#取消預設行為-event-preventDefault" class="headerlink" title="取消預設行為 event.preventDefault()"></a>取消預設行為 <code>event.preventDefault()</code></h3><p>如果我們需要在 <code>&lt;a&gt;</code> 或 <code>&lt;submit&gt;</code> 等上綁定事件，就需要適當的取消他們的預設行為</p>
+<p>如下範例，我們想要在點擊這個連結的時候，瀏覽器執行 <code>console.log(&#39;Google&#39;)</code>，而不是直接連結到 <code>Google</code> 首頁，就可以使用 <code>preventDefault()</code> 來取消 <code>&lt;a&gt;</code> 的預設行為</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.google.com&quot;</span> <span class="attr">id</span>=<span class="string">&quot;link&quot;</span>&gt;</span>Google<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> link = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#link&#x27;</span>);</span><br><span class="line"></span><br><span class="line">link.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  e.preventDefault();   <span class="comment">// 取消預設行為</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Google&#x27;</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="阻擋事件冒泡傳遞-enent-stopPropagation"><a href="#阻擋事件冒泡傳遞-enent-stopPropagation" class="headerlink" title="阻擋事件冒泡傳遞 enent.stopPropagation"></a>阻擋事件冒泡傳遞 <code>enent.stopPropagation</code></h3><p>當 “子元素” 和 “父元素” 有 相同的事件 ，我們希望觸發子元素的事件時不要觸發到父元素的事件，就可以使用到 <code>event object</code> 提供的另一個方法 <code>event.stopPropagation</code> 來阻擋事件向上冒泡</p>
+<p>如下範例，有時候為了增加 <code>checkbox</code> 的靈活性，會使用 <code>label</code> 包住的寫法，當我們在 label 和 <code>checkbox</code> 上都註冊 <code>click</code> 事件時，會發現 <code>label</code> 上的事件執行了兩次</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">id</span>=<span class="string">&quot;label&quot;</span>&gt;</span></span><br><span class="line">  Label <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">id</span>=<span class="string">&quot;checkbox&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> label = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;label&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> checkobx = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;checkbox&#x27;</span>);</span><br><span class="line"></span><br><span class="line">lable.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;label click&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">checkbox.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;checkbox click&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// in console</span></span><br><span class="line"><span class="string">&#x27;label click&#x27;</span></span><br><span class="line"><span class="string">&#x27;checkbox click&#x27;</span></span><br><span class="line"><span class="string">&#x27;label click&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如上範例，<code>label</code> 會執行兩次是因為當我們點擊 <code>label</code> 時，瀏覽器會自動將 <code>click</code> 事件傳給 <code>checkbox</code>，而 <code>checkbox</code> 受到事件冒泡影響，又會將 <code>click</code> 傳給上層的 <code>label</code>，所以執行了兩次</p>
+<p>要解決這個問題，只要在 <code>checkbox</code> 加上 <code>e.stopPropagation()</code>，就可以阻擋 <code>checkbox</code> 向上傳遞的事件冒泡</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> label = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;label&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> checkobx = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;checkbox&#x27;</span>);</span><br><span class="line">            </span><br><span class="line">lable.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;label click&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">            </span><br><span class="line">checkbox.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  e.stopPropagation();</span><br><span class="line">&#125;);</span><br><span class="line">            </span><br><span class="line"><span class="comment">// in console</span></span><br><span class="line"><span class="string">&#x27;label click&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="事件中的自己-this-與-e-target"><a href="#事件中的自己-this-與-e-target" class="headerlink" title="事件中的自己 this 與 e.target"></a>事件中的自己 <code>this</code> 與 <code>e.target</code></h3><ul>
+<li><code>this</code> : 透過 <code>this</code> 可以找到 觸發事件的目標 元素，也就是 <code>event.currentTarget</code></li>
+<li><code>e.target</code> : 透過 <code>e.target</code> 可以找到 觸發事件的元素</li>
+<li>大部分的情況 <code>this</code> 會和 <code>e.target</code> 指向同一個元素</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">id</span>=<span class="string">&quot;label&quot;</span>&gt;</span></span><br><span class="line">  Label <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">id</span>=<span class="string">&quot;checkbox&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> label = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;label&#x27;</span>);</span><br><span class="line"></span><br><span class="line">label.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.target.tagName);   <span class="comment">// &#x27;LABEL&#x27;</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.tagName);       <span class="comment">// &#x27;LABEL&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>但如果是 “傳遞” 的情況兩者指向的元素就會有所不同</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> label = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;label&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> checkbox = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;checkbox&#x27;</span>);</span><br><span class="line"></span><br><span class="line">label.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.target.tagName, <span class="number">1</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.tagName, <span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">checkbox.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.target.tagName, <span class="number">2</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.tagName, <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// in console</span></span><br><span class="line"><span class="string">&quot;LABEL 1&quot;</span></span><br><span class="line"><span class="string">&quot;LABEL 1&quot;</span></span><br><span class="line"><span class="string">&quot;INPUT 2&quot;</span></span><br><span class="line"><span class="string">&quot;INPUT 2&quot;</span></span><br><span class="line"><span class="string">&quot;INPUT 1&quot;</span></span><br><span class="line"><span class="string">&quot;LABEL 1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>前兩組結果可以輕易理解為 <code>label</code> 和 <code>checkbox</code> 各觸發一次 <code>click</code> 事件</p>
+<p>但最後一組結果就不一樣了，由 <code>1</code> 可以判斷這組結果是 <code>checkbox</code> 經由 “事件冒泡” 傳遞給 <code>label</code> 所觸發的事件</p>
+<p>這裡的 <code>e.target</code> 指的是 觸發事件的元素，也就是觸發事件冒泡的 <code>checkbox</code></p>
+<p>而 <code>this</code> 指的是 觸發事件的目標元素，也就是事件冒泡 的目標 <code>label</code></p>
+<h3 id="事件指派-Event-Delegation"><a href="#事件指派-Event-Delegation" class="headerlink" title="事件指派 Event Delegation"></a>事件指派 <code>Event Delegation</code></h3><p>事件指派 指的是透過前面介紹的 “事件流程” 和 “單一事件監聽器” 來處理多個事件目標</p>
+<p>如下範例，我們為 <code>myList</code> 的 <code>li</code> 綁定 <code>click</code> 事件，就要透過 <code>for</code> 迴圈來一一綁定</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">&quot;myList&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Item 01<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Item 02<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Item 03<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取得容器</span></span><br><span class="line"><span class="keyword">var</span> myList = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;myList&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 分別為 li 綁定事件</span></span><br><span class="line"><span class="keyword">if</span> ( myList.hasChildNodes() )&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, i &lt; myList.childNodes.length, i++ )&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//nodeType === 1 代表為實體 HTML 元素</span></span><br><span class="line">    <span class="keyword">if</span> ( myList.childNodes[i].nodeType === <span class="number">1</span> )&#123;</span><br><span class="line">      myList.childNodes[i].addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.textContent);</span><br><span class="line">      &#125;, <span class="literal">false</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立新的 li 元素</span></span><br><span class="line"><span class="keyword">var</span> newList = <span class="built_in">document</span>.createElement(<span class="string">&#x27;li&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立文字節點</span></span><br><span class="line"><span class="keyword">var</span> textNode = <span class="built_in">document</span>.createTextNode(<span class="string">&quot;Hello Wordl&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 文字結點 加入新增的 li 元素</span></span><br><span class="line">newList.appendChild(textNode);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將新增的 li 元素加入 myList</span></span><br><span class="line">myList.appendChild(newList);</span><br></pre></td></tr></table></figure>
+
+<p>這時會發生一個問題，新增的 <code>li</code> 並不會有 <code>click</code> 事件的註冊</p>
+<p>如果每次新增新的 <code>li</code> 都要新增新的事件監聽 <code>addEventListener</code>，不僅沒完沒了，沒有移除舊的事件監聽可能會發生錯誤</p>
+<p>因此透過 事件指派 <code>Event Delegation</code> 是比較好的做法</p>
+<p>如下範例，我們是將 <code>click</code> 事件改由外層的 <code>myList</code> 來監聽，利用事件傳遞的原理來取得目標結點，所以後續新增的 <code>li</code> 也會有 <code>click</code> 事件的效果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取得容器</span></span><br><span class="line"><span class="keyword">var</span> myList = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;myList&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 改由外層 myList 來監聽 click 事件</span></span><br><span class="line">myList.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (e.target.tagName.toLowerCase() === <span class="string">&#x27;li&#x27;</span>)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.target.textContent);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">/ 建立新的 li 元素</span><br><span class="line"><span class="keyword">var</span> newList = <span class="built_in">document</span>.createElement(<span class="string">&#x27;li&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立文字節點</span></span><br><span class="line"><span class="keyword">var</span> textNode = <span class="built_in">document</span>.createTextNode(<span class="string">&quot;Hello Wordl&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 文字結點 加入新增的 li 元素</span></span><br><span class="line">newList.appendChild(textNode);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將新增的 li 元素加入 myList</span></span><br><span class="line">myList.appendChild(newList);</span><br></pre></td></tr></table></figure>
+
+<h2 id="事件的種類"><a href="#事件的種類" class="headerlink" title="事件的種類"></a>事件的種類</h2><p>事件的種類分為以下幾種</p>
+<ul>
+<li>介面相關事件</li>
+<li>滑鼠相關事件</li>
+<li>鍵盤相關事件</li>
+<li>表單相關事件</li>
+<li>特殊事件</li>
+<li>自訂事件</li>
+</ul>
+<h3 id="介面相關事件"><a href="#介面相關事件" class="headerlink" title="介面相關事件"></a>介面相關事件</h3><p>介面事件不一定與使用者對 <code>DOM</code> 的操作有關，反而大多數與 <code>window</code> 物件比較相關</p>
+<h4 id="load"><a href="#load" class="headerlink" title="load"></a>load</h4><p>註冊在 <code>window</code> 物件上，指的是網頁資源 (包括 CSS、JS、圖片等)，全數載入後觸發。</p>
+<p>如果是 <code>img</code> 元素的 <code>load</code> 事件，就代表是在圖片載入後觸發</p>
+<h4 id="unload-與-beforeunload"><a href="#unload-與-beforeunload" class="headerlink" title="unload 與 beforeunload"></a>unload 與 beforeunload</h4><p><code>unload</code> 和 <code>beforeunload</code> 分別會在離開頁面或重新整理時觸發，<code>beforeunload</code> 會跳出對話框詢問使用者是否確定要離開</p>
+<p><img src="beforeunload.png"></p>
+<h4 id="error"><a href="#error" class="headerlink" title="error"></a>error</h4><p>error 事件會在 document 或圖片載入錯誤時觸發。</p>
+<p>基於維護性考量，大部分的 JS 建議都使用 非侵入式 JS 的寫法，也就是另外寫 <code>&lt;script&gt;</code>，但 <code>error</code> 反而很適合以 <code>on-event handler</code> 的寫法來處理</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;image.jpg&quot;</span> <span class="attr">onerror</span>=<span class="string">&quot;this.src=&#x27;default.jpg&#x27;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如上範例，當 image.jpg 不存在的時候，就會觸發 error 事件，此時會透過 this.src 將 src 屬性替換成 default.jpg</p>
+<p>如果是在 <code>load</code> 完成後才註冊 <code>error</code> 事件，就只會看到破圖的結果，因為 <code>error</code> 事件不會再度被觸發，所以後來掛上的 <code>handler</code> 形同虛設</p>
+<h4 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h4><p>當瀏覽器 <code>window</code> 或指定元素 <code>element</code> 的 “尺寸變更” 時觸發</p>
+<h4 id="scroll"><a href="#scroll" class="headerlink" title="scroll"></a>scroll</h4><p>當瀏覽器 <code>window</code> 或指定元素 <code>element</code> 的 “卷軸被拉動” 時觸發</p>
+<h4 id="DOMContentLoaded"><a href="#DOMContentLoaded" class="headerlink" title="DOMContentLoaded"></a>DOMContentLoaded</h4><p>和 <code>load</code> 事件類似，不同的是，<code>load</code> 是在網頁的所有資源載入後才會觸發，而 <code>DOMContentLoaded</code> 是在 <code>DOM</code> 結構被完整的讀取和解析後就會被觸發</p>
+<p>一般來說如果將 <code>&lt;script&gt;</code> 放在 <code>&lt;head&gt;</code> 之間，會發生讀取不到 DOM 的問題，但如果使用 <code>DOMContentLoaded</code>，就可以排除這個問題了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.addEventListener(<span class="string">&quot;DOMContentLoaded&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 當 document 結構已解析完成才會執行</span></span></span><br><span class="line"><span class="javascript">      <span class="built_in">document</span>.getElementById(<span class="string">&#x27;hello&#x27;</span>).textContent = <span class="string">&#x27;Hello&#x27;</span>;</span></span><br><span class="line"><span class="javascript">    &#125;, <span class="literal">false</span>);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="滑鼠相關事件"><a href="#滑鼠相關事件" class="headerlink" title="滑鼠相關事件"></a>滑鼠相關事件</h3><h4 id="click"><a href="#click" class="headerlink" title="click"></a>click</h4><p>當滑鼠點擊某元素時觸發</p>
+<h4 id="dblclick"><a href="#dblclick" class="headerlink" title="dblclick"></a>dblclick</h4><p>當滑鼠 “連點兩次” 時觸發</p>
+<h4 id="mouseenter-mousemove-mouseleave-不支援事件冒泡"><a href="#mouseenter-mousemove-mouseleave-不支援事件冒泡" class="headerlink" title="mouseenter/mousemove/mouseleave 不支援事件冒泡"></a>mouseenter/mousemove/mouseleave 不支援事件冒泡</h4><p>這三個事件並 “不支援事件冒泡”，也就是無法藉由綁定父元素來觸發子元素的事件</p>
+<ol>
+<li><code>mouseenter</code> : 當滑鼠 “移入” 這個元素時觸發</li>
+<li><code>mousemove</code>: 當滑鼠在這個元素內 “移動” 時觸發</li>
+<li><code>mouseleave</code>: 當滑鼠 “移出” 這個元素時觸發</li>
+</ol>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/zVbKBK?editors=1010">範例程式碼 (mousemove)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/zVbWaO">範例程式碼 (網頁座標)</a></p>
+<h4 id="mouseover-mouseout-支援事件冒泡"><a href="#mouseover-mouseout-支援事件冒泡" class="headerlink" title="mouseover/mouseout 支援事件冒泡"></a>mouseover/mouseout 支援事件冒泡</h4><p>和 <code>mouseover/mouseout</code> 對應的就是 <code>mouseenter/mouseleave</code>，但不同的地方在於 <code>mouseover/mouseout</code> 支援冒泡事件，也就是可以藉由綁定父元素來觸發子元素事件</p>
+<h3 id="鍵盤相關事件"><a href="#鍵盤相關事件" class="headerlink" title="鍵盤相關事件"></a>鍵盤相關事件</h3><p>鍵盤事件分成三種，大多數情況會註冊在 <code>input</code> 上</p>
+<h4 id="keydown"><a href="#keydown" class="headerlink" title="keydown"></a>keydown</h4><p>當 “壓下” 按鍵時觸發</p>
+<h4 id="keypress"><a href="#keypress" class="headerlink" title="keypress"></a>keypress</h4><p>當按著不放時會連續觸發</p>
+<h4 id="keyup"><a href="#keyup" class="headerlink" title="keyup"></a>keyup</h4><p>當 “放開” 按鍵時觸發</p>
+<p>如果同一個元素綁定了這三個鍵盤事件，觸發順序為 <code>keydown=&gt;keypress=&gt;keyup</code></p>
+<h4 id="keycode"><a href="#keycode" class="headerlink" title="keycode"></a>keycode</h4><p>每個按鍵都有自己的代號，透過 keycode 可以知道每個按鍵的代號，進而指定按鍵來觸發</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://keycode.info/">keycode 對照</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/LKaxxp">範例程式碼</a></p>
+<h3 id="表單相關事件"><a href="#表單相關事件" class="headerlink" title="表單相關事件"></a>表單相關事件</h3><h4 id="input"><a href="#input" class="headerlink" title="input"></a>input</h4><p>當 input、textarea 以及帶有 contenteditable 的元素內容被改變時，就會觸發 input 事件</p>
+<h4 id="change"><a href="#change" class="headerlink" title="change"></a>change</h4><p>當 input、select、textarea、radio、checkbox 等被改變時觸發。與 input 不同的是， input 事件會在輸入框輸入內容的當下觸發，而 <code>change</code> 事件則是在目前焦點離開輸入框後才觸發</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/QXoqPq?editors=1010">範例程式碼</a></p>
+<h4 id="submit"><a href="#submit" class="headerlink" title="submit"></a>submit</h4><p>當表單被送出時觸發，通常表單驗證都會在這一步處理，驗證未過則 <code>return false</code></p>
+<h4 id="focus"><a href="#focus" class="headerlink" title="focus"></a>focus</h4><p>元素被聚焦時觸發</p>
+<h4 id="blur"><a href="#blur" class="headerlink" title="blur"></a>blur</h4><p>當元素失去焦點時觸發</p>
+<h3 id="特殊事件"><a href="#特殊事件" class="headerlink" title="特殊事件"></a>特殊事件</h3><h4 id="Composition-Event-組成事件"><a href="#Composition-Event-組成事件" class="headerlink" title="Composition Event 組成事件"></a>Composition Event 組成事件</h4><p>透過 組成事件 Composition Event，可以將輸入的過程分的更細，針對每個環節綁定不同的事件。組成事件分為以下三種:</p>
+<ol>
+<li><code>compositionstart</code></li>
+</ol>
+<p>  輸入框內開啟輸入法，且 正在拼音時 觸發</p>
+<ol start="2">
+<li><code>compositionupdate</code></li>
+</ol>
+<p>  輸入框內開啟輸入法，且 正在拼音時 或 選字時 更改了內容觸發</p>
+<ol start="3">
+<li><code>compositionend</code></li>
+</ol>
+<p>  輸入框內開啟輸入法，且拼字獲選字 完成 時觸發</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/EBMEYM?editors=0010">範例程式碼</a></p>
+<h3 id="自訂事件"><a href="#自訂事件" class="headerlink" title="自訂事件"></a>自訂事件</h3><ul>
+<li>使用 <code>Event constructor</code> 建立</li>
+<li>同樣透過 <code>addEventListener</code> 來監聽</li>
+<li>由 <code>dispatchEvent</code> 決定事件觸發的時機</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自訂事件</span></span><br><span class="line"><span class="keyword">var</span> event = <span class="keyword">new</span> Event(<span class="string">&#x27;build&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 監聽事件</span></span><br><span class="line">element.addEventListener(<span class="string">&#x27;build&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;...&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 觸發事件</span></span><br><span class="line">element.dispatchEvent(event);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果要在自訂事件內增加更多資料，可以改用 CustomEvent 來自訂事件，Event Handler 就可以透過 event 來接收</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自訂事件</span></span><br><span class="line"><span class="keyword">var</span> event = <span class="keyword">new</span> CustomEvent(<span class="string">&#x27;build&#x27;</span>, &#123;<span class="string">&#x27;detail&#x27;</span>: element.dataset.time&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件監聽</span></span><br><span class="line">element.addEventListener(<span class="string">&#x27;build&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;The time is&#x27;</span> + e.detail);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他事件"><a href="#其他事件" class="headerlink" title="其他事件"></a>其他事件</h3><p>其他的事件可以參考 <code>MDN</code> 的 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/Events">Event reference</a></p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20065504/ironman/1259">重新認識 JavaScript</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20083608/ironman/1354">邁向 JavaScript 勇者之路</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/javascript-learning/">JavaScript 入門篇 - 學徒的試煉</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20190928/32632/" rel="prev" title="瀏覽器裡的 JavaScript">
+                  <i class="fa fa-chevron-left"></i> 瀏覽器裡的 JavaScript
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191004/50136/" rel="next" title="JavaScript - AJAX">
+                  JavaScript - AJAX <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

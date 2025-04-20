@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="這堂課將介紹如何客製化一個 Component">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building a First Custom Component">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220604/5794/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="這堂課將介紹如何客製化一個 Component">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-06-04T04:12:49.000Z">
+<meta property="article:modified_time" content="2022-07-03T08:41:14.124Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220604/5794/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220604/5794/","path":"react/20220604/5794/","title":"Building a First Custom Component"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Building a First Custom Component | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-a-Basic-Component"><span class="nav-number">1.</span> <span class="nav-text">Building a Basic Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Writing-More-Complex-JSX-Code"><span class="nav-number">2.</span> <span class="nav-text">Writing More Complex JSX Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-Basic-CSS-Styling"><span class="nav-number">3.</span> <span class="nav-text">Adding Basic CSS Styling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Outputting-Dynamic-Data-amp-Working-with-Expressions-in-JSX"><span class="nav-number">4.</span> <span class="nav-text">Outputting Dynamic Data &amp; Working with Expressions in JSX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Passing-Data-via-%E2%80%9Cprops%E2%80%9D"><span class="nav-number">5.</span> <span class="nav-text">Passing Data via “props”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-%E2%80%9Cnormal%E2%80%9D-JavaScript-Logic-to-Components"><span class="nav-number">6.</span> <span class="nav-text">Adding “normal” JavaScript Logic to Components</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Splitting-Components-into-Multiple-Components"><span class="nav-number">7.</span> <span class="nav-text">Splitting Components into Multiple Components</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220604/5794/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Building a First Custom Component
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-06-04 12:12:49" itemprop="dateCreated datePublished" datetime="2022-06-04T12:12:49+08:00">2022-06-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-07-03 16:41:14" itemprop="dateModified" datetime="2022-07-03T16:41:14+08:00">2022-07-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>這堂課將介紹如何客製化一個 Component</p>
+<span id="more"></span>
+
+<h2 id="Building-a-Basic-Component"><a href="#Building-a-Basic-Component" class="headerlink" title="Building a Basic Component"></a>Building a Basic Component</h2><p>延續先前的環境，其實在預設環境中，就有一個名為 APP 的 Component，這個 Component 是整個 SPA 專安的 Root Component，之後所有開發的 Component 都會從中做延伸。</p>
+<p>而這個 Component 也為我們示範了如何在 React 中建立一個 Component，其實就是透過 JavaScript function return HTML Element (JSX) 來達到建立 Component 的目的 ; 我們一般會在 src 路徑底下建立一個 components 資料夾，接著在其內建立 component，如下，是一個名為 ExpenseItem 的 component，通常我們直接運用 Component 的名稱作為 return function 的名稱即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">  - components</span><br><span class="line">    -ExpenseItem</span><br><span class="line">  - App.js</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Expense item!<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<p>接著會在 App.js 這個 Root Component 引入它，一般而言，我們會將 React Component 以 uppercase character 的方式寫入，以便區分原生 HTML element 的 lowercase character</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseItem <span class="keyword">from</span> <span class="string">&#x27;./components/ExpenseItem&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Let<span class="string">&#x27;s get started!&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;ExpenseItem&gt;&lt;/ExpenseItem&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  );</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">export default App;</span></span><br></pre></td></tr></table></figure>
+
+<p>最後就可以在畫面上看到這些引入的內容了</p>
+<h2 id="Writing-More-Complex-JSX-Code"><a href="#Writing-More-Complex-JSX-Code" class="headerlink" title="Writing More Complex JSX Code"></a>Writing More Complex JSX Code</h2><p>當然一般的開發情況不會像上面這個 Component 這麼單純，一個 Component 常常會有更多內容需要呈現，這時候我們需要透過小括號 () 來將這些 HTML element 包起來，並透過一個 <code>div</code> 將所有內容放進去，確保回傳時只有一個 parent element</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;June <span class="number">4</span> <span class="number">2022</span>&lt;/div&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;Car Insurance&lt;/h2&gt;</span><br><span class="line">        &lt;div&gt;$<span class="number">294.67</span>&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adding-Basic-CSS-Styling"><a href="#Adding-Basic-CSS-Styling" class="headerlink" title="Adding Basic CSS Styling"></a>Adding Basic CSS Styling</h2><p>當然一個完整的專案不會只有 HTML 和 JavaScript，還會有許多 CSS 來調整 UI 的呈現，在 React 中，我們通常會在 Component 旁直接建立一支同名的 CSS 來開發它的 style，而且只要單純透過 <code>import</code> 就可以使用，但這裡要特別注意的是，Component function 所 return 的 HTML 終究不是原生的 HTML Element，而是 React 團隊開發出來像是 HTML 的 JSX，因此在寫法上會有些許的不同，一般採用 CSS 所使用 <code>class</code> 屬性也要改成 <code>className</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;div&gt;June <span class="number">4</span> <span class="number">2022</span>&lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;Car Insurance&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$<span class="number">294.67</span>&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Outputting-Dynamic-Data-amp-Working-with-Expressions-in-JSX"><a href="#Outputting-Dynamic-Data-amp-Working-with-Expressions-in-JSX" class="headerlink" title="Outputting Dynamic Data &amp; Working with Expressions in JSX"></a>Outputting Dynamic Data &amp; Working with Expressions in JSX</h2><p>到目前為止，Component 的值還是 hard coded 在 HTML 內，第一步我們需要讓它由動態的資料帶入，回到之前所說的，React Component 它就是一個 JavaScript function，所以我們可以先在 function 內透過變數來代指這些資料，而在 JSX 中，我們可以透過大括號 {} 來填入各種 JavaScript 程式碼，藉此帶入動態的資料</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> expenseDate = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2022</span>, <span class="number">6</span>, <span class="number">4</span>);</span><br><span class="line">  <span class="keyword">const</span> expenseTitle = <span class="string">&quot;Car Insurance&quot;</span>;</span><br><span class="line">  <span class="keyword">const</span> expenseAmount = <span class="number">294.67</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;div&gt;&#123;expenseDate.toISOString()&#125;&lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;expenseTitle&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;expenseAmount&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Passing-Data-via-“props”"><a href="#Passing-Data-via-“props”" class="headerlink" title="Passing Data via “props”"></a>Passing Data via “props”</h2><p>將整個專案拆成許多 Component 的目的不外乎就是為了能讓每個 Component 處理單一的邏輯與功能並提高程式碼的複用性 Reusable，因此，就以這個記帳項目的 Component 來說，資料應該是由外而內傳入的 Configurable ，並不會有固定的資料在裡面，否則就無法實現透過代入不同資料複用其功能與介面的目的了，Component 彼此無法直接使用對方的參數，這時候就會用到 React 中一個很重要的方法 - <code>props</code>。</p>
+<p>首先，我們會有一筆資料列表位於外層的 Component (App.js)，接著可以自訂一名稱將資料變數直接定義在 JSX Component 上，並一樣透過大括號 {} 來代入這些資料變數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./App.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> ExpenseItem <span class="keyword">from</span> <span class="string">&quot;./components/ExpenseItem&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> expenses = [</span><br><span class="line">    &#123; <span class="attr">title</span>: <span class="string">&quot;Car Insurance&quot;</span>, <span class="attr">amount</span>: <span class="number">294.67</span>, <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2022</span>, <span class="number">6</span>, <span class="number">4</span>) &#125;,</span><br><span class="line">    &#123; <span class="attr">title</span>: <span class="string">&quot;Toilet Paper&quot;</span>, <span class="attr">amount</span>: <span class="number">94.12</span>, <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2022</span>, <span class="number">6</span>, <span class="number">3</span>) &#125;,</span><br><span class="line">    &#123; <span class="attr">title</span>: <span class="string">&quot;New TV&quot;</span>, <span class="attr">amount</span>: <span class="number">299.49</span>, <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2022</span>, <span class="number">6</span>, <span class="number">2</span>) &#125;,</span><br><span class="line">    &#123; <span class="attr">title</span>: <span class="string">&quot;New Desk (Wooden)&quot;</span>, <span class="attr">amount</span>: <span class="number">450</span>, <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2022</span>, <span class="number">6</span>, <span class="number">1</span>) &#125;,</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;App&quot;</span>&gt;</span><br><span class="line">      &lt;h2&gt;Let<span class="string">&#x27;s get started!&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;ExpenseItem</span></span><br><span class="line"><span class="string">        title=&#123;expenses[0].title&#125;</span></span><br><span class="line"><span class="string">        amount=&#123;expenses[0].amount&#125;</span></span><br><span class="line"><span class="string">        date=&#123;expenses[0].date&#125;</span></span><br><span class="line"><span class="string">      &gt;&lt;/ExpenseItem&gt;</span></span><br><span class="line"><span class="string">      &lt;ExpenseItem</span></span><br><span class="line"><span class="string">        title=&#123;expenses[1].title&#125;</span></span><br><span class="line"><span class="string">        amount=&#123;expenses[1].amount&#125;</span></span><br><span class="line"><span class="string">        date=&#123;expenses[1].date&#125;</span></span><br><span class="line"><span class="string">      &gt;&lt;/ExpenseItem&gt;</span></span><br><span class="line"><span class="string">      &lt;ExpenseItem</span></span><br><span class="line"><span class="string">        title=&#123;expenses[2].title&#125;</span></span><br><span class="line"><span class="string">        amount=&#123;expenses[2].amount&#125;</span></span><br><span class="line"><span class="string">        date=&#123;expenses[2].date&#125;</span></span><br><span class="line"><span class="string">      &gt;&lt;/ExpenseItem&gt;</span></span><br><span class="line"><span class="string">      &lt;ExpenseItem</span></span><br><span class="line"><span class="string">        title=&#123;expenses[3].title&#125;</span></span><br><span class="line"><span class="string">        amount=&#123;expenses[3].amount&#125;</span></span><br><span class="line"><span class="string">        date=&#123;expenses[3].date&#125;</span></span><br><span class="line"><span class="string">      &gt;&lt;/ExpenseItem&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  );</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">export default App;</span></span><br></pre></td></tr></table></figure>
+
+<p>那麼接下來我們要如何取得傳進來的參數呢 ? 記得 Component 不過就是一個 return function，因此我們可以將參數透過 function parameter 傳入，但這裡要注意的是，無論我們在 Parent Component 中定義了多少個參數要傳到 Child Component 中，function parameter 都只會有一個，至於名稱可以自由定義，但一般我們會將它定義為這個方法的名稱 - <code>props</code>，而在 Parent Component 中定義於 JSX Component 上的名稱就是 <code>props</code> 的 <code>key</code>，如此一來就可以透過代入不同的參數達到 Component Reusable。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;div&gt;&#123;props.date.toISOString()&#125;&lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;props.title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adding-“normal”-JavaScript-Logic-to-Components"><a href="#Adding-“normal”-JavaScript-Logic-to-Components" class="headerlink" title="Adding “normal” JavaScript Logic to Components"></a>Adding “normal” JavaScript Logic to Components</h2><p>到目前為止，上述程式碼所渲染出來的日期格式與一般大家常見的使用習慣還是有點出入，如果我們希望日期可以被單獨拆分成年、月和日，可以使用 JavaScript Date 原生語法 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString">toLocaleString</a> 和 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getFullYear">getFullYear</a> 來個別取得這些資料</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">month</span>: <span class="string">&quot;long&quot;</span> &#125;)&#125;&lt;/div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">day</span>: <span class="string">&quot;2-digit&quot;</span> &#125;)&#125;&lt;/div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.getFullYear()&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;props.title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<p>即便在 React JSX 中，我們可以在大括號 {} 寫入任何 JavaScript 邏輯，但為了 HTML 與 JavaScript 可以區分得更明確，我們可以透過變數儲存這些邏輯再帶入 JSX 中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> month = props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">month</span>: <span class="string">&quot;long&quot;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> day = props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">day</span>: <span class="string">&quot;2-digit&quot;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> year = props.date.getFullYear();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">month</span>: <span class="string">&quot;long&quot;</span> &#125;)&#125;&lt;/div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">day</span>: <span class="string">&quot;2-digit&quot;</span> &#125;)&#125;&lt;/div&gt;</span><br><span class="line">        &lt;div&gt;&#123;props.date.getFullYear()&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;props.title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Splitting-Components-into-Multiple-Components"><a href="#Splitting-Components-into-Multiple-Components" class="headerlink" title="Splitting Components into Multiple Components"></a>Splitting Components into Multiple Components</h2><p>一般在開發時，為了因應使用需求，專案往往會有越來越多的功能與 Component，這是非常正常的 ; 因此，為了讓每個 Component 負責的功能更加單純，我們會將原有的 Component 繼續拆分成更小的 Component，但這並沒有一個硬性的規定什麼時候應該拆分，單純依照需求和經驗來判斷，延續上方的範例，我們可以嘗試將 ExpenseItem 中的 date 拆分成一個 ExpenseDate 使其功能更加單純。</p>
+<p>首先，從 ExpenseItem 拆分出去後，我們需要 import ExpenseDate 將其引入使用，並將接受到的 date 這筆資料再次透過 <code>props</code> 傳給它，這裡特別注意一下，即便 ExpenseItem 因將 date 功能拆分出去後，並沒有直接使用到 date 這筆資料，但仍需透過它再將這筆資料 <code>props</code> 給 ExpenseDate，因為在 React 中，如果透過 <code>props</code> 傳遞資料，我們無法”跳過”中間層的 Component</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ExpenseItem.js</span></span><br><span class="line"><span class="keyword">import</span> ExpenseDate <span class="keyword">from</span> <span class="string">&quot;./ExpenseDate&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./ExpenseItem.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseItem</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div className=<span class="string">&quot;expense-item&quot;</span>&gt;</span><br><span class="line">      &lt;ExpenseDate date=&#123;props.date&#125; /&gt;</span><br><span class="line">      &lt;div className=<span class="string">&quot;expense-item__description&quot;</span>&gt;</span><br><span class="line">        &lt;h2&gt;&#123;props.title&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;div className=<span class="string">&quot;expense-item__price&quot;</span>&gt;$&#123;props.amount&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseItem;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ExpenseDate.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExpenseDate</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> month = props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">month</span>: <span class="string">&quot;long&quot;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> day = props.date.toLocaleString(<span class="string">&quot;en-US&quot;</span>, &#123; <span class="attr">day</span>: <span class="string">&quot;2-digit&quot;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> year = props.date.getFullYear();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;&#123;month&#125;&lt;/div&gt;</span><br><span class="line">      &lt;div&gt;&#123;day&#125;&lt;/div&gt;</span><br><span class="line">      &lt;div&gt;&#123;year&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> ExpenseDate;</span><br></pre></td></tr></table></figure>
+
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/react-complete-guide/commit/f2bd63783737eb58e311d7ecd36d476baaebc7d8">Github</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220601/56348/" rel="prev" title="JSX">
+                  <i class="fa fa-chevron-left"></i> JSX
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220605/53422/" rel="next" title="The Concept of Composition (children props)">
+                  The Concept of Composition (children props) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

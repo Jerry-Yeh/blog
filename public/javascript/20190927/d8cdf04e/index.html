@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在 JS 語法可以分為兩大類，敘述句 Statement 與 運算式 Expression">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript入門篇 - 運算式(Expression)與運算子(Operator)">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20190927/d8cdf04e/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在 JS 語法可以分為兩大類，敘述句 Statement 與 運算式 Expression">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-09-26T16:55:59.000Z">
+<meta property="article:modified_time" content="2019-09-27T17:26:37.078Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20190927/d8cdf04e/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20190927/d8cdf04e/","path":"javascript/20190927/d8cdf04e/","title":"JavaScript入門篇 - 運算式(Expression)與運算子(Operator)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript入門篇 - 運算式(Expression)與運算子(Operator) | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8B%E7%AE%97%E5%AD%90%E7%9A%84%E5%88%86%E9%A1%9E"><span class="nav-number">1.</span> <span class="nav-text">運算子的分類</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E8%A1%93%E9%81%8B%E7%AE%97%E5%AD%90-Arithmetic-Operator"><span class="nav-number">2.</span> <span class="nav-text">算術運算子 (Arithmetic Operator)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%99%9F"><span class="nav-number">2.1.</span> <span class="nav-text">加號 +</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%9B%E8%99%9F"><span class="nav-number">2.2.</span> <span class="nav-text">減號 -</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%98%E8%99%9F"><span class="nav-number">2.3.</span> <span class="nav-text">乘號 *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%A4%E8%99%9F"><span class="nav-number">2.4.</span> <span class="nav-text">除號 &#x2F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E9%A4%98%E6%95%B8"><span class="nav-number">2.5.</span> <span class="nav-text">取餘數 %</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%9E%E5%A2%9E-%E8%88%87-%E9%81%9E%E6%B8%9B"><span class="nav-number">2.6.</span> <span class="nav-text">遞增 ++ 與 遞減 --</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%A6%E5%80%BC%E9%81%8B%E7%AE%97%E5%AD%90-Assignment-Operator"><span class="nav-number">3.</span> <span class="nav-text">賦值運算子 (Assignment Operator)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BC%83%E9%81%8B%E7%AE%97%E5%AD%90-Comparison-Operators"><span class="nav-number">4.</span> <span class="nav-text">比較運算子 (Comparison Operators)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%A6%E5%80%BC-%E4%B8%80%E5%80%8B%E7%AD%89%E8%99%9F"><span class="nav-number">4.1.</span> <span class="nav-text">賦值 : 一個等號 &#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E7%AD%89-%E5%85%A9%E5%80%8B%E7%AD%89%E8%99%9F"><span class="nav-number">4.2.</span> <span class="nav-text">相等 : 兩個等號 &#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E7%AD%89-%E4%B8%89%E5%80%8B%E7%AD%89%E8%99%9F"><span class="nav-number">4.3.</span> <span class="nav-text">全等 : 三個等號 &#x3D;&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E6%96%BC-%E8%88%87"><span class="nav-number">4.4.</span> <span class="nav-text">不等於 !&#x3D; 與 !&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%96%BC-gt-%E8%88%87-%E5%B0%8F%E6%96%BC-lt"><span class="nav-number">4.5.</span> <span class="nav-text">大於 &gt; 與 小於 &lt;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%8F%E8%BC%AF%E9%81%8B%E7%AE%97%E5%AD%90-Logical-Operator"><span class="nav-number">5.</span> <span class="nav-text">邏輯運算子 (Logical Operator)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#And-amp-amp"><span class="nav-number">5.1.</span> <span class="nav-text">And &amp;&amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Or"><span class="nav-number">5.2.</span> <span class="nav-text">Or ||</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Not"><span class="nav-number">5.3.</span> <span class="nav-text">Not !</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E6%9E%97-Boolean-%E7%9A%84%E5%9E%8B%E5%88%A5%E8%BD%89%E6%8F%9B"><span class="nav-number">5.4.</span> <span class="nav-text">布林 Boolean 的型別轉換</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%8F%E8%BC%AF%E9%81%8B%E7%AE%97%E5%AD%90%E7%9A%84%E5%88%A4%E6%96%B7"><span class="nav-number">5.5.</span> <span class="nav-text">邏輯運算子的判斷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%97%E8%99%9F%E9%81%8B%E7%AE%97%E5%AD%90-Comma-Operator"><span class="nav-number">6.</span> <span class="nav-text">逗號運算子 (Comma Operator)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%85%83%E9%81%8B%E7%AE%97%E5%AD%90"><span class="nav-number">7.</span> <span class="nav-text">三元運算子</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20190927/d8cdf04e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript入門篇 - 運算式(Expression)與運算子(Operator)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2019-09-27 00:55:59" itemprop="dateCreated datePublished" datetime="2019-09-27T00:55:59+08:00">2019-09-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2019-09-28 01:26:37" itemprop="dateModified" datetime="2019-09-28T01:26:37+08:00">2019-09-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在 JS 語法可以分為兩大類，敘述句 <code>Statement</code> 與 運算式 <code>Expression</code></p>
+<span id="more"></span>
+
+<ul>
+<li><p>敘述句 <code>Statement</code> :</p>
+<p>簡單來說，敘述句就是執行某個動作，如變數的宣告、賦值、迴圈或 <code>if</code> 判斷式等，都可以被歸類於此</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo;</span><br></pre></td></tr></table></figure></li>
+<li><p>運算式 <code>Expression</code> :</p>
+<p>運算式最大的特性是會產生一個 值，如 <code>function</code> 的參數 <code>arguments</code>，或是透過等號 <code>=</code> 賦值時，在等號 <code>=</code> 右側的部分都屬於運算式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span> * <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如上，在等號 = 右側的 10 * 10 就是屬於運算式</p>
+</li>
+</ul>
+<h2 id="運算子的分類"><a href="#運算子的分類" class="headerlink" title="運算子的分類"></a>運算子的分類</h2><p>運算子的類型很多，常見的可以分為以下幾類，其餘可以操考 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Expressions_and_Operators">MDN 運算式與運算子</a></p>
+<ul>
+<li>算術運算子 (Arithmetic Operator)</li>
+<li>賦值運算子 (Assignment Operator)</li>
+<li>比較運算子 (Comparison Operator)</li>
+<li>邏輯運算子 (Logical Operator)</li>
+<li>逗號運算子 (Comma Operator)</li>
+<li>三元(條件)運算子</li>
+</ul>
+<h2 id="算術運算子-Arithmetic-Operator"><a href="#算術運算子-Arithmetic-Operator" class="headerlink" title="算術運算子 (Arithmetic Operator)"></a>算術運算子 (Arithmetic Operator)</h2><p>算術運算子包括大家熟知的 四則運算(加、減、乘、除)，但運算後的結果常常會出現一些特例，以下一一介紹</p>
+<p><a href="#%E5%8A%A0%E8%99%9F">加號 <code>+</code></a><br><a href="#%E6%B8%9B%E8%99%9F">減號 <code>-</code></a><br><a href="#%E4%B9%98%E8%99%9F">乘號 <code>*</code></a><br><a href="#%E9%99%A4%E8%99%9F">除號 <code>/</code></a><br><a href="#%E5%8F%96%E9%A4%98%E6%95%B8">取餘數 <code>%</code></a><br><a href="#%E9%81%9E%E5%A2%9E-%E8%88%87-%E9%81%9E%E6%B8%9B">遞增 <code>++</code> 與 遞減 <code>--</code></a></p>
+<h3 id="加號"><a href="#加號" class="headerlink" title="加號 +"></a>加號 <code>+</code></h3><ul>
+<li><p>單純數字的相加</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span> + <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);    <span class="comment">// 3</span></span><br></pre></td></tr></table></figure></li>
+<li><p>特殊字無限大 <code>Infinity</code>、負無限大 <code>-Infinity</code> 和 <code>Not a Number NaN</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">Infinity</span> + <span class="literal">Infinity</span>      <span class="comment">// Infinity</span></span><br><span class="line">-<span class="literal">Infinity</span> + -<span class="literal">Infinity</span>    <span class="comment">// -Infinity</span></span><br><span class="line">-<span class="literal">Infinity</span> + <span class="literal">Infinity</span>     <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+
+<p>而只要加號 <code>+</code> 兩側其中一個是 <code>NaN</code>，結果就會是 <code>NaN</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span> + <span class="literal">NaN</span>            <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> + <span class="literal">NaN</span>      <span class="comment">// NaN</span></span><br><span class="line">-<span class="literal">Infinity</span> + <span class="literal">NaN</span>     <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果加號 <code>+</code> 兩側其中一個是 字串 <code>string</code>，另一端就會 “自動轉型” 為 “字串”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 數字 + 字串 </span></span><br><span class="line"><span class="number">100</span> + <span class="string">&quot;100&quot;</span>      <span class="comment">// &quot;100100&quot;</span></span><br><span class="line"><span class="number">100</span> + <span class="string">&quot;ABC&quot;</span>      <span class="comment">// &quot;100ABC&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 字串 + 字串</span></span><br><span class="line"><span class="string">&quot;ABC&quot;</span> + <span class="string">&quot;XYZ&quot;</span>    <span class="comment">// &quot;ABCXYZ&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 布林 + 字串</span></span><br><span class="line"><span class="literal">true</span> + <span class="string">&quot;abc&quot;</span>     <span class="comment">// &quot;trueabc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 + 物件</span></span><br><span class="line"><span class="number">100</span> + &#123;&#125;         <span class="comment">// &quot;100[object Object]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 + undefined，undefined 會被轉成數字 NaN</span></span><br><span class="line"><span class="number">123</span> + <span class="literal">undefined</span>  <span class="comment">// NaN</span></span><br><span class="line"><span class="string">&quot;abc&quot;</span> + <span class="literal">undefined</span>    <span class="comment">// &quot;abcundefined&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 + null，null 會被轉成數字 0</span></span><br><span class="line"><span class="number">123</span> + <span class="literal">null</span>  <span class="comment">// 123</span></span><br><span class="line"><span class="string">&quot;abc&quot;</span> + <span class="literal">null</span>    <span class="comment">// &quot;abcnull&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>由於運算式是 “由左而右” 且 “先乘除後加減” 做運算，所以如果要讓數字先做運算，可以使用小括號 <code>()</code> 將數字運算包起來</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str1 = <span class="string">&quot;10 加 100 的結果是 &quot;</span> + <span class="number">10</span> + <span class="number">100</span>;   <span class="comment">// &quot;10 加 100 的結果是 10100&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">var</span> str2 = <span class="string">&quot;10 加 100 的結果是 &quot;</span> + (<span class="number">10</span> + <span class="number">100</span>);   <span class="comment">// &quot;10 加 100 的結果是 110&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="減號"><a href="#減號" class="headerlink" title="減號 -"></a>減號 <code>-</code></h3><ul>
+<li><p>單純數字相減</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span> - <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 7</span></span><br></pre></td></tr></table></figure></li>
+<li><p>特殊的數字，如無限大 <code>Infinity</code>、負無限大 <code>-Infinity</code> 和 <code>Not a Number NaN</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">Infinity</span> - <span class="literal">Infinity</span>   <span class="comment">// NaN</span></span><br><span class="line">-<span class="literal">Infinity</span> - -<span class="literal">Infinity</span>   <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line">-<span class="literal">Infinity</span> - <span class="literal">Infinity</span>    <span class="comment">// -Infinity</span></span><br><span class="line"><span class="literal">Infinity</span> - -<span class="literal">Infinity</span>    <span class="comment">// Infinity</span></span><br></pre></td></tr></table></figure>
+
+<p>如果減號 <code>-</code> 兩側其中之一是 <code>NaN</code>，那結果就會是 <code>NaN</code></p>
+</li>
+<li><p>與加號 <code>+</code> 不同的地方是如果減號 <code>-</code> 兩側其中之一不是數字，會透過 <code>Number()</code> 嘗試將數值轉為 “數字”</p>
+<ul>
+<li><p>不含數字的字串、<code>undefined</code> 和 物件 <code>object</code> 會被轉型成 <code>NaN</code></p>
+</li>
+<li><p>含數字的字串 會被轉型為 數字</p>
+</li>
+<li><p><code>true</code>、會被轉型為 <code>1</code></p>
+</li>
+<li><p><code>false</code>、<code>null</code> 會被轉型為 <code>0</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 數字 - 字串</span></span><br><span class="line"><span class="number">100</span> - <span class="string">&quot;50&quot;</span>    <span class="comment">// 50</span></span><br><span class="line"><span class="number">100</span> - <span class="string">&quot;abc&quot;</span>   <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 - 布林</span></span><br><span class="line"><span class="number">100</span> - <span class="literal">false</span>   <span class="comment">// 100</span></span><br><span class="line"><span class="number">100</span> - <span class="literal">true</span>    <span class="comment">// 99</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 - undefined</span></span><br><span class="line"><span class="number">100</span> - <span class="literal">undefined</span>   <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 - null</span></span><br><span class="line"><span class="number">100</span> - <span class="literal">null</span>   <span class="comment">// 100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 - 物件</span></span><br><span class="line"><span class="number">100</span> - &#123;&#125;   <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="乘號"><a href="#乘號" class="headerlink" title="乘號 *"></a>乘號 <code>*</code></h3><ul>
+<li><p>單純數字的運算</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span> * <span class="number">10</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 100</span></span><br></pre></td></tr></table></figure></li>
+<li><p>超出數字的範圍由就看結果是正數或負數來決定是 <code>Infinity</code> 或 <code>-Infinity</code></p>
+</li>
+<li><p>如果乘號兩側其中之一出現 <code>NaN</code>，那結果就會是 <code>NaN</code>， <code>Infinity * 0</code> 也是 <code>NaN</code></p>
+</li>
+<li><p>如果乘號兩側其中之一出現非數字的型別，會和減號 <code>-</code> 一樣使用 <code>Number()</code> 嘗試轉型為 “數字”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 數字 * 字串</span></span><br><span class="line"><span class="number">100</span> * <span class="string">&quot;10&quot;</span>   <span class="comment">// 1000</span></span><br><span class="line"><span class="number">100</span> * <span class="string">&quot;abc&quot;</span>   <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 * 布林</span></span><br><span class="line"><span class="number">100</span> * <span class="literal">true</span>   <span class="comment">// 100</span></span><br><span class="line"><span class="number">100</span> * <span class="literal">false</span>  <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 * undefined</span></span><br><span class="line"><span class="number">100</span> * <span class="literal">undefined</span>   <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//數字 * null</span></span><br><span class="line"><span class="number">100</span> * <span class="literal">null</span>   <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 數字 * 物件</span></span><br><span class="line"><span class="number">100</span> * &#123;&#125;   <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="除號"><a href="#除號" class="headerlink" title="除號 /"></a>除號 <code>/</code></h3><ul>
+<li>單純數字的運算</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span> / <span class="number">10</span></span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>“被除數” 為 <code>0</code> 的情況下</p>
+<ul>
+<li>除數為 “正數”，結果為 <code>Infinity</code></li>
+<li>除數為 “負數”，結果為 <code>-Infinity</code></li>
+<li>除數為 <code>0</code>，結果為 <code>NaN</code></li>
+</ul>
+</li>
+<li><p>和乘號 <code>*</code> 相同，如果除號 <code>/</code> 兩側其中之一為數字以外的型別，會透過 <code>Number()</code> 嘗試轉型為數字</p>
+</li>
+</ul>
+<h3 id="取餘數"><a href="#取餘數" class="headerlink" title="取餘數 %"></a>取餘數 <code>%</code></h3><ul>
+<li><p>單純數字的運算</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span> % <span class="number">33</span></span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 1 </span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果 “被除數” 為 <code>Infinity</code> 或 <code>-Infinity</code>，取餘數的結果為 <code>NaN</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">Infinity</span> % <span class="number">0</span>   <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> % <span class="number">100</span>   <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> % <span class="literal">Infinity</span>   <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> % -<span class="literal">Infinity</span>   <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果 “被除數” 為 “一般值”， “除數” 為 <code>Infinity</code>，結果為 “被除數”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span> % <span class="literal">Infinity</span>   <span class="comment">// 100</span></span><br><span class="line"><span class="number">0</span> % <span class="literal">Infinity</span>   <span class="comment">// 0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果 “被除數” 為 “一般值”， “除數” 為 <code>0</code>，結果為 <code>NaN</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">100</span> % <span class="number">0</span>   <span class="comment">// NaN</span></span><br><span class="line"><span class="number">0</span> % <span class="number">0</span>   <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure></li>
+<li><p>和除號 <code>/</code> 相同，如果取餘 <code>%</code> 兩側其中之一為數字以外的型別，會透過 <code>Number()</code> 嘗試轉型為數字</p>
+</li>
+</ul>
+<h3 id="遞增-與-遞減"><a href="#遞增-與-遞減" class="headerlink" title="遞增 ++ 與 遞減 --"></a>遞增 <code>++</code> 與 遞減 <code>--</code></h3><ul>
+<li><p>如同字面上的意思，遇到 遞增 <code>++</code> 就會加一，可以看成是 <code>a = a + 1</code> ，遇到 遞減 <code>--</code> 就會減一，可以看成是 <code>a = a - 1</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">a++;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 11</span></span><br><span class="line"></span><br><span class="line">a--;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 10</span></span><br></pre></td></tr></table></figure></li>
+<li><p>位置放在變數前後是有差別的，將 遞增 <code>++</code> 放在 前面，回傳的會是 “原始數值” ，放在 後面，回傳的會是 <code>+1</code> 後的結果，但事後再將兩者印出，都會出現 <code>+1</code> 後的結果，同理 遞減 <code>--</code> 也是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">a++;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 11</span></span><br><span class="line"></span><br><span class="line">a--;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 10</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="賦值運算子-Assignment-Operator"><a href="#賦值運算子-Assignment-Operator" class="headerlink" title="賦值運算子 (Assignment Operator)"></a>賦值運算子 (Assignment Operator)</h2><ul>
+<li><p>賦值運算子透過 等號 <code>=</code> 來將左側的值指派到右側，如下將右側的運算結果指派到左側的變數 <code>a</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span> * <span class="number">10</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>除了單純等號 <code>=</code>，還可以結合算術運算子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a += b;   <span class="comment">// a = a + b</span></span><br><span class="line">a -= b;   <span class="comment">// a = a - b</span></span><br><span class="line">a *= b;   <span class="comment">// a = a * b</span></span><br><span class="line">a /= b;   <span class="comment">// a = a / b</span></span><br><span class="line">a %= b;   <span class="comment">// a = a % b</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="比較運算子-Comparison-Operators"><a href="#比較運算子-Comparison-Operators" class="headerlink" title="比較運算子 (Comparison Operators)"></a>比較運算子 (Comparison Operators)</h2><p>比較運算子是用來比較運算子兩側的值，可能是 <code>純值</code>、<code>物件</code>、<code>運算式</code> 或 <code>函式回傳</code> 的結果，比較後會得到 <code>true</code> 或 <code>false</code></p>
+<ul>
+<li><h3 id="賦值-一個等號"><a href="#賦值-一個等號" class="headerlink" title="賦值 : 一個等號 ="></a>賦值 : 一個等號 <code>=</code></h3><p>一個等號 <code>=</code> 的意思是將等號 <code>=</code> 右側的值 指定、賦值 到 等號 <code>=</code> 左側，為 賦值運算子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure></li>
+<li><h3 id="相等-兩個等號"><a href="#相等-兩個等號" class="headerlink" title="相等 : 兩個等號 =="></a>相等 : 兩個等號 <code>==</code></h3><p>兩個等號 <code>==</code> 的意思是為左右兩側的資料進行比較，但 不同型別的值會 “自動轉型” 後再做比較</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&quot;10&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a == <span class="number">10</span> );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( a == b );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( a == <span class="number">100</span>  );   <span class="comment">// false </span></span><br></pre></td></tr></table></figure></li>
+<li><h3 id="全等-三個等號"><a href="#全等-三個等號" class="headerlink" title="全等 : 三個等號 ==="></a>全等 : 三個等號 <code>===</code></h3><p>三個等號 <code>===</code> 也是為左右兩側的值進行比較，但 “不同型別的值” 不會自動轉型</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&quot;10&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a == b );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( a === b );   <span class="comment">// false</span></span><br></pre></td></tr></table></figure></li>
+<li><h3 id="不等於-與"><a href="#不等於-與" class="headerlink" title="不等於 != 與 !=="></a>不等於 <code>!=</code> 與 <code>!==</code></h3><p>等號 <code>=</code> 前面加上 驚嘆號 <code>!</code> 即為 “不等於”，而不等於分成兩種，一個等號 <code>!=</code> “不會自動轉型” ，兩個等號 <code>!==</code> “會自動轉型”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure></li>
+<li><h3 id="大於-gt-與-小於-lt"><a href="#大於-gt-與-小於-lt" class="headerlink" title="大於 &gt; 與 小於 &lt;"></a>大於 <code>&gt;</code> 與 小於 <code>&lt;</code></h3><p>除了判斷是否相等，還可以比較大小，在後方加上 等號 <code>=</code> 就會包含等於，大於等於 <code>&gt;=</code> 和 小於等於 <code>&lt;=</code> ，如遇到不同型別就會 “自動轉型”</p>
+<ul>
+<li><p>如果兩者都是 “數字” 則單純就字面大小比</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">11</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a &gt; b );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( b &gt; a );   <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log( c &gt; a );   <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log( a &gt;= c );  <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果其中之一不是數字，則會嘗試將其轉型成 “數字” 再做比較</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;   <span class="comment">// number</span></span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&quot;9&quot;</span>;   <span class="comment">// string</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a &gt; b );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果兩者都是字串，則會依照字母的順序來做比較，如果有多個字母，則會比較到第一個不同的字母為止</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log( <span class="string">&quot;a&quot;</span> &gt; <span class="string">&quot;b&quot;</span> );   <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">&quot;b&quot;</span> &gt; <span class="string">&quot;a&quot;</span> );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">&quot;abd&quot;</span> &gt; <span class="string">&quot;abc&quot;</span> );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果其中之一是 布林 <code>boolean</code>，<code>true</code> 會被轉型為 <code>1</code>，<code>false</code> 會被轉型為 <code>0</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log( <span class="number">10</span> &gt; <span class="literal">true</span> );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( <span class="literal">true</span> &gt; <span class="literal">false</span> );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果其中之一是物件 <code>object</code>，會先透過 <code>valueOf()</code> 求得對應的數值，如果沒有 <code>valueOf()</code> 的方法，就會透過 <code>toString()</code> 轉型再做比較</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="邏輯運算子-Logical-Operator"><a href="#邏輯運算子-Logical-Operator" class="headerlink" title="邏輯運算子 (Logical Operator)"></a>邏輯運算子 (Logical Operator)</h2><p>邏輯運算式包含三種，and <code>&amp;&amp;</code>、or <code>||</code>、not <code>!</code>，通常會在 <code>if 判斷式 </code>和布林 <code>boolean</code> 搭配使用</p>
+<ul>
+<li><h3 id="And-amp-amp"><a href="#And-amp-amp" class="headerlink" title="And &amp;&amp;"></a>And <code>&amp;&amp;</code></h3><p>當 and <code>&amp;&amp;</code> 的兩側都是 <code>true</code> 結果才會是 <code>true</code>，否則就是 <code>false</code>，即 全部條件都必須成立才算成立</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a &gt; <span class="number">0</span> &amp;&amp; b = <span class="literal">true</span> );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( a &lt; <span class="number">0</span> &amp;&amp; b = <span class="literal">true</span> );   <span class="comment">// false</span></span><br></pre></td></tr></table></figure></li>
+<li><h3 id="Or"><a href="#Or" class="headerlink" title="Or ||"></a>Or <code>||</code></h3><p>當 or <code>||</code> 的兩側其中之一是 <code>true</code> 結果就會是 <code>true</code>，除非兩側都是 <code>false</code> 才會是 <code>false</code>，即 滿足其中一個條件就會成立</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line">                  </span><br><span class="line"><span class="built_in">console</span>.log( a &gt; <span class="number">0</span> || b = <span class="literal">true</span> );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( a &lt; <span class="number">0</span> || b = <span class="literal">true</span> );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><h3 id="Not"><a href="#Not" class="headerlink" title="Not !"></a>Not <code>!</code></h3><p>not <code>!</code> 代表否定、反向的意思，如果是 <code>! true</code>，就是 <code>false</code> 的意思，兩個驚嘆號 <code>!!</code> ，利用雙重否定可以取代 <code>Boolean()</code> 來判斷某數值 <code>Boolean</code> 轉換後的結果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a = <span class="number">0</span> );   <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log( a != <span class="number">0</span> );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><h3 id="布林-Boolean-的型別轉換"><a href="#布林-Boolean-的型別轉換" class="headerlink" title="布林 Boolean 的型別轉換"></a>布林 Boolean 的型別轉換</h3><ul>
+<li><p>透過 Boolean() 會轉換成 false 的值</p>
+<ul>
+<li>undefined</li>
+<li>null</li>
+<li>0</li>
+<li>NaN</li>
+<li>空字串 “” 、’’</li>
+</ul>
+</li>
+<li><p>其他的值透過 Boolean 轉型後都會是 true</p>
+</li>
+</ul>
+</li>
+<li><h3 id="邏輯運算子的判斷"><a href="#邏輯運算子的判斷" class="headerlink" title="邏輯運算子的判斷"></a>邏輯運算子的判斷</h3><p>透過邏輯運算子 <code>&amp;&amp;</code>、<code>||</code> 做判斷時，會先對左側進行驗證</p>
+<ul>
+<li><p>如果是 <code>Boolean</code> 類型就會做後續判斷，如果不是就會透過 <code>Boolean()</code> 轉型</p>
+</li>
+<li><p>以 and <code>&amp;&amp;</code> 來說，如果第一個值為 <code>true</code>，則回傳第二個值，否則回傳第一個</p>
+</li>
+<li><p>以 or <code>||</code> 來說，如果第一個值為 <code>true</code>，則回傳第一個值，否則回傳第二個</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( a &amp;&amp; b );   <span class="comment">// &quot;abc&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log( a || b );   <span class="comment">// 123</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( c &amp;&amp; a );   <span class="comment">// null</span></span><br><span class="line"><span class="built_in">console</span>.log( c || b );   <span class="comment">// &quot;abc&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log( c || a );   <span class="comment">// 123</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="逗號運算子-Comma-Operator"><a href="#逗號運算子-Comma-Operator" class="headerlink" title="逗號運算子 (Comma Operator)"></a>逗號運算子 (Comma Operator)</h2><p>逗號運算子 <code>,</code> 主要是分隔運算式中的多組運算式，常使用在 <code>for 迴圈</code> 中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, j = <span class="number">10</span>; i &lt; <span class="number">10</span>; i++, j++)&#123;</span><br><span class="line">  k = i + j;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用在 “變數的宣告”，但要注意的是，以下兩種宣告是 “不相同” 的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>, b = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> a = b = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>因為變數 <code>b</code>，其實沒有宣告，只有賦值，所以是全域變數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = b;</span><br><span class="line">b = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = b = <span class="number">10</span>;</span><br><span class="line">  <span class="built_in">console</span>.log( a, b );   <span class="comment">// 10, 10</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 離開作用範圍後</span></span><br><span class="line"><span class="built_in">console</span>.log(a, b);   <span class="comment">// undefined, 10</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三元運算子"><a href="#三元運算子" class="headerlink" title="三元運算子"></a>三元運算子</h2><p>三元運算子以 問號 <code>?</code> 和 冒號 <code>:</code> 所組成，如果條件為 <code>true</code>，回傳數值 <code>1</code>，否則回傳數值 <code>2</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;(條件)&quot;</span> ? <span class="string">&quot;數值1&quot;</span> : <span class="string">&quot;數值2&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果年紀大於等於 &quot;18&quot;，為&quot;成人&quot;，否則為&quot;小孩&quot;</span></span><br><span class="line"><span class="keyword">var</span> status = (age &gt;= <span class="number">18</span>) ? <span class="string">&quot;成人&quot;</span> : <span class="string">&quot;小孩&quot;</span>;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/jquery/20190927/1d3a5dfe/" rel="prev" title="滾動視差-滾動套用CSS效果">
+                  <i class="fa fa-chevron-left"></i> 滾動視差-滾動套用CSS效果
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20190927/2be5d539/" rel="next" title="JavaScript入門篇 - 流程判斷">
+                  JavaScript入門篇 - 流程判斷 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

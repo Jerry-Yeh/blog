@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在 React 18 中，如果開啟 Strict Mode，每當 component mounts 後，就會立即 unmount 再 remount 一次，這麼做的目的是提醒非必要的行為有被正確的清除，不過也不用擔心效能問題，因為這個行為只會發生在 development 模式下，所以非常建議在開發中啟動 Strict Mode，而非關閉它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Strict Mode">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20221015/65126/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在 React 18 中，如果開啟 Strict Mode，每當 component mounts 後，就會立即 unmount 再 remount 一次，這麼做的目的是提醒非必要的行為有被正確的清除，不過也不用擔心效能問題，因為這個行為只會發生在 development 模式下，所以非常建議在開發中啟動 Strict Mode，而非關閉它">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-10-15T03:45:13.000Z">
+<meta property="article:modified_time" content="2022-10-17T15:19:48.492Z">
+<meta property="article:author" content="Yeh">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20221015/65126/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20221015/65126/","path":"react/20221015/65126/","title":"React Strict Mode"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React Strict Mode | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Turn-on-Strict-Mode"><span class="nav-number">1.</span> <span class="nav-text">Turn on Strict Mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-handle-the-Effect-firing-twice-in-development"><span class="nav-number">2.</span> <span class="nav-text">How to handle the Effect firing twice in development?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Controlling-non-React-widgets"><span class="nav-number">2.1.</span> <span class="nav-text">Controlling non-React widgets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Subscribing-to-events"><span class="nav-number">2.2.</span> <span class="nav-text">Subscribing to events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Triggering-animations"><span class="nav-number">2.3.</span> <span class="nav-text">Triggering animations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fetching-data"><span class="nav-number">2.4.</span> <span class="nav-text">Fetching data</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sending-analytics"><span class="nav-number">3.</span> <span class="nav-text">Sending analytics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Not-an-Effect-Initializing-the-application"><span class="nav-number">4.</span> <span class="nav-text">Not an Effect: Initializing the application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Not-an-Effect-Buying-a-product"><span class="nav-number">5.</span> <span class="nav-text">Not an Effect: Buying a product</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recap"><span class="nav-number">6.</span> <span class="nav-text">Recap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20221015/65126/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React Strict Mode
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-10-15 11:45:13" itemprop="dateCreated datePublished" datetime="2022-10-15T11:45:13+08:00">2022-10-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-10-17 23:19:48" itemprop="dateModified" datetime="2022-10-17T23:19:48+08:00">2022-10-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>在 React 18 中，如果開啟 Strict Mode，每當 component mounts 後，就會立即 unmount 再 remount 一次，這麼做的目的是提醒非必要的行為有被正確的清除，不過也不用擔心效能問題，因為這個行為只會發生在 development 模式下，所以非常建議在開發中啟動 Strict Mode，而非關閉它</p>
+<span id="more"></span>
+
+<h2 id="Turn-on-Strict-Mode"><a href="#Turn-on-Strict-Mode" class="headerlink" title="Turn on Strict Mode"></a>Turn on Strict Mode</h2><p>在 React 18 的專案中要開啟 Strict Mode 也非常容易，只要在進入點 index.tsx 透過 react 取得 <code>StrictMode</code>，並將其包覆根元件，這麼一來整個專案的元件就會啟動 Strict Mode 了</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.tsx</span></span><br><span class="line"><span class="keyword">import</span> &#123; StrictMode &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">&quot;react-dom/client&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; RouterProvider &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;router&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> root = ReactDOM.createRoot(</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">&quot;root&quot;</span>) <span class="keyword">as</span> HTMLElement</span><br><span class="line">);</span><br><span class="line">root.render(</span><br><span class="line">  &lt;StrictMode&gt;</span><br><span class="line">    &lt;RouterProvider router=&#123;router&#125; /&gt;</span><br><span class="line">  &lt;/StrictMode&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="How-to-handle-the-Effect-firing-twice-in-development"><a href="#How-to-handle-the-Effect-firing-twice-in-development" class="headerlink" title="How to handle the Effect firing twice in development?"></a>How to handle the Effect firing twice in development?</h2><p>開啟 Strict Mode 後，useEffect 中的行為就會在開始時，被連續觸發兩次，而我們要思考的不是怎麼讓它只觸發一次，而是怎麼解決在 remount 後所發生的事情。</p>
+<p>在大部分的情況中，可以透過正確的使用 cleanup 來解決這個問題，以下是大部分開發中會出現的情境:</p>
+<h3 id="Controlling-non-React-widgets"><a href="#Controlling-non-React-widgets" class="headerlink" title="Controlling non-React widgets"></a>Controlling non-React widgets</h3><p>如果是一個與 React 沒有綁定 UI 元件，寫法其實就和一般寫法相同;舉個例子，這裡我們透過 <code>setZoomLevel</code> method 新增了一個 map component，因為直接使用 <code>zoomLevel</code> state，所以並不需要特別處理，反正在 production 也只會執行一次</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> map = mapRef.current;</span><br><span class="line">  map.setZoomLevel(zoomLevel);</span><br><span class="line">&#125;, [zoomLevel]);</span><br></pre></td></tr></table></figure>
+
+<p>但有些 API 即使在 development 可能也不希望呼叫兩次，例如一個 dialog 元件顯示，這種情況就可以在 cleanup 來立即關閉它，這麼一來顯示上就會如 production 只顯示一次</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> dialog = dialogRef.current;</span><br><span class="line">  dialog.showModal();</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> dialog.close(); <span class="comment">// close dialog</span></span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Subscribing-to-events"><a href="#Subscribing-to-events" class="headerlink" title="Subscribing to events"></a>Subscribing to events</h3><p>如果是透過事件監聽 <code>addEventListener()</code> 註冊一個事件，就可以在 cleanup 使用 <code>removeEventListener()</code> 來取消監聽</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleScroll</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.clientX, e.clientY);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">&quot;scroll&quot;</span>, handleScroll);</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="built_in">window</span>.removeEventListener(<span class="string">&quot;scroll&quot;</span>, handleScroll); <span class="comment">// remove listener</span></span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Triggering-animations"><a href="#Triggering-animations" class="headerlink" title="Triggering animations"></a>Triggering animations</h3><p>如果是透過調整 css 參數來影響畫面呈現的情況，就可以在 cleanup 將參數條回預設值，例如 opacity 由 0 -&gt; 1 的變化</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> node = ref.current;</span><br><span class="line">  node.style.opacity = <span class="number">1</span>; <span class="comment">// Trigger the animation</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    node.style.opacity = <span class="number">0</span>; <span class="comment">// Reset to the initial value</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fetching-data"><a href="#Fetching-data" class="headerlink" title="Fetching data"></a>Fetching data</h3><p>而如果是非同步的網路請求，就無法在送出後還要求撤回，因此需要透過一個變數來阻止重複更新資料，並在第一次呼叫後，於 cleanup 更改狀態，這麼一來更新資料的動作就只會執行一次，這麼做的目的是測試避免有任何相關聯的行為影響到資料</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> ignore = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">startFetching</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> json = <span class="keyword">await</span> fetchTodos(userId);</span><br><span class="line">    <span class="keyword">if</span> (!ignore) &#123;</span><br><span class="line">      setTodos(json);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  startFetching();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    ignore = <span class="literal">true</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;, [userId]);</span><br></pre></td></tr></table></figure>
+
+<p>在 development 環境可以透過 Devtool Network 發現，網路請求確實執行了兩次，但同樣的，在 production 環境只會被執行一次</p>
+<h2 id="Sending-analytics"><a href="#Sending-analytics" class="headerlink" title="Sending analytics"></a>Sending analytics</h2><p>有些行為執行一次或兩次在使用者眼中並沒有差別，例如畫面的切換，在這種情況下就建議維持原有寫法即可</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  logVisit(url); <span class="comment">// Sends a POST request</span></span><br><span class="line">&#125;, [url]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Not-an-Effect-Initializing-the-application"><a href="#Not-an-Effect-Initializing-the-application" class="headerlink" title="Not an Effect: Initializing the application"></a>Not an Effect: Initializing the application</h2><p>而有些邏輯只會在整個應用程式啟動時執行一次，這種功能就可以將其獨立於 component 之外，不隨著 component 更新而觸發</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">&quot;undefined&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">// Check if we&#x27;re running in the browser.</span></span><br><span class="line">  checkAuthToken();</span><br><span class="line">  loadDataFromLocalStorage();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Not-an-Effect-Buying-a-product"><a href="#Not-an-Effect-Buying-a-product" class="headerlink" title="Not an Effect: Buying a product"></a>Not an Effect: Buying a product</h2><p>而有些行為同樣也不希望被執行兩次，例如送出購買的需求，如果按返回鈕就被重複執行，這種情況想必不太樂見</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 🔴 Wrong: This Effect fires twice in development, exposing a problem in the code.</span></span><br><span class="line">  fetch(<span class="string">&quot;/api/buy&quot;</span>, &#123; <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span> &#125;);</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<p>所以也不該寫在 Effect 之中，而是透過實際使用者主動的操作行為來觸發</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleClick</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ✅ Buying is an event because it is caused by a particular interaction.</span></span><br><span class="line">  fetch(<span class="string">&quot;/api/buy&quot;</span>, &#123; <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><ul>
+<li>有別於事件，Effects 觸發於 component render 的時機，而不是特定的使用者交互作用</li>
+<li>Effects 提供外部的系統(如: 第三方 API 或網路請求行為) 與 component 同步</li>
+<li>預設的情況下，Effect 會在每次的 component render 都被執行</li>
+<li>你無法自行決定 dependencies，它來自於 Effect 中所引用的參數</li>
+<li>空的 dependency array <code>[]</code> 代表 component mounting 的行為</li>
+<li>如果為 React 專案加上 Strict Mode，就會在 development mount component 的階段執行兩次 Effects 中的行為以利壓力測試</li>
+<li>如果 Effect 行為終止於 remounting 階段，就需要使用 cleanup function</li>
+<li>React 會在下一次 Effect 執行之前，呼叫 cleanup function，也就是 unmount 階段</li>
+</ul>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://beta.reactjs.org/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development">How to handle data fetching happening twice?</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://stackoverflow.com/questions/72238175/useeffect-is-running-twice-on-mount-in-react">[stackoverflow] useEffect is running twice on mount in React</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220904/50067/" rel="prev" title="React Project with TypeScript">
+                  <i class="fa fa-chevron-left"></i> React Project with TypeScript
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/data-structure/20230227/65261/" rel="next" title="Hash Table">
+                  Hash Table <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

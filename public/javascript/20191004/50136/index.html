@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="透過 AJAX，可與伺服器進行非同步更新，不需要重新載入網頁就可以更新內容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - AJAX">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191004/50136/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="透過 AJAX，可與伺服器進行非同步更新，不需要重新載入網頁就可以更新內容">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191004/50136/XMLHttpRequest.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191004/50136/xhr.responseText.png">
+<meta property="article:published_time" content="2019-10-04T14:32:23.000Z">
+<meta property="article:modified_time" content="2021-09-21T05:47:06.005Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="AJAX">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/javascript/20191004/50136/XMLHttpRequest.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191004/50136/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191004/50136/","path":"javascript/20191004/50136/","title":"JavaScript - AJAX"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript - AJAX | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-AJAX"><span class="nav-number">1.</span> <span class="nav-text">什麼是 AJAX ?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81-AJAX"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼需要 AJAX ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AJAX-%E6%87%89%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">AJAX 應用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AJAX-%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">AJAX 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XMLHttpRequest-%E7%89%A9%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">XMLHttpRequest 物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#readyState-%E7%8B%80%E6%85%8B%E7%A2%BC"><span class="nav-number">2.2.</span> <span class="nav-text">readyState 狀態碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%B3%E7%B5%B1%E8%A1%A8%E5%96%AE%E8%BC%B8%E5%85%A5"><span class="nav-number">2.3.</span> <span class="nav-text">傳統表單輸入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#post-%E5%82%B3%E9%80%81%E8%A1%A8%E5%96%AE%E8%B3%87%E6%96%99"><span class="nav-number">2.4.</span> <span class="nav-text">post 傳送表單資料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#post-JSON"><span class="nav-number">2.5.</span> <span class="nav-text">post JSON</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CORS-Corss-Origin-Resourse-Sharing-%E8%B7%A8%E4%BE%86%E6%BA%90%E8%B3%87%E6%BA%90%E5%85%B1%E4%BA%AB"><span class="nav-number">3.</span> <span class="nav-text">CORS (Corss-Origin Resourse Sharing) 跨來源資源共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-%E7%8B%80%E6%85%8B%E7%A2%BC"><span class="nav-number">4.</span> <span class="nav-text">HTTP 狀態碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AJAX-%E5%AF%A6%E5%8B%99%E7%AF%84%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">AJAX 實務範例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191004/50136/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript - AJAX
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2019-10-04 22:32:23" itemprop="dateCreated datePublished" datetime="2019-10-04T22:32:23+08:00">2019-10-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2021-09-21 13:47:06" itemprop="dateModified" datetime="2021-09-21T13:47:06+08:00">2021-09-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>透過 AJAX，可與伺服器進行非同步更新，不需要重新載入網頁就可以更新內容</p>
+<span id="more"></span>
+
+<h2 id="什麼是-AJAX"><a href="#什麼是-AJAX" class="headerlink" title="什麼是 AJAX ?"></a>什麼是 AJAX ?</h2><p>AJAX 全名為 非同步 JavaScript 與 <code>XML(Asynchronous JavaScript and XML)</code>，其實並不能稱為一種 “新技術”，而是結合許多現有技術的 “新方法”，這些技術包括 HTML、XHTML、JavaScript、DOM 與最重要的 XMLHttpRequest 物件等</p>
+<h3 id="為什麼需要-AJAX"><a href="#為什麼需要-AJAX" class="headerlink" title="為什麼需要 AJAX ?"></a>為什麼需要 AJAX ?</h3><p>透過 AJAX 我們可以不需要重新讀取整個網頁就能及時更動網頁介面與內容，只會對改變的地方進行動態重新渲染，提高網頁效能並更快回復使用者的操作，常見於用戶註冊、驗證，不需要等到資料填完就會顯示是否重複或錯誤</p>
+<h3 id="AJAX-應用"><a href="#AJAX-應用" class="headerlink" title="AJAX 應用"></a>AJAX 應用</h3><ul>
+<li>使用 JavaScript 的 <code>XMLHttpRequest</code> 物件向網頁伺服器發送 <code>HTTP</code> 請求</li>
+<li>使用 JavaScript 操作 <code>DOM</code> 來執行動態效果</li>
+<li><code>XMLHttpRequest</code> 與 “網頁伺服器” 進行 “非同步” 資料交換</li>
+</ul>
+<h2 id="AJAX-操作"><a href="#AJAX-操作" class="headerlink" title="AJAX 操作"></a>AJAX 操作</h2><h3 id="XMLHttpRequest-物件"><a href="#XMLHttpRequest-物件" class="headerlink" title="XMLHttpRequest 物件"></a><code>XMLHttpRequest</code> 物件</h3><ol>
+<li>宣告一個 <code>XMLHttpRequest</code> 物件<br>當宣告一個 <code>XMLHttpRequest</code> 物件後，我們可以透過 <code>console.log</code> 來查看這個物件的屬性，並透過這些屬性來操作資料與確認狀態<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="built_in">console</span>.log(xhr);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>  <img src="XMLHttpRequest.png"></p>
+<ol start="2">
+<li><p><code>.open(&quot;格式&quot;, &quot;網址&quot;, &quot;同步/非同步&quot;)</code> 定義連線方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">&quot;get&quot;</span>, <span class="string">&quot;https://hexschool.github.io/ajaxHomework/data.json&quot;</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>格式<ul>
+<li><code>get</code> : 讀取資料</li>
+<li><code>post</code> : 傳資料到伺服器確認</li>
+</ul>
+</li>
+<li>網址<br>要讀取的資料位置</li>
+<li>同步與非同步<br>通常都使用 <code>true</code> 非同步，否則當資料太大時，會等到資料傳送完畢才會繼續渲染網頁<ul>
+<li><code>true</code> 非同步: 不會等資料傳回來，就會讓程式碼繼續往下跑</li>
+<li><code>false</code> 同步: 會等資料傳回來，才讓程式碼繼續往下跑</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>send()</code> 送出請求<br>在定義完連線方式後，接著就會送出請求，小括號 <code>()</code> 內放入要送出的資料，如果只是要取得資料，就會填入 <code>null</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.send(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p><code>responseText</code> 資料內容<br>送出請求後我們可以透過 <code>responseText</code> 來查看資料內容<br><img src="xhr.responseText.png"><br>但如果在送出請求後，接著使用 <code>console.log</code> 來查看資料，會發現取得 空值，因為 <code>AJAX</code> 是 “非同步” 取得資料，所以在取得資料前網頁就會渲染完畢</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(xhr.responseText);   <span class="comment">// 空值</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>onload</code> 成功取得資料後執行<br>要解決上述問題，只要使用 <code>onload</code> 在成功取得資料後再印出結果，要注意的是，從 <code>.json</code> 檔案取得的資料型態是 “字串”，所以要使用 <code>JSON.parse</code> 還原資料型態</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;message&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- after js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;message&quot;</span>&gt;</span>王小明<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; in json</span><br><span class="line">[</span><br><span class="line">  &#123;name: &quot;王小名&quot;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xhr.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(xhr.responseText);   <span class="comment">// &quot;[&#123;&quot;name&quot;:&quot;王小名&quot;&#125;]&quot;</span></span><br><span class="line">  <span class="keyword">var</span> str = JOSN.parse(xhr.responseText);</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.message&#x27;</span>).textContent = str[<span class="number">0</span>].name;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>onerror</code> 取得資料失敗後執行<br>除了設定成功取得資料後執行的內容，當然也可以設定取得資料失敗後執行的內容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;...&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="readyState-狀態碼"><a href="#readyState-狀態碼" class="headerlink" title="readyState 狀態碼"></a><code>readyState</code> 狀態碼</h3><p>在操作 <code>XMLHttpRequest</code> 物件的每個步驟都會有專屬的狀態碼以辨別當下進度</p>
+<p>通常 <code>2</code>、<code>3</code> 會在一瞬間執行完畢，所以在取得資料後查看會是 <code>4</code></p>
+<ul>
+<li><code>0</code> : 已經宣告一個 <code>XMLHttpRequest</code> 物件，但是還沒有連結要取得的資料</li>
+<li><code>1</code> : 使用 <code>open()</code> 撈資料，但還沒有傳送資料</li>
+<li><code>2</code> : 偵測到使用 <code>send</code></li>
+<li><code>3</code> : <code>loading</code> 資料中</li>
+<li><code>4</code> : 已經取得資料，且完全接收數據</li>
+</ul>
+<h3 id="傳統表單輸入"><a href="#傳統表單輸入" class="headerlink" title="傳統表單輸入"></a>傳統表單輸入</h3><p>傳統的表單如下，輸入資料後，會傳送到 action 所指定的位置</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;index.html&quot;</span>&gt;</span></span><br><span class="line">  帳號 : </span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span>&gt;</span>   // abc@gmail.com</span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  密碼 : </span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>&gt;</span>   // abcde</span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;send&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>傳送的資料以問號 <code>?</code> 隔開 “位置” 內容，如果有多筆內容，使用 <code>&amp;</code> 隔開</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;指定的網址&quot;</span> + <span class="string">&quot;?&quot;</span> + <span class="string">&quot;內容&quot;</span> + <span class="string">&quot;內容&quot;</span></span><br><span class="line">index.html?email=abc%40gmail.com&amp;password=abcde</span><br></pre></td></tr></table></figure>
+
+<h3 id="post-傳送表單資料"><a href="#post-傳送表單資料" class="headerlink" title="post 傳送表單資料"></a><code>post</code> 傳送表單資料</h3><ul>
+<li><p>如果要發送資料到資料庫，在 <code>open()</code> 中的第一個參數為 <code>post</code></p>
+</li>
+<li><p>因為要發送的資料會直接寫在 <code>send()</code> 中，所以需要先使用 <code>setRequestHeader</code> 來設定資料類型，如果發送的資料類型是表單，分別設立兩個參數為 <code>Content-Type</code> 和 <code>application/x-www-form-urlencoded</code></p>
+</li>
+<li><p>如上 “傳統表單” 送出一樣的資料</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, <span class="string">&#x27;https://hexschool-tutorial.herokuapp.com/api/signup&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line">xhr.setRequestHeader(<span class="string">&#x27;Content-type&#x27;</span>, <span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>);</span><br><span class="line">xhr.send(<span class="string">&#x27;email=abc@gmail.com&amp;password=abcde&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>傳送資料過去後，可以使用 console.log 查詢回傳的資料</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(xhr.responseText);   <span class="comment">// &#123;&quot;success&quot;:true,&quot;result&quot;:&#123;&#125;,&quot;message&quot;:&quot;帳號註冊成功&quot;&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果帳號已經被註冊。就會出現以下結果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(xhr.responseText);   <span class="comment">// &#123;&quot;success&quot;:false,&quot;result&quot;:&#123;&#125;,&quot;message&quot;:&quot;此帳號已被使用&quot;&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="post-JSON"><a href="#post-JSON" class="headerlink" title="post JSON"></a>post JSON</h3><p>除了使用 <code>post</code> 傳送表單格式資料外，也可以直接傳送 <code>json</code> 格式，只要把 <code>setRequestHeader()</code> 中第二個參數改成 <code>application/json</code>， 但要注意的是，和 <code>localStorage</code> 一樣，都是使用 “字串” 來傳送，所以要使用 <code>JSON.stringify</code> 和 <code>JSON.parse</code> 來轉換型態</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> account = &#123;</span><br><span class="line">  email: <span class="string">&#x27;abc@gmail.com&#x27;</span>,</span><br><span class="line">  password: <span class="string">&#x27;abcde&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> xhr = XMLHttpRequest();</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, <span class="string">&#x27;https://hexschool-tutorial.herokuapp.com/api/signup&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line">xhr.setRequestHeader(<span class="string">&#x27;Content-type&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> data = <span class="built_in">JSON</span>.stringify(account);</span><br><span class="line">xhr.send(data);</span><br></pre></td></tr></table></figure>
+
+<h2 id="CORS-Corss-Origin-Resourse-Sharing-跨來源資源共享"><a href="#CORS-Corss-Origin-Resourse-Sharing-跨來源資源共享" class="headerlink" title="CORS (Corss-Origin Resourse Sharing) 跨來源資源共享"></a>CORS (Corss-Origin Resourse Sharing) 跨來源資源共享</h2><p>在開發網頁時，常常需要串接外部的資料、API，這時候我們就會對伺服器送出一個 <code>HTTP request</code> 請求，但是當瀏覽器收到來自伺服器的 <code>HTTP response</code> 回應時，基於安全性考量，在網站與資料 “不同源” <code>not same origin</code> 的情況下，瀏覽器並不會把收到的 <code>response</code> 回傳給 <code>JavaScript</code></p>
+<p>而 <code>CORS</code> 就是一個允許不同源之間資料傳輸的規範，透過以下網站可以判定這個外接網址是否有開啟 <code>CORS</code></p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="http://www.test-cors.org/">test-cors.org</a></p>
+<p>詳細說明可以參考以下資料</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.techbridge.cc/2017/05/20/api-ajax-cors-and-jsonp/">輕鬆理解 Ajax 與跨來源請求</a></p>
+<h2 id="HTTP-狀態碼"><a href="#HTTP-狀態碼" class="headerlink" title="HTTP 狀態碼"></a><code>HTTP</code> 狀態碼</h2><p><code>HTTP</code> 狀態碼指的是伺服器回應 <code>HTTP response</code> 我們發出的請求 ，而 <code>HTTP request``HTTP</code> 狀態碼分為五大類、三個層級，而三個層級分別使用三個數字來表示，第一個數字就表示大類</p>
+<ul>
+<li>1xx - 參考資訊 (informational)</li>
+<li>2xx - 成功 (OK)</li>
+<li>3xx - 重新導向 (Redirection)</li>
+<li>4xx - 用戶端錯誤 (Client Error)</li>
+<li>5xx - 伺服器錯誤 (Server Error)</li>
+</ul>
+<p>最常見的為以下兩種</p>
+<ul>
+<li>200 : 用戶端請求成功</li>
+<li>404 : 找不到用戶端請求</li>
+</ul>
+<p>詳細內容操考以下資料</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81">HTTP狀態碼 Wiki</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.miniasp.com/post/2009/01/16/Web-developer-should-know-about-HTTP-Status-Code">網頁開發人員應了解的 HTTP 狀態碼</a></p>
+<h2 id="AJAX-實務範例"><a href="#AJAX-實務範例" class="headerlink" title="AJAX 實務範例"></a>AJAX 實務範例</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/NZZrov?editors=1010">AJAX 實務範例</a></p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/javascript-learning/">JavaScript 入門篇 - 學徒的試煉</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20102891/ironman/1955">從頭開始的API 和ajax</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://zh.wikipedia.org/wiki/AJAX">AJAX Wiki</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+              <a href="/tags/ajax/" rel="tag"># AJAX</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20191003/52047/" rel="prev" title="JavaScript - 事件">
+                  <i class="fa fa-chevron-left"></i> JavaScript - 事件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191004/8109/" rel="next" title="JavaScript - localStorage">
+                  JavaScript - localStorage <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

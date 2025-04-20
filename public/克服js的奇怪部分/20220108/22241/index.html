@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="接下來的課程將探討一個很有的 JavaScript Library - jQuery，但課程中並不會去個別了解每個功能是如何實作的，而是去學習如何閱讀程式碼與了解其中的架構。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入了解原始碼: jQuery">
+<meta property="og:url" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="接下來的課程將探討一個很有的 JavaScript Library - jQuery，但課程中並不會去個別了解每個功能是如何實作的，而是去學習如何閱讀程式碼與了解其中的架構。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/$().png">
+<meta property="og:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/newClass.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/removeclass.png">
+<meta property="article:published_time" content="2022-01-08T05:16:08.000Z">
+<meta property="article:modified_time" content="2022-05-02T01:09:11.813Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="jQuery">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/$().png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/","path":"克服js的奇怪部分/20220108/22241/","title":"深入了解原始碼: jQuery"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深入了解原始碼: jQuery | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%A2%BC"><span class="nav-number">2.</span> <span class="nav-text">原始碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%92%B0%E5%A2%83%E5%88%A4%E6%96%B7"><span class="nav-number">2.1.</span> <span class="nav-text">環境判斷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC-jQuery-%E4%B8%8D%E9%9C%80%E8%A6%81%E9%80%8F%E9%81%8E-new-%E5%BB%BA%E7%AB%8B%E7%89%A9%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">為什麼 jQuery 不需要透過 new 建立物件 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jQuery-fn-%E5%8F%88%E6%98%AF%E4%BB%80%E9%BA%BC%E5%91%A2"><span class="nav-number">2.3.</span> <span class="nav-text">jQuery.fn 又是什麼呢 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jQuery-extend"><span class="nav-number">2.4.</span> <span class="nav-text">jQuery.extend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-jQuery-IIFE-%E4%B8%AD%E5%9F%B7%E8%A1%8C%E5%85%B6%E4%BB%96-Library-IIFE"><span class="nav-number">2.5.</span> <span class="nav-text">在 jQuery IIFE 中執行其他 Library IIFE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-%E5%9B%9E%E5%82%B3%E4%B9%8B%E5%89%8D%E5%81%9A%E9%BB%9E%E5%88%A5%E7%9A%84%E4%BA%8B"><span class="nav-number">2.6.</span> <span class="nav-text">new 回傳之前做點別的事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E9%80%8F%E9%81%8E-jQuery-%E6%8C%87%E5%90%91%E7%9A%84-DOM-%E7%89%A9%E4%BB%B6%E7%9A%84-prototype-%E9%83%BD%E6%98%AF-jQuery"><span class="nav-number">2.7.</span> <span class="nav-text">所有透過 jQuery 指向的 DOM 物件的 prototype 都是 jQuery</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-Chain"><span class="nav-number">3.</span> <span class="nav-text">Method Chain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%80%91%E7%82%BA%E4%BB%80%E9%BA%BC%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8-jQuery-%E5%92%8C"><span class="nav-number">4.</span> <span class="nav-text">我們為什麼可以使用 jQuery 和 $</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E4%BE%86%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">資料來源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220108/22241/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深入了解原始碼: jQuery
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-01-08 13:16:08" itemprop="dateCreated datePublished" datetime="2022-01-08T13:16:08+08:00">2022-01-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-05-02 09:09:11" itemprop="dateModified" datetime="2022-05-02T09:09:11+08:00">2022-05-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/" itemprop="url" rel="index"><span itemprop="name">克服JS的奇怪部分</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>接下來的課程將探討一個很有的 JavaScript Library - jQuery，但課程中並不會去個別了解每個功能是如何實作的，而是去學習如何閱讀程式碼與了解其中的架構。</p>
+<span id="more"></span>
+
+<p>jQuery 是一個非常熱門的 JavaScript Library，但它其實並沒有為瀏覽器或 JavaScript 增添其他特性，而是單純透過封裝 JavaScript 來實現，且使用同一份原始碼就能支援各種瀏覽器環境。</p>
+<p>jQuery 是封裝 JavaScript 並操縱 <code>DOM</code> 物件來實現它的功能，以下我們直接透過程式碼來了解它是如何運作的。</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>首先我們可以在 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://jquery.com/download/">jQuery 官方網站</a> 下載未經壓縮的檔案，好處是它包含許多註解，可以藉此幫助我們了解程式碼，接著簡單的載一個 HTML 檔內載入我們所下載的 jQuery 檔案與自行撰寫的 JavaScript 檔案</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.html</span></span><br><span class="line"></span><br><span class="line">&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;</span><br><span class="line">  &lt;head&gt;&lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div id=<span class="string">&quot;main&quot;</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">      &lt;h1&gt;People&lt;/h1&gt;</span><br><span class="line">      &lt;ul <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;people&quot;</span>&gt;</span><br><span class="line">        &lt;li&gt;John Doe&lt;/li&gt;</span><br><span class="line">        &lt;li&gt;Jane Doe&lt;/li&gt;</span><br><span class="line">        &lt;li&gt;Jim Doe&lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;script src=<span class="string">&quot;js/jquery-3.6.0.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=<span class="string">&quot;js/app.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>接著就可以在 JS 檔案中使用 jQuery，我們可以透過 jQuery或 <code>$</code> 使用它，括號中可以像 CSS 一樣透過 <code>tag</code>、<code>id</code> 或 <code>class</code> 指定 <code>DOM</code> 物件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> q = $(<span class="string">&quot;ul.people li&quot;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(q);</span><br></pre></td></tr></table></figure>
+
+<p>透過 <code>console.log</code> 發現，符合的 <code>DOM</code> 物件會以 <code>jQuery.fn.init</code> 中的陣列來呈現，而每個取得的直都是一個 <code>DOM</code> 物件，而且它的 <code>prototype</code> 會指向一個 jQuery 物件，其中包含許多 <code>method</code> 可以使用</p>
+<p><img src="$().png"></p>
+<h2 id="原始碼"><a href="#原始碼" class="headerlink" title="原始碼"></a>原始碼</h2><p>接著我們來透過 jQuery 的原始碼了解為什麼會有上述的結果 ; 在這篇筆記撰寫的當下， jQuery 以來到 3.6 版，因此在官網下載未經壓縮的檔案後，得到一個 <code>jquery-3/6/0.js</code> 的檔案，打開這個檔案查看，會發現一共有一萬多行的程式碼，但我們並不是要一行行的讀它，而是先來了解它的架構。</p>
+<h3 id="環境判斷"><a href="#環境判斷" class="headerlink" title="環境判斷"></a>環境判斷</h3><p>首先，他執行了一個 <code>IIFE</code> 來，並傳入兩個參數 <code>global</code> 與 <code>factory</code>，並在一開始透過判斷 <code>module</code> 和 <code>module.exports</code> 是否為物件來確認是 <code>CommonJS</code>、<code>CommonJS-like</code> 或 <code>Node.js</code> 環境。</p>
+<ul>
+<li><code>global</code>: 透過 <code>window</code> 物件是否存在，如果存在就帶入 <code>window</code>，反之則是當下執行環境本身 - <code>this</code></li>
+<li><code>factory</code>: 這裡則是實際 jQuery 的所有程式碼，可以看到如果 <code>typeof module</code> 不是 <code>object</code> (一般 JS 環境)，就會直接把 <code>window</code> 作為 <code>global</code> 執行 <code>factory</code> 函式。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">global</span>, factory</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> === <span class="string">&quot;object&quot;</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">module</span>.exports === <span class="string">&quot;object&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">module</span>.exports = <span class="built_in">global</span>.ducument</span><br><span class="line">      ? factory(<span class="built_in">global</span>, <span class="literal">true</span>)</span><br><span class="line">      : <span class="function"><span class="keyword">function</span> (<span class="params">w</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (!w.document) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&quot;jQuery requires a window with a document&quot;</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> factory(w);</span><br><span class="line">        &#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    factory(<span class="built_in">global</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)(<span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">&quot;undefined&quot;</span> ? <span class="built_in">window</span> : <span class="built_in">this</span>, <span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">window</span>, noGlobal</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// jQuery code</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="為什麼-jQuery-不需要透過-new-建立物件"><a href="#為什麼-jQuery-不需要透過-new-建立物件" class="headerlink" title="為什麼 jQuery 不需要透過 new 建立物件 ?"></a>為什麼 jQuery 不需要透過 new 建立物件 ?</h3><p>還記得前面透過錢字號 <code>$</code> 帶入 CSS 選擇器指定 DOM 物件就可以直接使用 jQuery 嗎 ?</p>
+<p>接下來我們來看一下為什麼可以這麼使用，一樣看到程式碼 ; 首先建立一個名為 jQuery 的變數名稱，並指派一個函式給它，透過關鍵字 <code>new</code> 一個 <code>function constructor</code>，所以我們在使用它的時候就不需要加上 <code>new</code> 了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jQuery = <span class="function"><span class="keyword">function</span> (<span class="params">selector, context</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> jQuery.fn.init(selector, context);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="jQuery-fn-又是什麼呢"><a href="#jQuery-fn-又是什麼呢" class="headerlink" title="jQuery.fn 又是什麼呢 ?"></a>jQuery.fn 又是什麼呢 ?</h3><p>繼續往下看到程式碼，<code>jQuery.fn</code> 被指派為 <code>jQuery.prototype</code>，還記得 <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/" title="function-constructors-and-prototype">function-constructors-and-prototype</a> 中提到，函式都會有一個 <code>prototype</code> 屬性來作為透過 <code>function constructor</code> 建立物件的 <code>prototype</code>，jQuery 以 <code>fn</code> 來作為 <code>prototype</code> 的別名 <code>(alias)</code>，其中包含許多 <code>method</code> 供使用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jQuery.fn = jQuery.prototype = &#123;</span><br><span class="line">  constuctor: jQuery,</span><br><span class="line">  <span class="comment">// some methods ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="jQuery-extend"><a href="#jQuery-extend" class="headerlink" title="jQuery.extend"></a>jQuery.extend</h3><p>在 <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20211228/40176/" title="reflection-and-extend">reflection-and-extend</a> 這堂課中，我們就介紹了 <code>underscore.js</code> 透過 <code>extend</code> 來擴充物件的屬性和方法到另一個物件上，其實 <code>jQuery.extend</code> 也是做了相同的事情</p>
+<h3 id="在-jQuery-IIFE-中執行其他-Library-IIFE"><a href="#在-jQuery-IIFE-中執行其他-Library-IIFE" class="headerlink" title="在 jQuery IIFE 中執行其他 Library IIFE"></a>在 jQuery IIFE 中執行其他 Library IIFE</h3><p>接著往下會看到有一個名為 <code>Sizzle</code> 的變數被賦予 <code>IIFE</code>，註解還補上了 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/jquery/sizzle/wiki/">相關網址</a>，點開後發現這是一個 <code>CSS Selectors Library</code>，先不論詳細情況它做了什麼事，原來在 Library IIFE 中還可以使用另一個 Library 的 IIFE !</p>
+<p>接著往後看到原來 <code>jQuery.find</code> 就是 <code>Sizzle</code>，而 <code>jQuery.expr</code> 就是 <code>Sizzle.selectors</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">global</span>, factory</span>) </span>&#123;&#125;)(</span><br><span class="line">  <span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">&quot;undefined&quot;</span> ? <span class="built_in">window</span> : <span class="built_in">this</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">window</span>, noGlobal</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Sizzle = (<span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">window</span></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// do something ...</span></span><br><span class="line">    &#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line">    jQuery.find = Sizzle;</span><br><span class="line">    jQuery.expr = Sizzle.selectors;</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="new-回傳之前做點別的事"><a href="#new-回傳之前做點別的事" class="headerlink" title="new 回傳之前做點別的事"></a>new 回傳之前做點別的事</h3><p>在前面的課程中提到，如果透過建立 <code>function constructor</code>，再透過 <code>new</code> 新的物件，會自動生成一個新的空物件，並將 <code>this</code> 指向它，但接續一開始在我們使用 jQuery 時，因為它幫我們回傳一個 <code>new</code>，所以我們不需要透過 <code>new</code> 來建立 jQuery 物件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jQuery = <span class="function"><span class="keyword">function</span> (<span class="params">selector, context</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> jQuery.fn.init(selector, context);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但接著看到 <code>init</code> 函式，會發現它回傳的竟然是 <code>jQuery.makeArray</code> 函式所回傳的值，其中還帶入 <code>this</code> 這個參數，而 <code>this</code> 又是什麼呢 ? 這裡的 <code>this</code> 其實就是透過 <code>new</code> 所建立的新空物件，那既然透過 <code>new</code> 就會自動回傳一個空物件，它是不是有哪裡搞錯了呢 ?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> init = (jQuery.fn.init = <span class="function"><span class="keyword">function</span> (<span class="params">selector, context, root</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> jQuery.makeArray(selector, <span class="built_in">this</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>讓我們繼續看到 <code>makeArray</code> 到底做了什麼</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">jQuery.extend(&#123;</span><br><span class="line">  makeArray: <span class="function"><span class="keyword">function</span> (<span class="params">arr, results</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> ret = results || [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (arr != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (isArrayLike(<span class="built_in">Object</span>(arr))) &#123;</span><br><span class="line">        jQuery.merge(ret, <span class="keyword">typeof</span> arr === <span class="string">&quot;string&quot;</span> ? [arr] : arr);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        push.call(ret, arr);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>原來它最後還是把傳入的 <code>this</code> 回傳了，只是在這之前又做了其他事情而已。</p>
+<h3 id="所有透過-jQuery-指向的-DOM-物件的-prototype-都是-jQuery"><a href="#所有透過-jQuery-指向的-DOM-物件的-prototype-都是-jQuery" class="headerlink" title="所有透過 jQuery 指向的 DOM 物件的 prototype 都是 jQuery"></a>所有透過 jQuery 指向的 DOM 物件的 prototype 都是 jQuery</h3><p>回到一開始，當我們透過 jQuery 帶入 CSS selector 所建立的物件，其 <code>prototyope</code> 都指向 <code>jQuery.prototype</code>，讓我們來看一下這是如何發生的 ; 原來是它將 <code>init.prototype</code> 也指向 <code>jQuery.fn</code>，也就是 <code>jQuery.prototype</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> init = (jQuery.fn.init = <span class="function"><span class="keyword">function</span> (<span class="params">selector, context, root</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// do something ...</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">init.prototype = jQuery.fn;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Method-Chain"><a href="#Method-Chain" class="headerlink" title="Method Chain"></a>Method Chain</h2><p><code>Method Chain</code> 指的是在 jQuery 中，當我們指定一個 DOM 物件後，可以在其後方不斷串接 <code>method</code>，如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> q = $(<span class="string">&#x27;ul.people&#x27;</span>).addClass(<span class="string">&#x27;newclass&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(q);</span><br></pre></td></tr></table></figure>
+
+<p>當我們在後方串上一個 <code>addClass</code>，被指定的 DOM 物件就會加上這個 <code>class</code></p>
+<p><img src="newClass.png"></p>
+<p>不僅如此，我們還可以在後方繼續串下去</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> q = $(<span class="string">&#x27;ul.people&#x27;</span>).addClass(<span class="string">&#x27;newclass&#x27;</span>).removeClass(<span class="string">&#x27;newclass&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(q);</span><br></pre></td></tr></table></figure>
+
+<p><img src="removeclass.png"></p>
+<p>那麼這到底是如何做到的呢 ?</p>
+<p>首先我們在 jQuery 原始碼中找到 <code>addClass</code>，會發現最後 <code>return this</code>，這裡的 <code>this</code> 指的就是呼叫這個函式的物件 <code>$(&#39;ul.people&#39;)</code>，而如果這個物件沒有該方法，就會透過 <code>prototypal chain</code> 找，所以找到了 jQuery 物件 ; 接著看下去，會發現包含 <code>removeClass</code> 的方法也都在最後 <code>return this</code>，這就是為什麼 jQuery 中可以不斷串接方法的原因了 !</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">jQuery.fn.extend(&#123;</span><br><span class="line"></span><br><span class="line">  addClass: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something ...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">  removeClass: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something ...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;); </span><br></pre></td></tr></table></figure>
+
+<h2 id="我們為什麼可以使用-jQuery-和"><a href="#我們為什麼可以使用-jQuery-和" class="headerlink" title="我們為什麼可以使用 jQuery 和 $"></a>我們為什麼可以使用 jQuery 和 $</h2><p>那麼回到最一開始的問題，為什麼我們載入 jQuery 的原始碼 - <code>jquery-3.6.0.js</code> 後，我們就可以直接呼叫 jQuery 和 <code>$</code> 來使用呢 ?</p>
+<p>因為在一開始的 <code>IIFE</code> 中，我們判斷 <code>window</code> 存在後，就不帶入第二個 <code>callback function</code> 參數的第二個參數 <code>noGlobal</code>，看到原始碼最下方會發現，當判斷 <code>noGlobal</code> 不存在後，並賦予全域物件 <code>window</code> 的 jQuery 和 <code>$</code> 等於 jQuery 函式了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">global</span>, factory</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)(<span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">&#x27;undefined&#x27;</span> ? <span class="built_in">window</span> : <span class="built_in">this</span>, <span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">window</span>, noGlobal</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// jQuery code</span></span><br><span class="line">  <span class="keyword">if</span> (!noGlobal) &#123;</span><br><span class="line">    <span class="built_in">window</span>.jQuery = <span class="built_in">window</span>.$ = jQuery;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/understand-javascript/">Udemy-JavaScript: Understanding the Weird Parts</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jquery/" rel="tag"># jQuery</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220106/47596/" rel="prev" title="嚴謹模式">
+                  <i class="fa fa-chevron-left"></i> 嚴謹模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220109/57246/" rel="next" title="來打造一個 Framework/Library (一)">
+                  來打造一個 Framework/Library (一) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

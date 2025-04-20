@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="單元測試是最常見的前端測試，接下來將針對 React 專案進行單元測試的開發">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Units Tests">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220903/39499/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="單元測試是最常見的前端測試，接下來將針對 React 專案進行單元測試的開發">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/react/20220903/39499/run-test.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/react/20220903/39499/run-test-success.png">
+<meta property="article:published_time" content="2022-09-03T04:10:48.000Z">
+<meta property="article:modified_time" content="2022-09-11T07:13:51.695Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta property="article:tag" content="Units Tests">
+<meta property="article:tag" content="Jest">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/react/20220903/39499/run-test.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220903/39499/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220903/39499/","path":"react/20220903/39499/","title":"Units Tests"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Units Tests | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Required-Tools-amp-Setup"><span class="nav-number">1.</span> <span class="nav-text">Required Tools &amp; Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#First-Test"><span class="nav-number">2.</span> <span class="nav-text">First Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#test"><span class="nav-number">2.1.</span> <span class="nav-text">test()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arrange-render"><span class="nav-number">2.2.</span> <span class="nav-text">Arrange (render())</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Act"><span class="nav-number">2.3.</span> <span class="nav-text">Act</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Assert-screen"><span class="nav-number">2.4.</span> <span class="nav-text">Assert (screen)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#expect"><span class="nav-number">2.4.1.</span> <span class="nav-text">expect()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-Test"><span class="nav-number">2.5.</span> <span class="nav-text">Run Test</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grouping-Tests-Together-With-Test-Suits"><span class="nav-number">3.</span> <span class="nav-text">Grouping Tests Together With Test Suits</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#describe"><span class="nav-number">3.1.</span> <span class="nav-text">describe()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testing-User-Ineraction-amp-State"><span class="nav-number">4.</span> <span class="nav-text">Testing User Ineraction &amp; State</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testing-Connected-Components"><span class="nav-number">5.</span> <span class="nav-text">Testing Connected Components</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testing-Asynchronous-Code"><span class="nav-number">6.</span> <span class="nav-text">Testing Asynchronous Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-Mocks"><span class="nav-number">7.</span> <span class="nav-text">Working with Mocks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Initialize-Test-Environment"><span class="nav-number">7.1.</span> <span class="nav-text">Initialize Test Environment</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220903/39499/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Units Tests
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-09-03 12:10:48" itemprop="dateCreated datePublished" datetime="2022-09-03T12:10:48+08:00">2022-09-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-09-11 15:13:51" itemprop="dateModified" datetime="2022-09-11T15:13:51+08:00">2022-09-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>單元測試是最常見的前端測試，接下來將針對 React 專案進行單元測試的開發</p>
+<span id="more"></span>
+
+<h2 id="Required-Tools-amp-Setup"><a href="#Required-Tools-amp-Setup" class="headerlink" title="Required Tools &amp; Setup"></a>Required Tools &amp; Setup</h2><p>在開始專寫測試之前，有 2 個環境條件需要滿足:</p>
+<ul>
+<li>執行測試並回傳測試結果 (Jest)</li>
+</ul>
+<p>首先，測試本身也是一段程式碼，所以當然需要有人去執行並回傳結果，在 React 專案中，目前最常見的就是 jest 這個 3rd library</p>
+<ul>
+<li>模擬 React</li>
+</ul>
+<p>Jest 並非 React 專屬的 library，他適用於所有前端專案，所以我們還需要 React 對應的 library 來模擬 React 的運作</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@testing-library/jest-dom&quot;</span>: <span class="string">&quot;^5.11.6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;@testing-library/react&quot;</span>: <span class="string">&quot;^11.2.2&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;@testing-library/user-event&quot;</span>: <span class="string">&quot;^12.5.0&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="First-Test"><a href="#First-Test" class="headerlink" title="First Test"></a>First Test</h2><p>在 Units Tests 中，通常會將測試檔案以目標檔案命名，例如測試的目標檔案是 App.js，測試檔案就是 App.test.js，並先直接放在該檔案同一層資料夾中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">- App.js</span><br><span class="line">- App.test.js</span><br><span class="line">- setupTests.js</span><br></pre></td></tr></table></figure>
+
+<p>另外，還會有一支 setupTests.js 檔案來載入 Tests library</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// setupTests.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@testing-library/jest-dom&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>當然實際上不會直接對 App.js 做測試，而是將內容封裝成不同的 component 再加以測試;這裡我們就先新增一個 Greeting.js component，當然測試檔案的名稱就是 Greeting.test.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">- components</span><br><span class="line">  | Greeting.js</span><br><span class="line">  | Greeting.test.js</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Greeting.js</span></span><br><span class="line"><span class="keyword">const</span> Greeting = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;/h2&gt;</span><br><span class="line">      &lt;p&gt;It<span class="string">&#x27;s good to see you!&lt;/p&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  );</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">export default Greeting;</span></span><br></pre></td></tr></table></figure>
+
+<p>接著就是要針對這個 component 寫測試了，在測試檔案中，會包含 3 個流程，簡稱 3A:</p>
+<ul>
+<li>Arrange: 測試的目標檔案與環境，這個範例指的就是 Greeting.js 這個 component</li>
+<li>Act: 預期測試的使用者行為，例如按鈕點擊，當然也可以沒有</li>
+<li>Assert: 最後一步當然就是驗證測試的結果了</li>
+</ul>
+<p>在這個測試範例中，我們希望先來簡單測試 component 中是否有 Hello World 這段文字</p>
+<h3 id="test"><a href="#test" class="headerlink" title="test()"></a>test()</h3><p>首先，在載入測試用的 3rd library 後，會有一個 global function <code>test</code>，其中包含兩個參數</p>
+<ul>
+<li>第一個參數 string: 描述這段測試</li>
+<li>第二個參數 funcion: 測試流程</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Greeting.test.js</span></span><br><span class="line">test(<span class="string">&quot;renders Hello World as a text&quot;</span>, <span class="function">() =&gt;</span> &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Arrange-render"><a href="#Arrange-render" class="headerlink" title="Arrange (render())"></a>Arrange (render())</h3><p>接著就是透過 <code>render()</code> function 指定 Arrange 測試的目標檔案</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; render &#125; <span class="keyword">from</span> <span class="string">&quot;@testing-library/react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Greeting <span class="keyword">from</span> <span class="string">&quot;./Greeting&quot;</span>;</span><br><span class="line"></span><br><span class="line">test(<span class="string">&quot;renders Hello World as a text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Arrange</span></span><br><span class="line">  render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Act"><a href="#Act" class="headerlink" title="Act"></a>Act</h3><p>使用者操作行為，這裡沒有所有可以直接忽略</p>
+<h3 id="Assert-screen"><a href="#Assert-screen" class="headerlink" title="Assert (screen)"></a>Assert (screen)</h3><p>最後是驗證的邏輯，首先，透過 <code>screen</code> 可以取得許多 function，詳情考已參考<a target="_blank" rel="external nofollow noopener noreferrer" href="https://testing-library.com/docs/queries/about/#screen">官網</a>說明，這裡只是單純要取得文字，所以可以使用 <code>getByText()</code>，其中包含兩個參數</p>
+<ul>
+<li>第一個參數: 目標文字，可以單純 hardcode string 或是使用更彈性的 regular expression</li>
+<li>第二個參數: 一個 object，可以設定搜尋條件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; render, screen &#125; <span class="keyword">from</span> <span class="string">&quot;@testing-library/react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Greeting <span class="keyword">from</span> <span class="string">&quot;./Greeting&quot;</span>;</span><br><span class="line"></span><br><span class="line">test(<span class="string">&quot;renders Hello World as a text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Arrange</span></span><br><span class="line">  render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Act</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Assert</span></span><br><span class="line">  screen.getByText(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="expect"><a href="#expect" class="headerlink" title="expect()"></a>expect()</h4><p>最後會透過 <code>expect()</code> 指定測試的條件，也就是上方透過 <code>screen.getByText()</code> 所指定的文字，最後再透過 <code>toBeInTheDocument()</code> 表示須出現在目標測試檔案中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">&quot;renders Hello World as a text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Arrange</span></span><br><span class="line">  render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Act</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Assert</span></span><br><span class="line">  <span class="keyword">const</span> helloWorldElement = screen.getByText(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">  expect(helloWorldElement).toBeInTheDocument();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Run-Test"><a href="#Run-Test" class="headerlink" title="Run Test"></a>Run Test</h3><p>在撰寫完測試檔案後，就是要來實際執行這段測試了，在 package.json 中，會因為安裝了 test 3rd libraries 而新增了一個指令 test</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;start&quot;</span>: <span class="string">&quot;react-scripts start&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;build&quot;</span>: <span class="string">&quot;react-scripts build&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;test&quot;</span>: <span class="string">&quot;react-scripts test&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 cmd 執行後會出現以下畫面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="run-test.png"></p>
+<p>包含測試的目標檔案、測試的描述(test function 第一個參數)和測試的結過，如果如上的結果是失敗的，就會包含失敗的原因</p>
+<p>那麼為什麼結果會失敗呢? 原因是 <code>getByText()</code> 預設是完全符合才算成功，這裡多了一個驚嘆號所以就不完全符合了，可以改成 regular expression、加上驚嘆號或是在後方的測試條件改成不須完全符合</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更改測試條件不須完全符合</span></span><br><span class="line"><span class="keyword">const</span> helloWorldElement = screen.getByText(<span class="string">&quot;Hello World&quot;</span>, &#123; <span class="attr">exact</span>: <span class="literal">false</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>而在測試執行後，會持續監聽測試內容，所以只要修改測試條件後，結果也會即時顯示</p>
+<p><img src="run-test-success.png"></p>
+<h2 id="Grouping-Tests-Together-With-Test-Suits"><a href="#Grouping-Tests-Together-With-Test-Suits" class="headerlink" title="Grouping Tests Together With Test Suits"></a>Grouping Tests Together With Test Suits</h2><p>在上方的測試結果中，會發現包含兩個狀態 Tests &amp; Tests Suits，Tests 單純是這個測試的結果，Tests Suits 的出現是為了解決的一個專案中，可能會有許多 Units Tests，所以如果是出自同一個 component 或是功能，可以透過 Tests Suits 將之設定為群組</p>
+<h3 id="describe"><a href="#describe" class="headerlink" title="describe()"></a>describe()</h3><p>將多個 Test 群組就需要透過 <code>describe()</code> 將欲群組的測試包起來</p>
+<ul>
+<li>第一個參數: 同樣是測試的描述</li>
+<li>第二個參數: 將測試包起來的 function</li>
+</ul>
+<p>經 Tests Suits 改寫後結果如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Greeting.test.js</span></span><br><span class="line">describe(<span class="string">&quot;Greeting Component&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  test(<span class="string">&quot;renders Hello World as a text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Arrage</span></span><br><span class="line">    render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Act</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Assert</span></span><br><span class="line">    <span class="keyword">const</span> helloWorldElement = screen.getByText(<span class="string">&quot;Hello World&quot;</span>, &#123; <span class="attr">exact</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">    expect(helloWorldElement).toBeInTheDocument();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Testing-User-Ineraction-amp-State"><a href="#Testing-User-Ineraction-amp-State" class="headerlink" title="Testing User Ineraction &amp; State"></a>Testing User Ineraction &amp; State</h2><p>當然實際測試不會只是這麼單純的內容，通常還會加入使用者操作以涵蓋更多使用情境，這裡我們先將 component 改寫成當 button 點擊後，會改變顯示的內容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Greeting.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Greeting = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [changedText, setChangedText] = useState(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> changeTextHanlder = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    setChangedText(<span class="literal">true</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;/h2&gt;</span><br><span class="line">      &#123;!changedText &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>It&#x27;s good to see you!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>&#125;</span><br><span class="line">      &#123;changedText &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Changed<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>&#125;</span><br><span class="line">      &lt;button onClick=&#123;changeTextHanlder&#125;&gt;Change Text!&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>測試情境就可以區分成按鈕點擊前與點擊後，第一種情境是在點擊前，很單純的不需要使用者操作行為，直接判斷點擊錢是否出現預期文字</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Greeting.test.js</span></span><br><span class="line">describe(<span class="string">&quot;Greeting component&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  test(<span class="string">&#x27;renders &quot;good to see you&quot; if button was NOT clicked&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Arrenge</span></span><br><span class="line">    render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Act</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Assert</span></span><br><span class="line">    <span class="keyword">const</span> outputElement = screen.getByText(<span class="string">&quot;good to see you&quot;</span>, &#123; <span class="attr">exact</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">    expect(outputElement).toBeInTheDocument();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>第二種就需要判斷使用者在操作後所顯示的內容了，所以需要 import 另外一個 object <code>useEvent</code>，其中包含許多 user event，在這次的範例就是 button click，可以透過另一個 function <code>getByRole()</code> 指定 HTML element</p>
+<p>Assert 的部分因為在點擊後，這個 element 就會消失，因此可以改使用 <code>queryByText()</code>，在這個 element 不在時會回傳 null，<code>toBeInTheDocument()</code> 也可以改成 <code>toBeNull()</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">&#x27;does not renders &quot;good to see you&quot; if the button was clicked&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Arrange</span></span><br><span class="line">  render(<span class="xml"><span class="tag">&lt;<span class="name">Greeting</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Act</span></span><br><span class="line">  <span class="keyword">const</span> buttonElement = screen.getByRole(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  userEvent.click(buttonElement);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Assert</span></span><br><span class="line">  <span class="keyword">const</span> outputElement = screen.queryByText(<span class="string">&quot;good to see you&quot;</span>, &#123; <span class="attr">exact</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  expect(outputElement).toBeNull();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Testing-Connected-Components"><a href="#Testing-Connected-Components" class="headerlink" title="Testing Connected Components"></a>Testing Connected Components</h2><p>隨著專案功能不斷擴大，component 會因應需求不斷切分，所以常見的 component 不會只有一層，如果上方動態顯示的文字改由一層 component 如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Output.js</span></span><br><span class="line"><span class="keyword">const</span> Output = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;props.children&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Greeting.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Output <span class="keyword">from</span> <span class="string">&quot;./Output&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Greeting = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [changedText, setChangedText] = useState(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> changeTextHanlder = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    setChangedText(<span class="literal">true</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;/h2&gt;</span><br><span class="line">      &#123;!changedText &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Output</span>&gt;</span>It&#x27;s good to see you!<span class="tag">&lt;/<span class="name">Output</span>&gt;</span></span>&#125;</span><br><span class="line">      &#123;changedText &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Output</span>&gt;</span>Changed<span class="tag">&lt;/<span class="name">Output</span>&gt;</span></span>&#125;</span><br><span class="line">      &lt;button onClick=&#123;changeTextHanlder&#125;&gt;Change Text!&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果只是單純的顯示應用，上方所寫的測試內容可以完全不需要更改，但如果 component 邏輯變得更加複雜，就會將 component 的測試在抽離出去，如 Output.test.js</p>
+<h2 id="Testing-Asynchronous-Code"><a href="#Testing-Asynchronous-Code" class="headerlink" title="Testing Asynchronous Code"></a>Testing Asynchronous Code</h2><p>在前端開發中，多數資料並非靜態，而是透過非同步的方式由 server 傳送再進一步顯示</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Async.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Async = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [posts, setPosts] = useState([]);</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    fetch(<span class="string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>)</span><br><span class="line">      .then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">      .then(<span class="function">(<span class="params">data</span>) =&gt;</span> setPosts(data));</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;posts.map(<span class="function">(<span class="params">post</span>) =&gt;</span> (</span><br><span class="line">          &lt;li key=&#123;post.id&#125;&gt;&#123;post.title&#125;&lt;/li&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Async.test.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; render, screen &#125; <span class="keyword">from</span> <span class="string">&quot;@testing-library/react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Async <span class="keyword">from</span> <span class="string">&quot;./Async&quot;</span>;</span><br><span class="line"></span><br><span class="line">describe(<span class="string">&quot;Async component&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  test(<span class="string">&quot;renders posts if request succeeds&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    render(<span class="xml"><span class="tag">&lt;<span class="name">Async</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> listItemElements = screen.getAllByRole(<span class="string">&quot;listitem&quot;</span>);</span><br><span class="line">    expect(listItemElements).not.toHaveLength(<span class="number">0</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在撰寫測試時，如果以非同步資料顯示作為測試的結果就會出錯，因為測試程式碼並不知道這筆資料是會延遲一段時間後才送達，所以這裡的 <code>getAllByRole()</code> 需要改成 <code>findAllRole()</code>，差別在於 <code>findAllRole()</code> 會回傳一個 promise，期待二個參數同樣為測試條件，第三個參數為延遲秒數，預設為 1 秒;而 test function 也需要改成 async function</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">&quot;Async component&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  test(<span class="string">&quot;renders posts if request succeeds&quot;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    render(<span class="xml"><span class="tag">&lt;<span class="name">Async</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> listItemElements = <span class="keyword">await</span> screen.findAllByRole(<span class="string">&quot;listitem&quot;</span>);</span><br><span class="line">    expect(listItemElements).not.toHaveLength(<span class="number">0</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Working-with-Mocks"><a href="#Working-with-Mocks" class="headerlink" title="Working with Mocks"></a>Working with Mocks</h2><p>上述對於非同步事件的測試看似一切正常了，但這裡有一個問題是，在執行測試時，其時會反覆執行 component 中的 function，當遇到非同步事件時，除了會不斷產生 request 之外，更重要的是如果這個 request 是對資料進行新增或刪除等動作，測試的過程就不會斷更改資料庫的資料</p>
+<p>很顯然的，這不是我們期待的行為，Units Tests 的目的是測試 component 行為，而不是測試 Web API (fetch) 或其他 server API;Jest 為了解決這個問題，提供了在執行測試時，取代這些行為與資料的 mocks</p>
+<p>首先，將 <code>window.fetch()</code> 取代為 <code>ject.fn()</code>，並呼叫 <code>mockResolvedValueOnce()</code> 定義 resolved 後所接收到的資料，透過 <code>fetch</code> API 所接收到的資料會先以 async function <code>json()</code> 將資料轉為 JS object，其中所回傳的資料就是我們可以自由定義的 mock data</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Async.test.js</span></span><br><span class="line">describe(<span class="string">&quot;Async component&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  test(<span class="string">&quot;renders posts if request succeeds&quot;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="built_in">window</span>.fetch = jest.fn();</span><br><span class="line">    <span class="built_in">window</span>.fetch.mockResolvedValueOnce(&#123;</span><br><span class="line">      json: <span class="keyword">async</span> () =&gt; [&#123; <span class="attr">id</span>: <span class="string">&quot;p1&quot;</span>, <span class="attr">title</span>: <span class="string">&quot;First post&quot;</span> &#125;],</span><br><span class="line">    &#125;);</span><br><span class="line">    render(<span class="xml"><span class="tag">&lt;<span class="name">Async</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> listItemElements = <span class="keyword">await</span> screen.findAllByRole(<span class="string">&quot;listitem&quot;</span>);</span><br><span class="line">    expect(listItemElements).not.toHaveLength(<span class="number">0</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>透過這樣的改寫後，在執行測試時，就不會真的送出 request，而且還可以準備多組假資料以模擬不同的情境</p>
+<h3 id="Initialize-Test-Environment"><a href="#Initialize-Test-Environment" class="headerlink" title="Initialize Test Environment"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://create-react-app.dev/docs/running-tests/#initializing-test-environment">Initialize Test Environment</a></h3><p>上述不希望在執行測試時被出發的事件，可以在根目錄上建立一個 src/setupTests.js 的檔案，這支檔案會在執行所有<strong>測時前先被執行</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/setupTests.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> localStorageMock = &#123;</span><br><span class="line">  getItem: jest.fn(),</span><br><span class="line">  setItem: jest.fn(),</span><br><span class="line">  removeItem: jest.fn(),</span><br><span class="line">  clear: jest.fn(),</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">global</span>.localStorage = localStorageMock;</span><br></pre></td></tr></table></figure>
+
+<p>而如果在新增 src/setupTests.js 檔案前就執行 <code>eject</code> (scripts in package.json)，package.json 就不會建立任何關聯到這支檔案上，那麼就需要手動補上以下設定:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&quot;jest&quot;: &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  &quot;setupTestFrameworkScriptFile&quot;: &quot;&lt;rootDir&gt;/src/setupTests.js&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://testing-library.com/docs/queries/about/#screen">@testing-library/react</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://jestjs.io/">jest</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+              <a href="/tags/units-tests/" rel="tag"># Units Tests</a>
+              <a href="/tags/jest/" rel="tag"># Jest</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220903/40383/" rel="prev" title="Testing">
+                  <i class="fa fa-chevron-left"></i> Testing
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/typescript/20220904/36157/" rel="next" title="Generics Type">
+                  Generics Type <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

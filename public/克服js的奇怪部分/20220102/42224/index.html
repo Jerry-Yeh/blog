@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前一堂課介紹了如何透過關鍵字 new 來建立物件，這堂課將進一步介紹 function construsctors 和 .prototype">
+<meta property="og:type" content="article">
+<meta property="og:title" content="function-constructors-and-prototype">
+<meta property="og:url" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="前一堂課介紹了如何透過關鍵字 new 來建立物件，這堂課將進一步介紹 function construsctors 和 .prototype">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/proto.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/function.png">
+<meta property="article:published_time" content="2022-01-02T14:01:08.000Z">
+<meta property="article:modified_time" content="2022-01-02T16:09:42.189Z">
+<meta property="article:author" content="Yeh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/proto.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/","path":"克服js的奇怪部分/20220102/42224/","title":"function-constructors-and-prototype"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>function-constructors-and-prototype | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prototype"><span class="nav-number">1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%98%E6%86%B6%E9%AB%94%E5%8D%A0%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">記憶體占用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%96%B0%E5%A2%9E%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">後續新增方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">4.</span> <span class="nav-text">注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E4%BE%86%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">資料來源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220102/42224/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          function-constructors-and-prototype
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-01-02 22:01:08" itemprop="dateCreated datePublished" datetime="2022-01-02T22:01:08+08:00">2022-01-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-01-03 00:09:42" itemprop="dateModified" datetime="2022-01-03T00:09:42+08:00">2022-01-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/" itemprop="url" rel="index"><span itemprop="name">克服JS的奇怪部分</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前一堂課介紹了如何透過關鍵字 <code>new</code> 來建立物件，這堂課將進一步介紹 <code>function construsctors</code> 和 <code>.prototype</code></p>
+<span id="more"></span>
+
+<h2 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h2><p>延續上一堂課的範例，如果透過 <code>new</code> 關鍵字來建立的物件，並使用 <code>__proto__</code> 來查看它的 <code>prototype</code> 會是什麼呢 ?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">firstname, lastname</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">  <span class="built_in">this</span>.firstname = firstname;</span><br><span class="line">  <span class="built_in">this</span>.lastname = lastname;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;This function is invoked.&#x27;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> john = <span class="keyword">new</span> Person(<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Doe&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(john.__proto__);</span><br></pre></td></tr></table></figure>
+
+<p>我們會得到一個名為 <code>Person</code> 的空物件</p>
+<p><img src="proto.png"></p>
+<p>但這到底是如何形成的呢 ?</p>
+<p>之前的課程有提到過，在一個函式被件建立時，它會有幾個預設的屬性，函式內的程式碼 - <code>code</code>、匿名函式不會有的 - <code>name</code> 和一個只被用來產生物件的 <code>function constructor</code> 才會有的屬性 - <code>prototype</code></p>
+<p><img src="function.png"></p>
+<p>但這裡很弔詭的是，函式的 <code>prototype</code> 屬性並不是這個函式的 <code>prototype</code>，而是透過 <code>new</code> 建立的物件的 <code>__proto__</code> 會自動指向這個函式的 <code>prototype</code> 屬性，這裡我們透過一個範例來了解</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">firstname, lastname</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.firstname = firstname;</span><br><span class="line">  <span class="built_in">this</span>.lastname = lastname;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> john = <span class="keyword">new</span> Person(<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Doe&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(john);</span><br><span class="line"><span class="built_in">console</span>.log(john.getFullName());   <span class="comment">// John Doe</span></span><br></pre></td></tr></table></figure>
+
+<p>這裡我們將一個函式 <code>getFullName</code> 指派給 <code>Person.prototype</code>，接著呼叫 <code>john.getFUllName()</code> 時，因為 <code>john</code> 本身並沒有這個方法，因此會沿著 <code>prototypal chain</code> 尋找，這時會找到 <code>Person.prototype</code>，所以我們會得到 <code>return</code> 的結果。</p>
+<p>那麼我們是不是也可以將這麼方法直接在函式 <code>Person</code> 建立時就賦予給它呢 ?</p>
+<p>當然可以，因為透過 <code>new</code> 來建立物件時會呼叫這個函式，並將 <code>this</code> 指向新的空物件，就和屬性一樣，方法也會出現在新建立的物件中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">firstname, lastname</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.firstname = firstname;</span><br><span class="line">  <span class="built_in">this</span>.lastname = lastname;</span><br><span class="line">  <span class="built_in">this</span>.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> john = <span class="keyword">new</span> Person(<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Doe&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(john.getFullName());   <span class="comment">// John Doe</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="記憶體占用"><a href="#記憶體占用" class="headerlink" title="記憶體占用"></a>記憶體占用</h2><p>但這裡不一樣的是，如果把方法 <code>getFullName</code> 在函式建立時就賦予給它，每當我們透過 <code>new</code> 建立一個物件時，這些物件都會有自己的 <code>getFullName</code> 方法，所以自然會有各自占用的記憶體空間 ; 但如果透過 <code>Person.prototype</code> 賦予時，在呼叫物件的方法時，因為找不到，所以會沿著 <code>prototypal chain</code> 找到賦予在函式 <code>prototype</code> 的方法，藉此減少相同方法占用記憶體空間。</p>
+<h2 id="後續新增方法"><a href="#後續新增方法" class="headerlink" title="後續新增方法"></a>後續新增方法</h2><p>透過函式的 <code>prototype</code> 新增方法的方式甚至可以在物件被建立後追加，不需要因為後續新增方法而去修改先前建立的物件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">firstname, lastname</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.firstname = firstname;</span><br><span class="line">  <span class="built_in">this</span>.lastname = lastname;</span><br><span class="line">  <span class="built_in">this</span>.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> john = <span class="keyword">new</span> Person(<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Doe&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(john.getFullName());   <span class="comment">// John Doe</span></span><br><span class="line"></span><br><span class="line">Person.prototype.getFormalFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.lastname + <span class="string">&#x27;, &#x27;</span> + <span class="built_in">this</span>.firstname;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(john.getFormalFullName());   <span class="comment">// Doe, John</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h2><p>在 <code>JavaScript</code> 透過 <code>function constructor</code> 的方式建立物件時，我們需要在呼叫函式前加上一個關鍵字 <code>new</code>，但如果我們漏掉關鍵字 <code>new</code>，整個程式碼還是可以執行的，只是這個變數會被賦予函式 <code>return</code> 的值，如果沒有回傳任何資料，這個值就會是 <code>undefined</code>，因為這也是一般呼叫函式的方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">firstname, lastname</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>);   <span class="comment">// window</span></span><br><span class="line">  <span class="built_in">this</span>.firstname = firstname;</span><br><span class="line">  <span class="built_in">this</span>.lastname = lastname;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;This function is invoked.&#x27;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.getFullName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.firstname + <span class="string">&#x27; &#x27;</span> + <span class="built_in">this</span>.lastname;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> john = Person(<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Doe&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(john);   <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(john.getFullName()):   <span class="comment">// error... </span></span><br></pre></td></tr></table></figure>
+
+<p>為了盡量避免發生這種錯誤，所以在開發時通常會一個慣例，那就是如果這個函式是一個 <code>function constructor</code>，那命名上就會使用大寫開頭 <code>capital letter</code> (person –&gt; Person)，藉此提醒我們在透過這類函式建立物件時，記得加上關鍵字 <code>new</code>。</p>
+<h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/understand-javascript/">Udemy-JavaScript: Understanding the Weird Parts</a>`</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20211229/60572/" rel="prev" title="函數建構子、new 與 JavaScript 的歷史">
+                  <i class="fa fa-chevron-left"></i> 函數建構子、new 與 JavaScript 的歷史
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20220103/32940/" rel="next" title="內建函式建構子">
+                  內建函式建構子 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

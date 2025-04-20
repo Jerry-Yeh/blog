@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在開發中，時常會遇到一個問題是，因為 component 層層區分，當有一個子元件要傳資料給另外一條支線的子元件時，如果透過 props 傳遞就會變得相當麻煩，中間不需要得到這些資訊的 component 也需要幫忙傳遞，就像是如果今天要送一個禮物給堂弟，我不能直接拿給他，只能先傳給父親，再傳給爺爺，接這再傳給堂弟的父親，最後才會交到他的手上，在 Vue 中，可以透過 provide&#x2F;inje">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Context API">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220626/41766/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在開發中，時常會遇到一個問題是，因為 component 層層區分，當有一個子元件要傳資料給另外一條支線的子元件時，如果透過 props 傳遞就會變得相當麻煩，中間不需要得到這些資訊的 component 也需要幫忙傳遞，就像是如果今天要送一個禮物給堂弟，我不能直接拿給他，只能先傳給父親，再傳給爺爺，接這再傳給堂弟的父親，最後才會交到他的手上，在 Vue 中，可以透過 provide&#x2F;inje">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/react/20220626/41766/component-tree.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/react/20220626/41766/provider-without-default-value.png">
+<meta property="article:published_time" content="2022-06-26T01:45:24.000Z">
+<meta property="article:modified_time" content="2022-09-04T03:56:02.592Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/react/20220626/41766/component-tree.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220626/41766/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220626/41766/","path":"react/20220626/41766/","title":"React Context API"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React Context API | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Context-File"><span class="nav-number">1.</span> <span class="nav-text">Create Context File</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-Context-with-Provider"><span class="nav-number">2.</span> <span class="nav-text">Using Context with Provider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Context-Consumer"><span class="nav-number">3.</span> <span class="nav-text">Context Consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Default-Value"><span class="nav-number">4.</span> <span class="nav-text">Default Value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useContext"><span class="nav-number">5.</span> <span class="nav-text">useContext()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Making-Context-Dynamic"><span class="nav-number">6.</span> <span class="nav-text">Making Context Dynamic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-to-use-Props-amp-Context"><span class="nav-number">7.</span> <span class="nav-text">When to use Props &amp; Context ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-amp-Using-a-Custom-Context-Provider-Component"><span class="nav-number">8.</span> <span class="nav-text">Building &amp; Using a Custom Context Provider Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Context-Limitations"><span class="nav-number">9.</span> <span class="nav-text">React Context Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">10.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220626/41766/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React Context API
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-06-26 09:45:24" itemprop="dateCreated datePublished" datetime="2022-06-26T09:45:24+08:00">2022-06-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2022-09-04 11:56:02" itemprop="dateModified" datetime="2022-09-04T11:56:02+08:00">2022-09-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>在開發中，時常會遇到一個問題是，因為 component 層層區分，當有一個子元件要傳資料給另外一條支線的子元件時，如果透過 props 傳遞就會變得相當麻煩，中間不需要得到這些資訊的 component 也需要幫忙傳遞，就像是如果今天要送一個禮物給堂弟，我不能直接拿給他，只能先傳給父親，再傳給爺爺，接這再傳給堂弟的父親，最後才會交到他的手上，在 Vue 中，可以透過 <code>provide/inject</code> &amp; <code>Vuex</code> 來解決這些問題，React 中提供了一些方法稱為 - Context API</p>
+<span id="more"></span>
+
+<p>從下方的 component-tree 可以看到，即便是功能這麼單純的 component，在子元件之間的資料傳遞也想當不便，很顯然的我們需要一些其他方法來解決這些問題</p>
+<p><img src="component-tree.png"></p>
+<h2 id="Create-Context-File"><a href="#Create-Context-File" class="headerlink" title="Create Context File"></a>Create Context File</h2><p>首先，我們需要先建立一個檔案來存放這些共用資料，這樣的檔案可大可小，名稱上一般統一使用 store 作為資料夾名稱，再根據功能為檔案命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">- store</span><br><span class="line">  - auth-context.js</span><br></pre></td></tr></table></figure>
+
+<p>在這個檔案中，呼叫 <code>React.createContext()</code> 來建立 context，並將欲共用的變數放在裡面，最後透過 <code>export</code> 匯出回傳值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> AuthContext = React.createContext(&#123;</span><br><span class="line">  isLoggedIn: <span class="literal">false</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> AuthContext;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Using-Context-with-Provider"><a href="#Using-Context-with-Provider" class="headerlink" title="Using Context with Provider"></a>Using Context with Provider</h2><p>建立了 Context 後，接著就是要將這些資料分享到需要的 component 上，這時候就可以透過 Context Provider 將對應的 JSX 包住，這麼一來其中所有的 child component 就都能使用這些資料了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AuthContext <span class="keyword">from</span> <span class="string">&quot;./store/auth-context&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;React.Fragment&gt;</span><br><span class="line">      &lt;AuthContext.Provider&gt;</span><br><span class="line">        &lt;MainHeader isAuthenticated=&#123;isLoggedIn&#125; onLogout=&#123;logoutHandler&#125; /&gt;</span><br><span class="line">        &lt;main&gt;</span><br><span class="line">          &#123;!isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onLogin</span>=<span class="string">&#123;loginHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">          &#123;isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> <span class="attr">onLogout</span>=<span class="string">&#123;logoutHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">        &lt;/main&gt;</span><br><span class="line">      &lt;/AuthContext.Provider&gt;</span><br><span class="line">    &lt;/React.Fragment&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>甚至可以更進一步簡化將 <code>React.Fragment</code> 移除，因為這本來就是為了維持回傳單一組元件而存在</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Provider&gt;</span><br><span class="line">      &lt;MainHeader isAuthenticated=&#123;isLoggedIn&#125; onLogout=&#123;logoutHandler&#125; /&gt;</span><br><span class="line">      &lt;main&gt;</span><br><span class="line">        &#123;!isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onLogin</span>=<span class="string">&#123;loginHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">        &#123;isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> <span class="attr">onLogout</span>=<span class="string">&#123;logoutHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Context-Consumer"><a href="#Context-Consumer" class="headerlink" title="Context Consumer"></a>Context Consumer</h2><p>取得使用權後，還需要將資料個別放置到對應的地方，這次使用的對象是 MainHeader 內的 Navigation，同樣需要使用到另一組 context function - Consumer，不同的是，在裡面會有一組 callback function，context data 會由 function parameters 取得，最後 return JSX</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> AuthContext <span class="keyword">from</span> <span class="string">&quot;../../store/auth-context&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Navigation = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Consumer&gt;</span><br><span class="line">      &#123;<span class="function">(<span class="params">ctx</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">          &lt;nav className=&#123;classes.nav&#125;&gt;</span><br><span class="line">            &lt;ul&gt;</span><br><span class="line">              &#123;ctx.isLoggedIn &amp;&amp; (</span><br><span class="line">                &lt;li&gt;</span><br><span class="line">                  &lt;a href=<span class="string">&quot;/&quot;</span>&gt;Users&lt;/a&gt;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">              )&#125;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">          &lt;/nav&gt;</span><br><span class="line">        );</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &lt;/AuthContext.Consumer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Navigation;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Default-Value"><a href="#Default-Value" class="headerlink" title="Default Value"></a>Default Value</h2><p>但到目前為止會看到出現以下 error log，原因是 Context 中已經有預設值，但 Consumer 中所使用的初始值須由 Provider 提供，所以還需要在 Provider 加上初始值</p>
+<p><img src="provider-without-default-value.png"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Provider</span><br><span class="line">      value=&#123;&#123;</span><br><span class="line">        isLoggedIn: <span class="literal">false</span>,</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;MainHeader isAuthenticated=&#123;isLoggedIn&#125; onLogout=&#123;logoutHandler&#125; /&gt;</span><br><span class="line">      &lt;main&gt;</span><br><span class="line">        &#123;!isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onLogin</span>=<span class="string">&#123;loginHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">        &#123;isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> <span class="attr">onLogout</span>=<span class="string">&#123;logoutHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這麼一來就可以將原先透過 props 傳遞的方式移除了，並由 component 內的 State 來代表這個值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Provider</span><br><span class="line">      value=&#123;&#123;</span><br><span class="line">        isLoggedIn, <span class="comment">// Using State</span></span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;MainHeader onLogout=&#123;logoutHandler&#125; /&gt; <span class="comment">// remove props</span></span><br><span class="line">      &lt;main&gt;</span><br><span class="line">        &#123;!isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onLogin</span>=<span class="string">&#123;loginHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">        &#123;isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> <span class="attr">onLogout</span>=<span class="string">&#123;logoutHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="useContext"><a href="#useContext" class="headerlink" title="useContext()"></a>useContext()</h2><p>React 提供了另一個 hook 來取代 Context Consumer，使的寫法更加簡潔，只需要呼叫 useContext() 並帶入 Context object，其所原傳的值就是上述 Context 中的共用變數了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; useContext &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> AuthContext <span class="keyword">from</span> <span class="string">&quot;../../store/auth-context&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Navigation = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> ctx = useContext(AuthContext);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;nav className=&#123;classes.nav&#125;&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;ctx.isLoggedIn &amp;&amp; (</span><br><span class="line">          &lt;li&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/&quot;</span>&gt;Users&lt;/a&gt;</span><br><span class="line">          &lt;/li&gt;</span><br><span class="line">        )&#125;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Making-Context-Dynamic"><a href="#Making-Context-Dynamic" class="headerlink" title="Making Context Dynamic"></a>Making Context Dynamic</h2><p>在 Context 的使用上，當然不限於純值或物件資料，還可以共用 function 方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Provider</span><br><span class="line">      value=&#123;&#123;</span><br><span class="line">        isLoggedIn,</span><br><span class="line">        onLogout: logoutHandler,</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;MainHeader /&gt;</span><br><span class="line">      &lt;main&gt;</span><br><span class="line">        &#123;!isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> <span class="attr">onLogin</span>=<span class="string">&#123;loginHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">        &#123;isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> <span class="attr">onLogout</span>=<span class="string">&#123;logoutHandler&#125;</span> /&gt;</span></span>&#125;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Navigation.js</span></span><br><span class="line">  <span class="keyword">const</span> Navigation = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> ctx = useContext(AuthContext);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;nav className=&#123;classes.nav&#125;&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">          &#123;ctx.isLoggedIn &amp;&amp; (</span><br><span class="line">            &lt;li&gt;</span><br><span class="line">              &lt;a href=<span class="string">&quot;/&quot;</span>&gt;Users&lt;/a&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">          )&#125;</span><br><span class="line">          &#123;ctx.isLoggedIn &amp;&amp; (</span><br><span class="line">            &lt;li&gt;</span><br><span class="line">              &lt;button onClick=&#123;ctx.onLogout&#125;&gt;Logout&lt;/button&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">          )&#125;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">      &lt;/nav&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但這裡就會有點納悶的是，既然預設值可以直接設定在 Provider value 上，那 Context 檔案內的設定必要性在哪 ? 是否可以維持空物件就好了 ?</p>
+<p>其實維持空物件或預設值給定不同型別也不會出錯，但為了讓 IDE 可以較輕易辨別，建議還是給予初始設定，如果是 function 給定 anonymous function 即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth-context.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> AuthContext = React.createContext(&#123;</span><br><span class="line">  isLoggedIn: <span class="literal">false</span>,</span><br><span class="line">  onLogout: <span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> AuthContext;</span><br></pre></td></tr></table></figure>
+
+<h2 id="When-to-use-Props-amp-Context"><a href="#When-to-use-Props-amp-Context" class="headerlink" title="When to use Props &amp; Context ?"></a>When to use Props &amp; Context ?</h2><p>Context 可以突破 component 之間的關係直接傳遞資料，但大部分的情況還是會直接透過 Props 直接傳遞父子元件之間的資料，雖然沒有明確規範，但如果只有單層，盡量還是保持透過 Props 傳遞，這麼一來透過查看傳遞方式就可以比較直接的知道資料傳遞的出處與目標。</p>
+<h2 id="Building-amp-Using-a-Custom-Context-Provider-Component"><a href="#Building-amp-Using-a-Custom-Context-Provider-Component" class="headerlink" title="Building &amp; Using a Custom Context Provider Component"></a>Building &amp; Using a Custom Context Provider Component</h2><p>到目前為止，已經達成目的透過 Context 將特定 property &amp; method 傳遞到指定元件，但目前的寫法會發現，所有關於登入的邏輯都直接寫在 root component App.js，一旦隨著開發的內容越來越多，更好的方法是將特定的邏輯都抽離出去成為一個負責專一功能的 component，Context Provider 也不例外，甚至可以將包含邏輯和 JSX 全部抽離到 Context Component，如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth-context.js</span></span><br><span class="line"><span class="keyword">import</span> React, &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> AuthContext = React.createContext(&#123;</span><br><span class="line">  isLoggedIn: <span class="literal">false</span>,</span><br><span class="line">  onLogout: <span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">  onLogin: <span class="function">(<span class="params">email, password</span>) =&gt;</span> &#123;&#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AuthContextProvider = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [isLoggedIn, setIsLoggedIn] = useState(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> storedUserLoggedInInformation = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;isLoggedIn&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (storedUserLoggedInInformation === <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">      setIsLoggedIn(<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> loginHandler = <span class="function">(<span class="params">email, password</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// We should of course check emㄑail and password</span></span><br><span class="line">    <span class="comment">// But it&#x27;s just a dummy/ demo anyways</span></span><br><span class="line">    <span class="built_in">localStorage</span>.setItem(<span class="string">&quot;isLoggedIn&quot;</span>, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    setIsLoggedIn(<span class="literal">true</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> logoutHandler = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">localStorage</span>.setItem(<span class="string">&quot;isLoggedIn&quot;</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">    setIsLoggedIn(<span class="literal">false</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;AuthContext.Provider</span><br><span class="line">      value=&#123;&#123;</span><br><span class="line">        isLoggedIn,</span><br><span class="line">        onLogout: logoutHandler,</span><br><span class="line">        onLogin: loginHandler,</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &#123;props.children&#125;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> AuthContext;</span><br></pre></td></tr></table></figure>
+
+<p>並在注入點 index.js 導入 Context Provider component，將它直接包在 App..js 之外，這麼一來 root component App.js 內所有的 component 都可以直接取用 Context，邏輯也變得更加單純</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">&quot;react-dom/client&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AuthContextProvider &#125; <span class="keyword">from</span> <span class="string">&quot;./store/auth-context&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> root = ReactDOM.createRoot(<span class="built_in">document</span>.getElementById(<span class="string">&quot;root&quot;</span>));</span><br><span class="line">root.render(</span><br><span class="line">  &lt;AuthContextProvider&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/AuthContextProvider&gt;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">import</span> React, &#123; useContext &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> ctx = useContext(AuthContext);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;React.Fragment&gt;</span><br><span class="line">      &lt;MainHeader /&gt;</span><br><span class="line">      &lt;main&gt;</span><br><span class="line">        &#123;!ctx.isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>&#125;</span><br><span class="line">        &#123;ctx.isLoggedIn &amp;&amp; <span class="xml"><span class="tag">&lt;<span class="name">Home</span> /&gt;</span></span>&#125;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line">    &lt;/React.Fragment&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> App;</span><br></pre></td></tr></table></figure>
+
+<p>其他需要使用到 Context 資料的 component 便可自行透過 Context Consumer or useContext hook 取得</p>
+<h2 id="React-Context-Limitations"><a href="#React-Context-Limitations" class="headerlink" title="React Context Limitations"></a>React Context Limitations</h2><p>即便 React Context 提供了非常方便的方法讓 component 突破關聯傳遞資料，但仍有幾個使用上的限制，如下:</p>
+<ul>
+<li><p>更動頻率過高<br>官方團隊也直接提到，如果是更動頻率過高的資料，就不適合透過 Context 來管理，在這之後仍有一種方法稱為 Redux 來接管這種情況</p>
+</li>
+<li><p>完全由 Context 管理 component 資料<br>Context 並非來取代所有 props 資料傳遞的，它只是提供了一個更方便的方式來處理跨 component 資料傳遞，但單純的富子元件還是建議直接使用 props 會有更好的效能表現</p>
+</li>
+</ul>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/React-The-Complete-Guide-Section9/commit/a9f6bf098dd89abdae690220b9292f154a5ef186">GitHub</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220625/40125/" rel="prev" title="useReducer & Reducers">
+                  <i class="fa fa-chevron-left"></i> useReducer & Reducers
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220626/49936/" rel="next" title="Rules of Hooks">
+                  Rules of Hooks <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

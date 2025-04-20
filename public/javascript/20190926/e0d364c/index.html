@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="作為前端領域最強勢的語言，JavaScript 隨著新版本演進，功能日趨完善，也不斷出現如 jQuery 與 Vue.js 等開源框架，讓 JavaScript 成為學習前端不可或缺的技能 ; 在這篇文章中，將透過 VSCode 來做為開發的編輯器，並部屬基礎環境設定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript入門篇 - JavaScript簡介與環境">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20190926/e0d364c/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="作為前端領域最強勢的語言，JavaScript 隨著新版本演進，功能日趨完善，也不斷出現如 jQuery 與 Vue.js 等開源框架，讓 JavaScript 成為學習前端不可或缺的技能 ; 在這篇文章中，將透過 VSCode 來做為開發的編輯器，並部屬基礎環境設定">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-09-26T07:22:59.000Z">
+<meta property="article:modified_time" content="2019-09-26T07:49:12.887Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20190926/e0d364c/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20190926/e0d364c/","path":"javascript/20190926/e0d364c/","title":"JavaScript入門篇 - JavaScript簡介與環境"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript入門篇 - JavaScript簡介與環境 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript-%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 環境設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E6%A7%8B%E4%B8%80%E5%80%8B-JavaScript-%E7%92%B0%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">建構一個 JavaScript 環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML%E3%80%81CSS%E3%80%81JavaScript-%E7%9A%84%E9%97%9C%E8%81%AF%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">HTML、CSS、JavaScript 的關聯性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ID-%E8%88%87-textContent"><span class="nav-number">4.</span> <span class="nav-text">ID 與 textContent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ID"><span class="nav-number">4.1.</span> <span class="nav-text">ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#textContent"><span class="nav-number">4.2.</span> <span class="nav-text">textContent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E8%AD%AF%E5%99%A8%E6%B5%81%E7%A8%8B%E4%BB%8B%E7%B4%B9"><span class="nav-number">5.</span> <span class="nav-text">直譯器流程介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20190926/e0d364c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript入門篇 - JavaScript簡介與環境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-09-26 15:22:59 / 修改時間：15:49:12" itemprop="dateCreated datePublished" datetime="2019-09-26T15:22:59+08:00">2019-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>作為前端領域最強勢的語言，<code>JavaScript</code> 隨著新版本演進，功能日趨完善，也不斷出現如 <code>jQuery</code> 與 <code>Vue.js</code> 等開源框架，讓 <code>JavaScript</code> 成為學習前端不可或缺的技能 ; 在這篇文章中，將透過 <code>VSCode</code> 來做為開發的編輯器，並部屬基礎環境設定</p>
+<span id="more"></span>
+
+<h2 id="JavaScript-環境設定"><a href="#JavaScript-環境設定" class="headerlink" title="JavaScript 環境設定"></a>JavaScript 環境設定</h2><p>有時候我們會利用 JavaScript 新增 HTML 樣板到 HTML 檔案中，而 VSCode 預設在 JavaScript 檔案中是無法使用 <code>Emmet</code> 的，因此我們要在 VSCode 的設定中的 <code>setting.json</code> 加上以下文字</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// in setting.json </span></span><br><span class="line">&quot;emmet.includeLanguages&quot;: &#123;</span><br><span class="line">  &quot;javascript&quot;: &quot;html&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="建構一個-JavaScript-環境"><a href="#建構一個-JavaScript-環境" class="headerlink" title="建構一個 JavaScript 環境"></a>建構一個 JavaScript 環境</h2><p>如同 CSS 使用 <code>&lt;link&gt;</code> 載入 <code>.css</code> 檔案或使用 <code>&lt;style&gt;&lt;/style&gt;</code> 在內部直接撰寫 CSS，JavaScript 是使用 <code>&lt;script&gt;&lt;/script&gt;</code>，而又因為 HTML 是 “由上而下” 讀取，JS 時常會操作當中的 <code>DOM 元素</code>，所以 JS 要放在 “網頁內容之後” 以避免出現目標元素還未渲染而造成讀取錯誤的情況</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 網頁內容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          </span><br><span class="line">  <span class="comment">&lt;!-- 載入 .js 檔案 --&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/all.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 直接撰寫 JS --&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    alert(<span class="string">&#x27;Hello World!&#x27;</span>);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="HTML、CSS、JavaScript-的關聯性"><a href="#HTML、CSS、JavaScript-的關聯性" class="headerlink" title="HTML、CSS、JavaScript 的關聯性"></a>HTML、CSS、JavaScript 的關聯性</h2><ul>
+<li><code>HTML</code> - 內容 : HTML 負責網頁的內容，為網頁的骨架</li>
+<li><code>CSS</code> - 樣式 : CSS 負責網頁的樣式，替網站添加裝飾</li>
+<li><code>JavaScript</code> - 行為 : JavaScript 負責網頁的行為，可以動態操作 HTML、CSS，也可以連接外部的伺服器與資料庫，與使用者互動</li>
+</ul>
+<h2 id="ID-與-textContent"><a href="#ID-與-textContent" class="headerlink" title="ID 與 textContent"></a>ID 與 textContent</h2><h3 id="ID"><a href="#ID" class="headerlink" title="ID"></a>ID</h3><ul>
+<li><p><code>ID 選擇器</code> 具備 “錨點功能”，也就是能定位在網頁上，如果指定到該錨點，會在網址後方加上該 <code>ID</code> 名稱</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;* 選定前網址 *&#x2F; </span><br><span class="line">https:&#x2F;&#x2F;jerry-yeh.github.io&#x2F;website&#x2F;html&#x2F;JavaScript&#x2F;JavaScript-入門篇.html</span><br><span class="line"></span><br><span class="line">&#x2F;* 選定後網址 *&#x2F; </span><br><span class="line">https:&#x2F;&#x2F;jerry-yeh.github.io&#x2F;website&#x2F;html&#x2F;JavaScript&#x2F;JavaScript-入門篇.html#ID</span><br></pre></td></tr></table></figure></li>
+<li><p>在 JS 中可以透過以下語法選取 ID</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;ID 名稱&#x27;</span>).textContent(<span class="string">&#x27;修改後的內容&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="textContent"><a href="#textContent" class="headerlink" title="textContent"></a>textContent</h3><p>在 JS 中可以透過此語法選取 <code>DOM 元素</code> 的內容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;ID 名稱&#x27;</span>).textContent(<span class="string">&#x27;修改後的內容&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="直譯器流程介紹"><a href="#直譯器流程介紹" class="headerlink" title="直譯器流程介紹"></a>直譯器流程介紹</h2><p>瀏覽器接收到網頁後，就會由上而下開始解析網頁內容，當解析到 JS <code>&lt;script&gt;&lt;/script&gt;</code> 的部份時，會透過瀏覽器的引擎來將我們寫的 JS 程式語言轉換成電腦認識的語言，而這中介的引擎稱為直譯器 <code>interpreter</code>，如 <code>Chrome</code> 的 <code>V8</code> 引擎，而解析完後瀏覽器才會繼續渲染網頁內容</p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/javascript-learning/">六角課程 - JavaScript 入門篇 - 學徒的試煉</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://zh.wikipedia.org/wiki/JavaScript">JavaScript Wiki</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/git/20190926/a121fcd1/" rel="prev" title="Git 入門">
+                  <i class="fa fa-chevron-left"></i> Git 入門
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20190926/b2bfbc85/" rel="next" title="JaveScript入門篇 - 變數">
+                  JaveScript入門篇 - 變數 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

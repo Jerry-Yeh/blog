@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="[偷米騎巴哥] Node.js 後端開發起手式紀錄，Node.js 基本介紹">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js 後端開發起手式 (一)">
+<meta property="og:url" content="https://jerry-yeh.github.io/uncategorized/20210816/22460/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="[偷米騎巴哥] Node.js 後端開發起手式紀錄，Node.js 基本介紹">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-08-16T15:55:09.000Z">
+<meta property="article:modified_time" content="2021-08-28T03:02:47.324Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="Node">
+<meta property="article:tag" content="Back-end">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/uncategorized/20210816/22460/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/uncategorized/20210816/22460/","path":"uncategorized/20210816/22460/","title":"Node.js 後端開發起手式 (一)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Node.js 後端開發起手式 (一) | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E5%B7%B2%E7%9F%A5%E7%9A%84-JS-%E9%81%8B%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">目前已知的 JS 運用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Node-js"><span class="nav-number">2.</span> <span class="nav-text">安裝 Node.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E9%81%8E-NVM-%E5%AE%89%E8%A3%9D"><span class="nav-number">2.1.</span> <span class="nav-text">透過 NVM 安裝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%9D"><span class="nav-number">2.2.</span> <span class="nav-text">直接安裝</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">基本介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#REPL-Read-Eval-Print-Loop-%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">REPL (Read Eval Print Loop) 交互式命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%B7%E8%A1%8C-JS-%E6%AA%94%E6%A1%88"><span class="nav-number">3.1.1.</span> <span class="nav-text">執行 JS 檔案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B7%B3%E5%87%BA-REPL"><span class="nav-number">3.1.2.</span> <span class="nav-text">跳出 REPL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%9F%9F"><span class="nav-number">4.</span> <span class="nav-text">全域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#global"><span class="nav-number">4.1.</span> <span class="nav-text">global</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#global-%E5%B1%AC%E6%80%A7"><span class="nav-number">4.1.1.</span> <span class="nav-text">global 屬性</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/uncategorized/20210816/22460/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node.js 後端開發起手式 (一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-08-16 23:55:09" itemprop="dateCreated datePublished" datetime="2021-08-16T23:55:09+08:00">2021-08-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2021-08-28 11:02:47" itemprop="dateModified" datetime="2021-08-28T11:02:47+08:00">2021-08-28</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[偷米騎巴哥] Node.js 後端開發起手式紀錄，Node.js 基本介紹</p>
+<span id="more"></span>
+
+<h3 id="目前已知的-JS-運用"><a href="#目前已知的-JS-運用" class="headerlink" title="目前已知的 JS 運用"></a>目前已知的 JS 運用</h3><ul>
+<li>瀏覽器 ( Chrome、Firefox、Safari、IE、etc. )</li>
+<li>前端工具 ( Webpack、Gulp、Grunt、etc. ) </li>
+<li>後端開發 ( Express、Koa、etc. )</li>
+<li>資料庫 ( MongoDB )</li>
+<li>硬體版 ( Raspberry Pi、Webduino、etc. )</li>
+<li>Google 雲端服務 ( Google Apps Script )</li>
+</ul>
+<h3 id="安裝-Node-js"><a href="#安裝-Node-js" class="headerlink" title="安裝 Node.js"></a>安裝 Node.js</h3><p>安裝具備以下兩種方式</p>
+<h4 id="透過-NVM-安裝"><a href="#透過-NVM-安裝" class="headerlink" title="透過 NVM 安裝"></a>透過 NVM 安裝</h4><ul>
+<li>優點<ul>
+<li>快速切換不同版本</li>
+<li>方便測試</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>占用較多磁碟空間 ( 但以當今的硬體規格其實可以忽略這一點安裝空間 )</li>
+</ul>
+</li>
+</ul>
+<p>可以透過到官方的 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/coreybutler/nvm-windows/releases">Github</a> 下載，一般下載 nvm-setup.zip 版本接下來一路按確認即可安裝。</p>
+<p>安裝完 NVM 後接著就是打開 CML 透過 NVM 來安裝 Node.js，輸入 nvm 就會出現許多功能介紹。</p>
+<p>安裝 Node.js 特定版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install &lt;version&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用、切換下載後的 Node.js 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm use</span><br></pre></td></tr></table></figure>
+
+<h4 id="直接安裝"><a href="#直接安裝" class="headerlink" title="直接安裝"></a>直接安裝</h4><ul>
+<li>優點<ul>
+<li>於官網直接安裝</li>
+<li>版本固定</li>
+</ul>
+</li>
+<li>缺點<ul>
+<li>切換版本需重新安裝</li>
+</ul>
+</li>
+</ul>
+<p>Node.js 官網後會看到有兩個版本可以下載，方別是 LTS ( Long Time Support ) 長期支援的版本 &amp; Current 最新版本，如果沒有對於最新版本的需求，官方建議下載 LTS 版本即可，此版本大版號下官方宣稱會持續維護三年左右。</p>
+<p>基於以上幾點比較，現在的環境較為推薦使用 NVM 進行安裝。</p>
+<h3 id="基本介紹"><a href="#基本介紹" class="headerlink" title="基本介紹"></a>基本介紹</h3><p>Node.js 是 JS 在 Node 上執行的方式，也因為載體不再是瀏覽器，因此也缺乏 DOM &amp; BOM 的操控。但與前端瀏覽器相同的是，都採用 Chrome 團隊 V8 引擎，號稱地表最快 JS 引擎，原因在於一般程式語言需要被電腦讀取都需要進行編譯的動作轉成中介碼，最後再轉成電腦可直接讀取的機械碼，但 V8 省去中介碼的轉換因此能有較好的效能。<br>一般來說大版號基數為開發測試版，偶數則為正式版號，因此都以偶數版為下載版本。</p>
+<h4 id="REPL-Read-Eval-Print-Loop-交互式命令"><a href="#REPL-Read-Eval-Print-Loop-交互式命令" class="headerlink" title="REPL (Read Eval Print Loop) 交互式命令"></a>REPL (Read Eval Print Loop) 交互式命令</h4><p>REPL 其實就和前端瀏覽器中的 console 一樣，可藉由輸入 console 印出對應訊息，作法是在 CML 中輸入 <code>node</code> 後，在顯示的 <code>&gt;</code> 符號後輸入以往在前端輸入的 console 訊息即可，但也因為不在瀏覽器中，所以同樣無法使用 DOM &amp; BOM。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node</span><br></pre></td></tr></table></figure>
+
+<h5 id="執行-JS-檔案"><a href="#執行-JS-檔案" class="headerlink" title="執行 JS 檔案"></a>執行 JS 檔案</h5><p>亦可直接執行 JS 檔案，副檔名 <code>.js</code> 可以直接忽略</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 執行 demo.js</span></span><br><span class="line">node demo</span><br></pre></td></tr></table></figure>
+
+<h5 id="跳出-REPL"><a href="#跳出-REPL" class="headerlink" title="跳出 REPL"></a>跳出 REPL</h5><p>按一下 <code>ctrl + D</code> 或兩下 <code>ctrl + C</code> 都可以跳出 REPL 狀態</p>
+<h3 id="全域"><a href="#全域" class="headerlink" title="全域"></a>全域</h3><p>在瀏覽器中如果直接印出 <code>this</code> 會出現 <code>Window</code> 物件，因為此物件為瀏覽中的最高級物件。一段最簡單的程式碼如下，宣告一個變數後，透過 <code>this</code> 呼叫會發現，透過 browser console &amp; REPL 都會出現期待的結過，但直接透過 node 呼叫會出現 <code>undefined</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run();</span><br><span class="line"></span><br><span class="line"><span class="comment">// browser console &amp; REPL</span></span><br><span class="line"></span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// node</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">global</span></span><br><span class="line"><span class="literal">undefined</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="global"><a href="#global" class="headerlink" title="global"></a>global</h4><p>其原因是在 node 中，為了避免全域之間彼此互相汙染，所以檔案內宣告的全域變數並不會直接掛載到全域 <code>global</code> 上，但 REPL 因為每次開啟相互獨立，所以不會有這個問題</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span> === <span class="built_in">global</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// node demo</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// REPL</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span> === <span class="built_in">global</span>)   <span class="comment">// true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="global-屬性"><a href="#global-屬性" class="headerlink" title="global 屬性"></a>global 屬性</h5><p>以下幾個屬性是專屬於 node.js，無法在瀏覽器中使用</p>
+<ul>
+<li><p>require()</p>
+<ul>
+<li><p>載入模組 ( <a target="_blank" rel="external nofollow noopener noreferrer" href="https://nodejs.org/dist/latest-v14.x/docs/api/fs.html">Node.js 內建模組</a> )</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// abc.txt</span></span><br><span class="line">abcdef</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> data = fs.readFilesSync(<span class="string">&#x27;abc.txt&#x27;</span>); </span><br><span class="line"><span class="built_in">console</span>.log(data);</span><br></pre></td></tr></table></figure>
+
+<p>載入後會發現出現一段 <code>buffer</code>，需要透過 <code>toString</code> Function 來將其轉成一般字串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> data = fs.readFilesSync(<span class="string">&#x27;abc.txt&#x27;</span>); </span><br><span class="line"><span class="built_in">console</span>.log(data.toString());</span><br></pre></td></tr></table></figure></li>
+<li><p>載入套件 ( 透過 NPM 下載 )<br>和前端一樣在專案底下執行指令即可安裝</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i &lt;plugin name&gt;</span><br></pre></td></tr></table></figure>
+<p>載入後會發現所有 npm 相關套件都會被安裝在 <code>node_modules</code> 資料夾下</p>
+<p><strong>package.json</strong></p>
+<p>使用 npm 套件時，可透過以下指令來建構 package.json 作為專案套件的目錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br></pre></td></tr></table></figure>
+<p>輸入後會詢問一些專案基本資料，如果希望跳過這些問題使用預設值，在後方加上 <code>-y</code> 即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p><strong>package.lock.json</strong></p>
+<p>被記錄在這個檔案中的套件會使下次在下載專案時載入指定版本，避免有些套件橫跨大版號時語法不完全相容導致程式無法執行，因此這個檔案一般也會 commit 到 git 中。npm 5.0 版本開始就會自動產生這個檔案</p>
+</li>
+<li><p>載入自訂模組 ( 自己寫的模組 )</p>
+</li>
+</ul>
+</li>
+<li><p>exports<br>在製作一個模組時，可以透過 <code>exports</code> 供其他模組使用，模組預設為一個 ‘物件’，所以一般來說會在其之下新增屬性。需要特別注意的是，這裡的 require 需使用 ‘相對路徑’。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module1.js</span></span><br><span class="line"><span class="built_in">exports</span>.run = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;run&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="keyword">var</span> m1 = <span class="built_in">require</span>(<span class="string">&#x27;./module1&#x27;</span>);</span><br><span class="line">m1.run();   <span class="comment">// run</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>module.exports</strong></p>
+<p>然而如果不想從一個物件為起點，不能直接將 <code>exports</code> 賦予另一個物件，需使用 <code>module.exports</code> 來指向 <code>exports</code>，但 <code>require</code> 其實是指向 <code>module.exports</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module1.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;run&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="keyword">var</span> m1 = <span class="built_in">require</span>(<span class="string">&#x27;module1&#x27;</span>);</span><br><span class="line">m1();   <span class="comment">// run</span></span><br></pre></td></tr></table></figure></li>
+<li><p>module<br>如同前面所述，每個 <code>exports</code> 的 .js 檔案都可以視為一個 module</p>
+</li>
+<li><p>__filename<br>目前正在執行的檔案</p>
+</li>
+<li><p>__dirname<br>目前正在執行的資料夾</p>
+</li>
+<li><p>process<br>提供全域資訊與訊息控制，以下為長裕資訊屬性</p>
+<ul>
+<li>process.argv<br>這個屬性會顯示執行時所代的參數，預設會有 node.js 和該檔案本身<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  <span class="string">&#x27;C:\\Program Files\\nodejs\\node.exe&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;C:\\Users\\YA\\Desktop\\Node\\demo&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+如果在後方帶入額外參數則會往後新增，多個參數間只要透過空格方開即可<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">node demo xxx yyy</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;C:\\Program Files\\nodejs\\node.exe&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;C:\\Users\\YA\\Desktop\\Node\\demo&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;yyy&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li>process.env<br>為一個代表環境變數的物件，包含路徑、OS.etc</li>
+<li>process.cwd<br>代表執行當下的工作目錄</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/node/" rel="tag"># Node</a>
+              <a href="/tags/back-end/" rel="tag"># Back-end</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%85%8B%E6%9C%8Djs%E7%9A%84%E5%A5%87%E6%80%AA%E9%83%A8%E5%88%86/20210513/16622/" rel="prev" title="運算子 operators">
+                  <i class="fa fa-chevron-left"></i> 運算子 operators
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vue-3/20210911/13819/" rel="next" title="Vite + Vue-Roueter on Github Pages">
+                  Vite + Vue-Roueter on Github Pages <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

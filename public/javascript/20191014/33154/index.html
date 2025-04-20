@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ES6 開始可以使用箭頭 &#x3D;&gt; 來定義涵式，但與原先的函式在某些情況並不完全相同，在這篇文章中會探討箭頭函式的寫法與傳統函式的差異">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - ES6 - 箭頭函式">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191014/33154/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="ES6 開始可以使用箭頭 &#x3D;&gt; 來定義涵式，但與原先的函式在某些情況並不完全相同，在這篇文章中會探討箭頭函式的寫法與傳統函式的差異">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-10-13T16:00:12.000Z">
+<meta property="article:modified_time" content="2021-09-30T15:56:08.018Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="ES6">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191014/33154/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191014/33154/","path":"javascript/20191014/33154/","title":"JavaScript - ES6 - 箭頭函式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript - ES6 - 箭頭函式 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AF%AB%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">基本寫法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%92%E6%9C%89-arguments-%E5%8F%83%E6%95%B8"><span class="nav-number">2.</span> <span class="nav-text">沒有 arguments 參數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this-%E5%B7%AE%E7%95%B0"><span class="nav-number">3.</span> <span class="nav-text">this 差異</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-number">4.</span> <span class="nav-text">特殊的情況</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E7%94%A8%E5%9C%A8%E5%BB%BA%E6%A7%8B%E5%BC%8F%E5%87%BD%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">不能用在建構式函式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM-%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%9B%A3%E8%81%BD"><span class="nav-number">4.2.</span> <span class="nav-text">DOM 事件的監聽</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AD%B0"><span class="nav-number">5.</span> <span class="nav-text">使用建議</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191014/33154/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript - ES6 - 箭頭函式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2019-10-14 00:00:12" itemprop="dateCreated datePublished" datetime="2019-10-14T00:00:12+08:00">2019-10-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2021-09-30 23:56:08" itemprop="dateModified" datetime="2021-09-30T23:56:08+08:00">2021-09-30</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>ES6</code> 開始可以使用箭頭 <code>=&gt;</code> 來定義涵式，但與原先的函式在某些情況並不完全相同，在這篇文章中會探討箭頭函式的寫法與傳統函式的差異</p>
+<span id="more"></span>
+
+<h2 id="基本寫法"><a href="#基本寫法" class="headerlink" title="基本寫法"></a>基本寫法</h2><ul>
+<li><p>正常寫法，省略 <code>function</code> ，使用箭頭 <code>=&gt;</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fnc = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;Hello&#x27;</span> + e;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fnc = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;Hello&#x27;</span> + e ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>如果只有內容只有一行，可以省略 “大括號” <code>&#123; &#125;</code> 和 <code>return</code>，並且自動回傳</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fnc = <span class="function">(<span class="params">e</span>) =&gt;</span> <span class="string">&#x27;Hello&#x27;</span> + e;</span><br></pre></td></tr></table></figure></li>
+<li><p>如果只有 “一個參數”，可以省略 “小括號” <code>( )</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fnc = <span class="function"><span class="params">e</span> =&gt;</span> <span class="string">&#x27;Hello&#x27;</span> + e;</span><br></pre></td></tr></table></figure></li>
+<li><p>如果 “沒有參數” 或 “多個參數”，就一定要有 “小括號” <code>( )</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fnc = <span class="function">() =&gt;</span> <span class="string">&#x27;Hello&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> fnc2 = <span class="function">(<span class="params">num1, num2</span>) =&gt;</span> num1 + num2;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="沒有-arguments-參數"><a href="#沒有-arguments-參數" class="headerlink" title="沒有 arguments 參數"></a>沒有 arguments 參數</h2><p>一般函式被呼叫時，都會產生一個 <code>argument</code> 物件，這個物件的內容就是我們帶入的 “參數”，而箭頭函式中是沒有 <code>arguments</code> 物件的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fnc = <span class="function"><span class="keyword">function</span> (<span class="params">num1, num2</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="built_in">arguments</span>.length );</span><br><span class="line">  <span class="keyword">return</span> num1 + num2;   </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fuc(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);   <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="this-差異"><a href="#this-差異" class="headerlink" title="this 差異"></a>this 差異</h2><ul>
+<li><p>傳統函式 : <code>this</code> 的值是動態的，由呼叫這個函式的擁有物件 <code>object</code> 而定</p>
+</li>
+<li><p>箭頭函式 : <code>this</code> 的值綁定到其定義時所在的物件而定，也就是由周邊的作用域而定</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;我是全域&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> test = &#123;</span><br><span class="line">  name: <span class="string">&#x27;我是作用域&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  callName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;1&quot;</span>, <span class="built_in">this</span>.name);     <span class="comment">// 1 我是作用域</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;2&quot;</span>, <span class="built_in">this</span>.name);   <span class="comment">// 2 我是作用域</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;3&quot;</span>, <span class="built_in">this</span>);        <span class="comment">// 3 test 這個物件</span></span><br><span class="line">    &#125;, <span class="number">100</span>);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  callName2: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;4&quot;</span>, <span class="built_in">this</span>.name);          <span class="comment">// 4 我是全域</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;5&quot;</span>, <span class="built_in">this</span>.name);   <span class="comment">// 5 我是全域</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;6&quot;</span>, <span class="built_in">this</span>);        <span class="comment">// 6 window 物件</span></span><br><span class="line">    &#125;, <span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test.callName();</span><br><span class="line">test.callName2();</span><br></pre></td></tr></table></figure>
+
+<p>由以上範例可以看到，傳統函式 <code>function</code> 的 <code>this</code> 指的是這個函式的擁有物件 <code>test</code>，而箭頭函式在全域被宣告定義，所以其 this 自然指向最高級物件 window</p>
+<p>而外層的 “函式” 並不回影響箭頭函式的 <code>this</code> 原先指向的 <code>window</code>，外層的 “物件” 才會使箭頭函式的 <code>this</code> 指向這個物件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> func2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">    &#125;, <span class="number">10</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> func3 = &#123;</span><br><span class="line">    func4: func2</span><br><span class="line">  &#125;</span><br><span class="line">  func2();         <span class="comment">// window 物件</span></span><br><span class="line">  func3.func4();   <span class="comment">// func3 這個物件</span></span><br><span class="line">&#125;</span><br><span class="line">func();</span><br></pre></td></tr></table></figure>
+
+<p>由上範例可以看到，如果 “不是” 建立在 “物件” 內的箭頭函式，就不會影響箭頭函式的 <code>this</code></p>
+<ul>
+<li>func() : 最外層的函式，不會影響內部箭頭函式的 <code>this</code></li>
+<li>func2() : 第二層的函式，也不會影響內部箭頭函式的 <code>this</code></li>
+<li>func3() : 為一個物件，內部箭頭函式的 <code>this</code> 就會指向這個物件</li>
+</ul>
+</li>
+</ul>
+<h2 id="特殊的情況"><a href="#特殊的情況" class="headerlink" title="特殊的情況"></a>特殊的情況</h2><p>內建函式 <code>call</code>、<code>apply</code> 和 <code>bind</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> func1 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> func2 = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func3</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>( <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func4</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>( <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> func5 = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>( <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func1.call(obj);   <span class="comment">// obj </span></span><br><span class="line">func2.call(obj);   <span class="comment">// window </span></span><br><span class="line">func3.call(obj);   <span class="comment">// window </span></span><br><span class="line">func4.call(obj);   <span class="comment">// obj </span></span><br><span class="line">func5.call(obj);   <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>func1</code> : 透過 <code>call</code> 呼叫給定 <code>this</code> ，所以 <code>this</code> 自然指向 <code>obj</code> 這個物件</li>
+<li><code>func2</code> : 箭頭函式沒有宣告在物件內部，所以 <code>this</code> 還是指向 <code>window</code></li>
+<li><code>func3</code> : 傳統函式的 <code>this</code> 依據呼叫的方式，可以看成是 <code>window.setTimeout</code>，所以 <code>this</code> 指向 <code>window</code></li>
+<li><code>func4</code> : 因為外層 <code>func4</code> 的 <code>this</code> 被指定為 <code>obj</code>，所以 <code>setTimeout</code> 內的箭頭函式會在 <code>obj</code> 中被宣告</li>
+<li><code>func5</code> : 因為外層 <code>func5</code> 在全域宣告，所以 <code>this</code> 自然指向 <code>window，setTimeout</code> 內箭頭函式的 <code>this</code> 也會指向 window`</li>
+</ul>
+<h3 id="不能用在建構式函式"><a href="#不能用在建構式函式" class="headerlink" title="不能用在建構式函式"></a>不能用在建構式函式</h3><p>由於箭頭函式的 <code>this</code> 是在其所定義的物件下建立，所以不能像 <code>function</code> 一樣作為建構式的函式，直接使用 <code>new</code> 會出現錯誤</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> test = <span class="function">(<span class="params">num</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.text = num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> testAgain = <span class="keyword">new</span> test(<span class="string">&#x27;Hello World&#x27;</span>);</span><br><span class="line"><span class="comment">// Uncaught TypeError: test is not a constructor</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM-事件的監聽"><a href="#DOM-事件的監聽" class="headerlink" title="DOM 事件的監聽"></a>DOM 事件的監聽</h3><p>在 <code>DOM</code> 事件監聽的情況下，函式的 <code>this</code> 應該指向這個 <code>DOM</code> 元素本身，但箭頭函式的 <code>this</code> 依然會指向定義其所在的物件 <code>window</code>，所以不適用於這類情況</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.btn&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> addSomething = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>);   <span class="comment">// window 物件</span></span><br><span class="line">  <span class="built_in">this</span>.innerHTML = <span class="string">&#x27;AddSomething&#x27;</span>;   <span class="comment">// Error</span></span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line">btn.addEventListener(<span class="string">&#x27;click&#x27;</span>, addSomething);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用建議"><a href="#使用建議" class="headerlink" title="使用建議"></a>使用建議</h2><ul>
+<li>物件內的函式可以優先使用，因為傳統函式以往的做法會先將 <code>this</code> 賦予再另一個變數上，以記錄當下的 <code>this</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> test = &#123;</span><br><span class="line">  callName ()&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="built_in">this</span>;</span><br><span class="line">    <span class="built_in">setTimeout</span> (<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(that);   <span class="comment">// test 這個物件</span></span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  callName2 ()&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span> (<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>);   <span class="comment">// test 這個物件</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>雖然只有一個參數時可以省略 “小括號” <code>( )</code>，但還是建議都加上，避免意外錯誤</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+              <a href="/tags/es6/" rel="tag"># ES6</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20191013/50209/" rel="prev" title="JavaScript - ES6 - 變數">
+                  <i class="fa fa-chevron-left"></i> JavaScript - ES6 - 變數
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191022/30921/" rel="next" title="JavaScript - ES6 - 樣板字串">
+                  JavaScript - ES6 - 樣板字串 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

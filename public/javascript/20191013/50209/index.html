@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在 ES6 中多了兩種變數的宣告方式，let 與 const，其最大的目的在於盡量避免汙染到全域，原因在於載入多個模組或進行多人協作時，如果遇到相同名稱的全域變數就會發生衝突，也減少了程式的靈活性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - ES6 - 變數">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191013/50209/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在 ES6 中多了兩種變數的宣告方式，let 與 const，其最大的目的在於盡量避免汙染到全域，原因在於載入多個模組或進行多人協作時，如果遇到相同名稱的全域變數就會發生衝突，也減少了程式的靈活性">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-10-13T15:18:19.000Z">
+<meta property="article:modified_time" content="2019-10-13T15:37:00.060Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="ES6">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191013/50209/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191013/50209/","path":"javascript/20191013/50209/","title":"JavaScript - ES6 - 變數"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript - ES6 - 變數 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#window-%E8%88%87-var"><span class="nav-number">1.</span> <span class="nav-text">window 與 var</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#let-%E8%88%87-var"><span class="nav-number">2.</span> <span class="nav-text">let 與 var</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#let-%E8%88%87-for-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">let 與 for 的用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const"><span class="nav-number">4.</span> <span class="nav-text">const</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#let-%E8%88%87-const-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">5.</span> <span class="nav-text">let 與 const 的注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191013/50209/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript - ES6 - 變數
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-10-13 23:18:19 / 修改時間：23:37:00" itemprop="dateCreated datePublished" datetime="2019-10-13T23:18:19+08:00">2019-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在 ES6 中多了兩種變數的宣告方式，<code>let</code> 與 <code>const</code>，其最大的目的在於盡量避免汙染到全域，原因在於載入多個模組或進行多人協作時，如果遇到相同名稱的全域變數就會發生衝突，也減少了程式的靈活性</p>
+<span id="more"></span>
+
+<h2 id="window-與-var"><a href="#window-與-var" class="headerlink" title="window 與 var"></a>window 與 var</h2><p>在 ES6 以前，都使用 <code>var</code> 來進行變數的宣告，而切分 <code>var</code> 有效範圍的最小單位是 函式 function，所以在 <code>function</code> 外使用 <code>var</code> 宣告的變數都會成為全域變數，也就是 最高級物件 <code>window</code> 的屬性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> b =<span class="number">0</span>; b &lt; <span class="number">2</span>; b++)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(b);   <span class="comment">// 0, 1</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> c = <span class="number">3</span></span><br><span class="line">  <span class="built_in">console</span>.log(c);   <span class="comment">// 3</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(c);   <span class="comment">// c is not defined</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.a);   <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.b);   <span class="comment">// 3</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.c);   <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="let-與-var"><a href="#let-與-var" class="headerlink" title="let 與 var"></a>let 與 var</h2><p>與 <code>var</code> 不同的是，<code>let</code> 是一個 區塊 <code>block</code> 變數，<code>block</code> 意指 大括號 <code>&#123; &#125;</code>， 也就是說切分 let 有效範圍的最小單位是 大括號 <code>&#123; &#125;</code>，且使用 let 宣告的全域變數不會成為全域物件 <code>window</code> 的屬性</p>
+<p>同上範例，我們將 <code>var</code> 都改成 <code>let</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> b =<span class="number">0</span>; b &lt; <span class="number">2</span>; b++)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(b);   <span class="comment">// 0, 1</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// b is not defined</span></span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> c = <span class="number">3</span></span><br><span class="line">  <span class="built_in">console</span>.log(c);   <span class="comment">// 3</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(c);   <span class="comment">// c is not defined</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.a);   <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.b);   <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.c);   <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="let-與-for-的用法"><a href="#let-與-for-的用法" class="headerlink" title="let 與 for 的用法"></a>let 與 for 的用法</h2><p>如下範例，我們要讓每一個 <code>li</code> 被點擊時都能顯示自己的數字</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++)&#123;</span><br><span class="line">  <span class="built_in">document</span>.querySelectorAll(<span class="string">&#x27;.list li&#x27;</span>)[i].addEventListener(<span class="string">&#x27;click&#x27;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i + <span class="number">1</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但結果並不如預期，在點擊每個 <code>li</code> 都會是 <code>4</code>，因為這裡的變數 <code>i</code> 使用 <code>var</code> 來宣告，所以是全域變數，當跑完 for 迴圈的時候，所有 <code>console.log(i + 1)</code> 中的 <code>i</code> 都會被全域的 <code>i = 3</code> 取代</p>
+<p>如果將上述範例的 <code>var</code> 改成 <code>let</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++)&#123;</span><br><span class="line">  <span class="built_in">document</span>.querySelectorAll(<span class="string">&#x27;.list li&#x27;</span>)[i].addEventListener(<span class="string">&#x27;click&#x27;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i + <span class="number">1</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改成 <code>let</code> 來宣告的結果會如預期一樣，點擊每個 <code>li</code> 都是自己的數字，因為變數 <code>i</code> 並不會成為全域變數，所以 <code>console.log(i + 1)</code> 中的 <code>i</code> 都會是迴圈執行時當下取得的值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++)&#123;</span><br><span class="line">  <span class="built_in">document</span>.querySelectorAll(<span class="string">&#x27;.list li&#x27;</span>)[i].addEventListener(<span class="string">&#x27;click&#x27;</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i + <span class="number">1</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改成 let 來宣告的結果會如預期一樣，點擊每個 li 都是自己的數字，因為變數 i 並不會成為全域變數，所以 console.log(i + 1) 中的 i 都會是迴圈執行時當下取得的值</p>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
+<li><p>使用 <code>const</code> 宣告的變數又稱為 “常數” 或 “唯讀變數”</p>
+</li>
+<li><p>宣告完的變數無法再進行修改</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="number">1</span>;</span><br><span class="line">a = <span class="number">2</span>;  </span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 錯誤</span></span><br></pre></td></tr></table></figure></li>
+<li><p>但使用 <code>const</code> 宣告的 物件 <code>&#123; &#125;</code> 和 陣列 <code>[]</code> 依然可以修改其內容，因為物件型別是 “傳址” <code>pass by reference</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  url: <span class="string">&#x27;a&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line">obj.url = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj.url);   <span class="comment">// b</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果要使宣告的物件連屬性也無法修改，可以使用 <code>Object.freeze()</code> 來將物件凍結</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  url: <span class="string">&#x27;a&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Object</span>.freeze(obj);</span><br><span class="line">obj.url = b;</span><br><span class="line"><span class="built_in">console</span>.log(obj.url);   <span class="comment">// a</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="let-與-const-的注意事項"><a href="#let-與-const-的注意事項" class="headerlink" title="let 與 const 的注意事項"></a>let 與 const 的注意事項</h2><p>ES6 變數的宣告與以往使用 <code>var</code> 有一些性質上的不同，以下一一介紹</p>
+<ul>
+<li><p>不會向上提升 Hoisting，從宣告的那一行開始成立</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> d;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// ReferenceError</span></span><br><span class="line"><span class="built_in">console</span>.log(c);   <span class="comment">// ReferenceError</span></span><br><span class="line"><span class="built_in">console</span>.log(d);   <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> c = <span class="number">3</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>同一個 “區塊” <code>block</code> 內不能重複命名</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;   <span class="comment">// SyntaxError</span></span><br><span class="line"><span class="keyword">const</span> c = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> c = <span class="number">2</span>;   <span class="comment">// SyntaxError</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在全域宣告的變數不會成為最高級物件 <code>window</code> 的屬性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> c = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.a);   <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.b);   <span class="comment">// undefined </span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.c);   <span class="comment">// undefined </span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/javascript-learning/">JavaScript 入門篇 - 學徒的試煉</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20083608/ironman/1354">邁向 JavaScript 勇者之路</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="http://es6.ruanyifeng.com/#docs/intro">ECMAScript 6 入門</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+              <a href="/tags/es6/" rel="tag"># ES6</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20191004/8109/" rel="prev" title="JavaScript - localStorage">
+                  <i class="fa fa-chevron-left"></i> JavaScript - localStorage
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191014/33154/" rel="next" title="JavaScript - ES6 - 箭頭函式">
+                  JavaScript - ES6 - 箭頭函式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

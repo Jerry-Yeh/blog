@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在先前的課程中，都是以 React Router v5 作為範例，但在這篇筆記紀錄的當下，React Router 已經推出 v6 了，所以接下來將升級 v5 的專案至 v6，並說明其所帶來的好處">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Upgrading to React Router v6">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220817/188/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在先前的課程中，都是以 React Router v5 作為範例，但在這篇筆記紀錄的當下，React Router 已經推出 v6 了，所以接下來將升級 v5 的專案至 v6，並說明其所帶來的好處">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-08-17T14:28:00.000Z">
+<meta property="article:modified_time" content="2022-08-17T15:59:20.708Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta property="article:tag" content="React Router">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220817/188/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220817/188/","path":"react/20220817/188/","title":"Upgrading to React Router v6"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Upgrading to React Router v6 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install"><span class="nav-number">1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v5-Switch-gt-v6-Routes"><span class="nav-number">2.</span> <span class="nav-text">v5 Switch &#x3D;&gt; v6 Routes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-child-component-gt-element-JSX-component"><span class="nav-number">3.</span> <span class="nav-text">Route child component -&gt; element&#x3D;{JSX component}</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#remove-exact"><span class="nav-number">4.</span> <span class="nav-text">remove exact</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Link-amp-NavLink"><span class="nav-number">5.</span> <span class="nav-text">Link &amp; NavLink</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redirect-gt-Navigate"><span class="nav-number">6.</span> <span class="nav-text">Redirect -&gt; Navigate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nested-Route"><span class="nav-number">7.</span> <span class="nav-text">Nested Route</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%AF%AB"><span class="nav-number">7.1.</span> <span class="nav-text">改寫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useHistory-gt-useNavigate"><span class="nav-number">8.</span> <span class="nav-text">useHistory() -&gt; useNavigate()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prompt-gt-%E2%9D%8C"><span class="nav-number">9.</span> <span class="nav-text">Prompt -&gt; ❌</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">10.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220817/188/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Upgrading to React Router v6
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2022-08-17 22:28:00 / 修改時間：23:59:20" itemprop="dateCreated datePublished" datetime="2022-08-17T22:28:00+08:00">2022-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在先前的課程中，都是以 React Router v5 作為範例，但在這篇筆記紀錄的當下，React Router 已經推出 v6 了，所以接下來將升級 v5 的專案至 v6，並說明其所帶來的好處</p>
+<span id="more"></span>
+
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>不論是否已經安裝 v5 的專案，要升級到 v6 同樣非常簡單，只要執行下列指令即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i react-router-dom@6</span><br></pre></td></tr></table></figure>
+
+<h2 id="v5-Switch-gt-v6-Routes"><a href="#v5-Switch-gt-v6-Routes" class="headerlink" title="v5 Switch =&gt; v6 Routes"></a>v5 Switch =&gt; v6 Routes</h2><p>在 v5 中，會透過 <code>Switch</code> Component 包覆所有 <code>Route</code> 以解決渲染出其中所有符合條件的 <code>Route</code>，v6 中則改以 <code>Routes</code> 取代</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="comment">// v5</span></span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Switch&gt;</span><br><span class="line">        &lt;Route&gt;</span><br><span class="line">          ...</span><br><span class="line">        &lt;Route/&gt;</span><br><span class="line">        &lt;Route&gt;</span><br><span class="line">          ...</span><br><span class="line">        &lt;Route/&gt;</span><br><span class="line">      &lt;/Switch&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// v6</span></span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Routes&gt;</span><br><span class="line">        &lt;Route&gt;</span><br><span class="line">          ...</span><br><span class="line">        &lt;Route/&gt;</span><br><span class="line">        &lt;Route&gt;</span><br><span class="line">          ...</span><br><span class="line">        &lt;Route/&gt;</span><br><span class="line">      &lt;/Routes&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Route-child-component-gt-element-JSX-component"><a href="#Route-child-component-gt-element-JSX-component" class="headerlink" title="Route child component -&gt; element={JSX component}"></a>Route child component -&gt; element={JSX component}</h2><p>在 v5 <code>Route</code> 中，會將欲在這個路徑下顯示的 Component 作為 child component，v6 則改以 <code>element</code> attribute 取代，但這裡要特別注意的是，不是單純放入 component，而是放入 component JSX</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// v5</span></span><br><span class="line">&lt;Route to=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">  &lt;Welcome /&gt;</span><br><span class="line">&lt;/Route&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v6</span></span><br><span class="line">&lt;Route to=<span class="string">&quot;/welcome&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">Welcome</span> /&gt;</span></span>&#125;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="remove-exact"><a href="#remove-exact" class="headerlink" title="remove exact"></a>remove exact</h2><p><code>exact</code> attribute 則被移除了，取而代之的是，v6 中有更好的演算法來判斷最佳路徑，所以如果有以下路徑，在進到 <code>/products/p1</code> 時，也不會渲染 <code>/products</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=<span class="string">&quot;/products&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">Products</span> /&gt;</span></span>&#125; /&gt;</span><br><span class="line">&lt;Route path=<span class="string">&quot;/products/:productId&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">ProductDetail</span> /&gt;</span></span>&#125; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但如果希望同時被渲染，可以在後方加上 <code>/*</code>，就會出現和 v5 不加 <code>exact</code> 同樣的結果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=<span class="string">&quot;/products/*&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">Products</span> /&gt;</span></span>&#125; /&gt;</span><br><span class="line">&lt;Route path=<span class="string">&quot;/products/:productId&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">ProductDetail</span> /&gt;</span></span>&#125; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>另外，v6 中更好的演算法也讓我們不用擔心 <code>Route</code> 的放置順序，如果出現下列寫法，並選擇到 <code>/products/edit</code>，也不會因為由上而下的緣故選擇 <code>/products/:productId</code>，而是選擇最符合結果的選項</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=<span class="string">&quot;/products/:productId&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">ProductDetail</span> /&gt;</span></span>&#125; /&gt;</span><br><span class="line">&lt;Route path=<span class="string">&quot;/products/edit&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">ProductEdit</span> /&gt;</span></span>&#125; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Link-amp-NavLink"><a href="#Link-amp-NavLink" class="headerlink" title="Link &amp; NavLink"></a>Link &amp; NavLink</h2><p>在 <code>Link</code> component 的使用上並沒有差異，但在 NavLink 的使用上有些許的差異是，當我們使用客製 class 時，在 v5 使用的是 <code>activeClassName</code>，但在 v6 被移除了，取而代之的是使用一般的 <code>className</code>，但其中的值為 function，function 第一個參數為 React Router 所提供的 <code>navData</code>(名稱自訂)，其中的 <code>isActive</code> 如果在路徑有被正常指向就會是 <code>true</code>，所以寫法差異如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// v5</span></span><br><span class="line">&lt;NavLink activeClassName=&#123;classes.active&#125; to=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">  Welcome</span><br><span class="line">&lt;/NavLink&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v6</span></span><br><span class="line">&lt;NavLink className=&#123;<span class="function">(<span class="params">navData</span>) =&gt;</span> nvaData.isActive ? classes.active : <span class="string">&#x27;&#x27;</span>&#125; to=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">  Welcome</span><br><span class="line">&lt;/NavLink&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Redirect-gt-Navigate"><a href="#Redirect-gt-Navigate" class="headerlink" title="Redirect -&gt; Navigate"></a>Redirect -&gt; Navigate</h2><p>v5 中，可以透過 <code>Redirect</code> 將網址重新導向期待的頁面，在 v6 中則由 <code>Navigate</code> 所取代，但仍然需要改寫到 element attribute 之中，完整的寫法可以再補上 <code>replace</code> attribute</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// v5</span></span><br><span class="line">&lt;Route path=<span class="string">&quot;/&quot;</span>&gt;</span><br><span class="line">  &lt;Redirect to=<span class="string">&quot;/welcome&quot;</span> /&gt;</span><br><span class="line">&lt;/Route&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v6</span></span><br><span class="line">&lt;Route path=<span class="string">&quot;/&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">Navigate</span> <span class="attr">replace</span> <span class="attr">to</span>=<span class="string">&quot;/welcome&quot;</span> /&gt;</span></span>&#125;/&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nested-Route"><a href="#Nested-Route" class="headerlink" title="Nested Route"></a>Nested Route</h2><p>在 v5 Nested Route 的寫法就是直接在 Component 中加上一組 <code>Route</code>，但在 v6 中，<code>Route</code> 無法在沒有 <code>Routes</code> 的情況下單獨出現</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// v5</span></span><br><span class="line">&lt;Route path=<span class="string">&quot;/welcome/new-user&quot;</span>&gt;</span><br><span class="line">  &lt;p&gt;Welcome, <span class="keyword">new</span> user!&lt;/p&gt;</span><br><span class="line">&lt;/Route&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v6</span></span><br><span class="line">&lt;Routes&gt;</span><br><span class="line">  &lt;Route path=<span class="string">&quot;/welcome/new-user&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome, new user!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>&#125; /&gt;</span><br><span class="line">&lt;/Routes&gt;</span><br></pre></td></tr></table></figure>
+
+<p>另外，在 v6 中，外層 <code>Route</code> 如果還有內層 <code>Route</code>，就需要在 url 後方加上 <code>/*</code>，好處是內層的 url 就不用再重複外層的 url，只要寫上附加的 url 即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/welcome/*&quot;</span>&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v5</span></span><br><span class="line"><span class="keyword">const</span> Welcome = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Link to=<span class="string">&quot;/welcome/new-user&quot;</span>&gt;</span><br><span class="line">    &lt;Route path=<span class="string">&quot;/welcome/new-user&quot;</span>&gt;</span><br><span class="line">      &lt;p&gt;Welcome, <span class="keyword">new</span> user!&lt;/p&gt;</span><br><span class="line">    &lt;/Route&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v5</span></span><br><span class="line"><span class="keyword">const</span> Welcome = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Link to=<span class="string">&quot;/new-user&quot;</span>&gt;</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/new-user&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome, new user!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>&#125; /&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="改寫"><a href="#改寫" class="headerlink" title="改寫"></a>改寫</h3><p>v6 還提供了另一種 Nested Route 的寫法，可以將所有 Nested Route 寫在一起</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/welcome/*&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">Welcome</span> /&gt;</span></span>&#125;&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;new-user&quot;</span> element=&#123;<span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome, new user!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>&#125; /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但這裡還有一個問題是，Child Route element 不知道應該要放在哪裡，所以 React Router 提供了另一個 component - <code>Outlet</code> 來指定放置的位置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Welcome = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;section&gt;</span><br><span class="line">      &lt;h1&gt;The Welcome Page&lt;/h1&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;new-user&quot;</span>&gt;New User&lt;/Link&gt;</span><br><span class="line">      &lt;Outlet /&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這兩種寫法完全由個人喜好自行決定</p>
+<h2 id="useHistory-gt-useNavigate"><a href="#useHistory-gt-useNavigate" class="headerlink" title="useHistory() -&gt; useNavigate()"></a>useHistory() -&gt; useNavigate()</h2><p>在 v5 中，如果是依賴程式在滿足某種條件下自動切換 route，可以透過 <code>useHistory()</code> hook 來改變 route，v6 中則由 <code>useNavigate()</code> 取代，而且不需要 <code>push</code> function，可以直接於回傳的 function 所執行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// v5</span></span><br><span class="line"><span class="keyword">const</span> history = useHistory();</span><br><span class="line">history.push(<span class="string">&#x27;/welcome&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// v6</span></span><br><span class="line"><span class="keyword">const</span> navigate = useNavigate();</span><br><span class="line">navigate(<span class="string">&#x27;welcome&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Prompt-gt-❌"><a href="#Prompt-gt-❌" class="headerlink" title="Prompt -&gt; ❌"></a>Prompt -&gt; ❌</h2><p>在 v5 中，<code>Prompt</code> component 提供了一層確認 alert 作為使用者操作行為的防呆機制，但在 v6 中被移除了，只能自行撰寫 component 來維持這個機制，在未來可能會被重新加回來也說不定</p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://reactrouter.com/docs/en/v6/upgrading/v5">React Router</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+              <a href="/tags/react-router/" rel="tag"># React Router</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/react/20220814/33177/" rel="prev" title="More flexible routing code">
+                  <i class="fa fa-chevron-left"></i> More flexible routing code
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220821/61941/" rel="next" title="Deploying React Apps">
+                  Deploying React Apps <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

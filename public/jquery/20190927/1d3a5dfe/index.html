@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在這篇文章中，會透過 jQuery 來達到滾動網頁到指定位置時，套用特定的 CSS 效果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滾動視差-滾動套用CSS效果">
+<meta property="og:url" content="https://jerry-yeh.github.io/jquery/20190927/1d3a5dfe/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="在這篇文章中，會透過 jQuery 來達到滾動網頁到指定位置時，套用特定的 CSS 效果">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-09-26T16:37:46.000Z">
+<meta property="article:modified_time" content="2019-09-26T16:46:36.496Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="jQuery">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/jquery/20190927/1d3a5dfe/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/jquery/20190927/1d3a5dfe/","path":"jquery/20190927/1d3a5dfe/","title":"滾動視差-滾動套用CSS效果"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>滾動視差-滾動套用CSS效果 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E7%89%88%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">建立版型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%B1%E8%97%8F%E5%85%A7%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">隱藏內容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C%E8%A3%BD%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">效果製作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery-%E6%BB%BE%E5%8B%95"><span class="nav-number">4.</span> <span class="nav-text">jQuery 滾動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%BE%E5%8B%95%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">滾動方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E4%BD%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">取得位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E5%85%83%E7%B4%A0%E4%BD%8D%E7%BD%AE-offset-%E8%88%87-position"><span class="nav-number">5.1.</span> <span class="nav-text">取得元素位置 offset 與 position</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E7%B6%B2%E9%A0%81%E9%AB%98%E5%BA%A6"><span class="nav-number">5.2.</span> <span class="nav-text">取得網頁高度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%97%E7%94%A8%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">套用座標位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/jquery/20190927/1d3a5dfe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          滾動視差-滾動套用CSS效果
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-09-27 00:37:46 / 修改時間：00:46:36" itemprop="dateCreated datePublished" datetime="2019-09-27T00:37:46+08:00">2019-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/jquery/" itemprop="url" rel="index"><span itemprop="name">jQuery</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在這篇文章中，會透過 jQuery 來達到滾動網頁到指定位置時，套用特定的 CSS 效果</p>
+<span id="more"></span>
+
+<h2 id="建立版型"><a href="#建立版型" class="headerlink" title="建立版型"></a>建立版型</h2><p>首先，建立要動態套用 CSS 的版型，在這裡會做出讓 “三大重點” 中的項目在滾到到該區域時，由下而上浮現<br><strong><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/vYBgeVv?editors=1010">範例版型</a></strong></p>
+<h2 id="隱藏內容"><a href="#隱藏內容" class="headerlink" title="隱藏內容"></a>隱藏內容</h2><p>要做出動態浮現的效果時，我們會預設內容是隱藏的，但在這裡使用的是透明化 <code>opacity: 0</code>，而不是直接未顯示 <code>display: none</code>，因為在透明化的情況下才會 “保留元素空間”，避免版型走位</p>
+<p>在這裡設定一個 <code>className</code> 並帶入元素中</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.animated</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-three-one animated&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;text-center m-y-2&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-mobile fa-5x&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;text-center m-y-1&quot;</span>&gt;</span></span><br><span class="line">    Fully Responsive</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus aut dolorem in autem veniam, nisi repellendus amet a eum laboriosam veritatis doloremque consectetur.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="效果製作"><a href="#效果製作" class="headerlink" title="效果製作"></a>效果製作</h2><p>接著再新增一個 <code>className</code> 來製作呈現的效果，在這裡先增加不透明的效果 <code>opacity: 1</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.fadeIn</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="jQuery-滾動"><a href="#jQuery-滾動" class="headerlink" title="jQuery 滾動"></a>jQuery 滾動</h2><h3 id="滾動方法"><a href="#滾動方法" class="headerlink" title="滾動方法"></a>滾動方法</h3><p>在這裡透過 <code>jQuery</code> 的滾動方法 <code>scroll</code> 來觸發滾動事件，並綁定在頂層物件 <code>window</code> 上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="built_in">window</span>).scroll(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="取得位置"><a href="#取得位置" class="headerlink" title="取得位置"></a>取得位置</h2><p>如果要做出這個效果，就必須取得元素的座標位置，才得以在滾動到該位置時觸發效果</p>
+<h3 id="取得元素位置-offset-與-position"><a href="#取得元素位置-offset-與-position" class="headerlink" title="取得元素位置 offset 與 position"></a>取得元素位置 offset 與 position</h3><p>在 <code>jQuery</code> ，這兩種方法都可以取得元素的座標位置，可以先透過 <code>consle.log</code> 來查看取得的座標</p>
+<ul>
+<li><code>top</code>: 取得指定元素的 <code>y</code> 軸 座標</li>
+<li><code>left</code>: 取得指定元素的 <code>x</code> 軸 座標</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> thisPos = $(<span class="built_in">this</span>).offset().top;</span><br><span class="line"><span class="keyword">var</span> thisPos = $(<span class="built_in">this</span>).position().left;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>offset</code> 與 <code>position</code> 的差異</strong><br>這兩種方法的差異在於 “相對位置”</p>
+<ul>
+<li><code>offset</code>: 以最高級元素 <code>document</code> 也就是整個網站來做為相對位置</li>
+<li><code>position</code>: 會以指定元素網上尋找，直到找到第一個含 <code>position: relative</code> 屬性的元素來取得相對座標</li>
+</ul>
+<h3 id="取得網頁高度"><a href="#取得網頁高度" class="headerlink" title="取得網頁高度"></a>取得網頁高度</h3><p>取得網頁高度有助於在觸發事件的位置上更靈活，而不會在滾動到該區域的最上方才會觸發</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> windowHeight = $(<span class="built_in">window</span>).height();</span><br></pre></td></tr></table></figure>
+
+<h2 id="套用座標位置"><a href="#套用座標位置" class="headerlink" title="套用座標位置"></a>套用座標位置</h2><p>在了解滾動方法並取得座標位置後，就可以開始設定條件來呈現 CSS 效果</p>
+<p><strong>取得元素</strong><br>透過方法 <code>each()</code> 來取得所有包含該 <code>className</code> 的元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.animated&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>取得元素座標</strong><br>取得元素後，再透過上述提到的方法來取的座標</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.animated&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> thisPos = $(<span class="built_in">this</span>).offset().top;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>設定條件</strong><br>在這裡設定如果 “網頁座標” 加上 “網頁高度” 大於等於 “元素座標”，就加上要套用的 CSS 效果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">window</span>).scroll(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> scrollPos = $(<span class="built_in">window</span>).scrollTop();</span><br><span class="line">  <span class="keyword">var</span> windowHeight = $(<span class="built_in">window</span>).height();</span><br><span class="line"></span><br><span class="line">  $(<span class="string">&#x27;.animated&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> thisPos = $(<span class="built_in">this</span>).offset().top;</span><br><span class="line">    <span class="keyword">if</span> ((windowHeight + scrollPos) &gt;= thisPos)&#123;</span><br><span class="line">      $(<span class="built_in">this</span>).addClass(<span class="string">&#x27;fadeIn&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如此一來，就可以在滾動到特定元素時，套用指定的 CSS 效果囉</p>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/responsive/">六角學院課程 - 一變應萬變的響應式網頁設計</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jquery/" rel="tag"># jQuery</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20190926/63428deb/" rel="prev" title="JaveScript入門篇 - 陣列(Array)與物件(Object)">
+                  <i class="fa fa-chevron-left"></i> JaveScript入門篇 - 陣列(Array)與物件(Object)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20190927/d8cdf04e/" rel="next" title="JavaScript入門篇 - 運算式(Expression)與運算子(Operator)">
+                  JavaScript入門篇 - 運算式(Expression)與運算子(Operator) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

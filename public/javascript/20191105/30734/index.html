@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="JavaScript 的變數再賦予不同型別的時候，會有同的傳遞方式，以 “基本型別” Primitive 和 “物件型別” Object 作為區分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 中的傳值與傳址">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191105/30734/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="JavaScript 的變數再賦予不同型別的時候，會有同的傳遞方式，以 “基本型別” Primitive 和 “物件型別” Object 作為區分">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%80%BC-1.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%80%BC-2.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%9D%80-1.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%9D%80-2.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%80%BC%E8%88%87%E5%82%B3%E5%9D%80%E7%9A%84%E4%BE%8B%E5%A4%96.png">
+<meta property="article:published_time" content="2019-11-05T02:30:59.000Z">
+<meta property="article:modified_time" content="2019-11-05T04:34:52.296Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/javascript/20191105/30734/%E5%82%B3%E5%80%BC-1.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191105/30734/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191105/30734/","path":"javascript/20191105/30734/","title":"JavaScript 中的傳值與傳址"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript 中的傳值與傳址 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%8B%E5%88%A5-Types"><span class="nav-number">1.</span> <span class="nav-text">型別 Types</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%9E%8B%E5%88%A5-Primitive-type"><span class="nav-number">1.1.</span> <span class="nav-text">基本型別 Primitive type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E4%BB%B6%E5%9E%8B%E5%88%A5-Object-type"><span class="nav-number">1.2.</span> <span class="nav-text">物件型別 Object type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%B3%E5%80%BC%E8%88%87%E5%82%B3%E5%9D%80"><span class="nav-number">2.</span> <span class="nav-text">傳值與傳址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%B3%E5%80%BC-pass-by-value"><span class="nav-number">2.1.</span> <span class="nav-text">傳值 pass by value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%B3%E5%9D%80-pass-by-reference"><span class="nav-number">2.2.</span> <span class="nav-text">傳址 pass by reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%A4%96%E6%83%85%E6%B3%81"><span class="nav-number">2.3.</span> <span class="nav-text">例外情況</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191105/30734/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript 中的傳值與傳址
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2019-11-05 10:30:59 / 修改時間：12:34:52" itemprop="dateCreated datePublished" datetime="2019-11-05T10:30:59+08:00">2019-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>JavaScript 的變數再賦予不同型別的時候，會有同的傳遞方式，以 “基本型別” <code>Primitive</code> 和 “物件型別” <code>Object</code> 作為區分 </p>
+<span id="more"></span>
+
+<h2 id="型別-Types"><a href="#型別-Types" class="headerlink" title="型別 Types"></a>型別 Types</h2><h3 id="基本型別-Primitive-type"><a href="#基本型別-Primitive-type" class="headerlink" title="基本型別 Primitive type"></a>基本型別 Primitive type</h3><p>當宣告兩個變數並賦予相同的基本型別時，兩個變數的會是 “相等” 的，這似乎很直觀</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&quot;String&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> d = <span class="string">&quot;String&quot;</span>;</span><br><span class="line"><span class="built_in">console</span>.log( a === b );   <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log( c === d );   <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="物件型別-Object-type"><a href="#物件型別-Object-type" class="headerlink" title="物件型別 Object type"></a>物件型別 Object type</h3><p>但是當宣告兩個變數並賦予相同屬性與值的物件時，兩個變數卻是 “不相等” 的，因為 javascript 中的物件可以看成是個別的 “實體”，兩個物件雖然可以看成 “等值”，但卻不是同一個 “實體”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123; <span class="attr">value</span>: <span class="number">10</span> &#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123; <span class="attr">value</span>: <span class="number">10</span> &#125;</span><br><span class="line"><span class="built_in">console</span>.log( obj1 === obj2 );   <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="傳值與傳址"><a href="#傳值與傳址" class="headerlink" title="傳值與傳址"></a>傳值與傳址</h2><ul>
+<li>傳值 <code>pass by value</code> </li>
+<li>傳址 <code>pass by reference</code></li>
+</ul>
+<h3 id="傳值-pass-by-value"><a href="#傳值-pass-by-value" class="headerlink" title="傳值 pass by value"></a>傳值 pass by value</h3><p>在基本型別的變數中，當我們複製變數時，取得的是原先變數的 “值”，而不是這個變數本身</p>
+<p>因為當指定 <code>b</code> 的值等於 <code>a</code> 時，會建立一個新的記憶體來存放相同的值，彼此不會互相干擾，這種情況稱為 “傳值” <code>pass by value</code> </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 10</span></span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%E5%82%B3%E5%80%BC-1.png"></p>
+<p>所以我們更改原先變數 <code>a</code> 的值時，並不會影響新變數 <code>b</code> 的值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// 100</span></span><br><span class="line">consolg.log(b);   <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%E5%82%B3%E5%80%BC-2.png"></p>
+<h3 id="傳址-pass-by-reference"><a href="#傳址-pass-by-reference" class="headerlink" title="傳址 pass by reference"></a>傳址 pass by reference</h3><p>當我們建立一個物件型別的變數 a 時，一樣會建立一個位置在記憶體中;但是當我們另建立一個變數 b 並賦予他的值等於 a，這時和基本型別不一樣的是，並不會建立一個新的位置在記憶體中，而是讓變數 b 指向和 a 同一個記憶體中的位置，稱為 “傳址” <code>pass by reference</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123; <span class="attr">value</span>: <span class="number">10</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// &#123;value: 10&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// &#123;value: 10&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%E5%82%B3%E5%9D%80-1.png"></p>
+<p>所以當我們更改 <code>a</code> 的內容時，<code>b</code> 自然會跟著更改</p>
+<p><img src="%E5%82%B3%E5%9D%80-2.png"></p>
+<h3 id="例外情況"><a href="#例外情況" class="headerlink" title="例外情況"></a>例外情況</h3><p>有一些例外的情況透過傳值的方式複製物件，而複製又分為 “深度複製” <code>Deep copy</code> 和 “淺度複製” <code>Shallow copy</code>，”深度複製” 全部透過 “傳值” 的方式複製，而 “淺度複製” 只有 “第一層傳值”，內層還是 “傳址”</p>
+<ul>
+<li><p>重新賦值</p>
+<p>凡事都有例外，當物件型別的變數被重新賦值時，就會在記憶體中產生一個新的位置來存放這個內容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;<span class="attr">value</span>: <span class="number">10</span>&#125;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line"></span><br><span class="line">a = &#123;<span class="attr">value</span>: <span class="number">100</span>&#125;</span><br><span class="line"><span class="built_in">console</span>.log(a);   <span class="comment">// &#123;value: 100&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b);   <span class="comment">// &#123;value: 10&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%E5%82%B3%E5%80%BC%E8%88%87%E5%82%B3%E5%9D%80%E7%9A%84%E4%BE%8B%E5%A4%96.png"></p>
+</li>
+<li><p>手動賦值 (淺度複製)</p>
+<p>手動賦值很直接的把 “物件傳址” 改用 “傳值” 的方式傳遞，傳值的部分就會完全獨立 ; 但要注意的是，”內層物件” 還是 “傳址”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Person = &#123;</span><br><span class="line">  name: <span class="string">&#x27;Jerry&#x27;</span>,</span><br><span class="line">  bwh: &#123;</span><br><span class="line">    strength: <span class="number">34</span>,</span><br><span class="line">    agility: <span class="number">25</span>,</span><br><span class="line">    intelligence: <span class="number">96</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Person2 = &#123;</span><br><span class="line">  name: Person.name, </span><br><span class="line">  bwh: Person.bwh,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.name = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line">Person.bwh.strength = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(Person2.name);   <span class="comment">// 還是 &quot;Jerry&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person2.bwh.strength);    <span class="comment">// 一起改成 0  </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>for…in (淺度複製)</li>
+</ul>
+<p>透過 for…in 將原本的物件屬性的值傳到新的物件</p>
+<ul>
+<li>轉字串</li>
+</ul>
+<p>將物件轉型成字串，再將字串轉回物件，兩個物件會 “完全無關”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="built_in">JSON</span>.stringify(Person);</span><br><span class="line"><span class="keyword">var</span> P = <span class="built_in">JSON</span>.parse(Person);</span><br><span class="line"></span><br><span class="line">Person.name = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line">Person.bwh.strength = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p.name);   <span class="comment">// 還是 &quot;Jerry&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.bwh.strength);    <span class="comment">// 還是 34</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>jQuery</li>
+</ul>
+<p>jQuery 中可以透過 <code>extend()</code> 來複製物件，可以透過更改第一個參數來調整深度或淺度複製</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p1 = jQuery.extend(&#123;&#125;, Person);       <span class="comment">// 淺度複製</span></span><br><span class="line"><span class="keyword">var</span> p2 = jQuery.extend(<span class="literal">true</span>, &#123;&#125;, Person); <span class="comment">// 深度複製</span></span><br><span class="line"></span><br><span class="line">Person.name = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line">Person.bwh.strength = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p1.name);   <span class="comment">// 還是 &quot;Jerry&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(p1.bwh.strength);    <span class="comment">// 改成 0</span></span><br><span class="line"><span class="built_in">console</span>.log(p2.name);   <span class="comment">// 還是 &quot;Jerry&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(p2.bwh.strength);    <span class="comment">// 還是 34</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ES6</li>
+</ul>
+<p>在原生 JavaScript 中 ES6 也推出 <code>Object.assign()</code> 新的方法，但只適用於 “淺度複製”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="built_in">Object</span>.assign(&#123;&#125;, Person);</span><br><span class="line"></span><br><span class="line">Person.name = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line">Person.bwh.strength = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p.name);   <span class="comment">// 還是 &quot;Jerry&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.bwh.strength);    <span class="comment">// 改成 0</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://pjchender.blogspot.com/2016/03/javascriptby-referenceby-value.html">[筆記] 談談JavaScript中by reference和by value的重要觀念</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/articles/10191057">JavaScript 是「傳值」或「傳址」？</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20191024/33578/" rel="prev" title="JavaScript - 閉包 Closure">
+                  <i class="fa fa-chevron-left"></i> JavaScript - 閉包 Closure
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191105/49319/" rel="next" title="JavaScript 物件與原型鍊">
+                  JavaScript 物件與原型鍊 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

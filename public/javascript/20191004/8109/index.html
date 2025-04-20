@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Web storage 為 HTML 5 問世後提供的新技術，提供比 cookie (每條 cookie 的儲存空間為 4K) 更大 (localStorage 為 5M) 更安全的本地端儲存空間，也不會影響到網頁效能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript - localStorage">
+<meta property="og:url" content="https://jerry-yeh.github.io/javascript/20191004/8109/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="Web storage 為 HTML 5 問世後提供的新技術，提供比 cookie (每條 cookie 的儲存空間為 4K) 更大 (localStorage 為 5M) 更安全的本地端儲存空間，也不會影響到網頁效能">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/javascript/20191004/8109/localStorage-key&value.png">
+<meta property="article:published_time" content="2019-10-04T15:22:32.000Z">
+<meta property="article:modified_time" content="2019-10-04T17:32:49.519Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/javascript/20191004/8109/localStorage-key&value.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/javascript/20191004/8109/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/javascript/20191004/8109/","path":"javascript/20191004/8109/","title":"JavaScript - localStorage"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript - localStorage | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Storage"><span class="nav-number">1.</span> <span class="nav-text">Web Storage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#localStorage-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">localStorage 基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#locarStorage-%E8%A3%A1%E7%9A%84-key-%E8%88%87-value"><span class="nav-number">2.1.</span> <span class="nav-text">locarStorage 裡的 key 與 value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#localStorage-%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">localStorage 操作方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-%E8%B3%87%E6%96%99%E7%B7%A8%E8%AD%AF"><span class="nav-number">3.</span> <span class="nav-text">JSON 資料編譯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E5%80%91%E9%9C%80%E8%A6%81%E7%B7%A8%E8%AD%AF%E8%B3%87%E6%96%99"><span class="nav-number">3.1.</span> <span class="nav-text">為什麼我們需要編譯資料 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%A8%E8%AD%AF%E8%B3%87%E6%96%99%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">編譯資料的方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-5-%E4%B8%AD%E7%9A%84-data-%E5%B1%AC%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">HTML 5 中的 data-* 屬性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-JS-%E4%B8%AD%E9%81%B8%E5%8F%96-data"><span class="nav-number">4.1.</span> <span class="nav-text">在 JS 中選取 data-*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-CSS-%E4%B8%AD%E9%81%B8%E5%8F%96-data"><span class="nav-number">4.2.</span> <span class="nav-text">在 CSS 中選取 data-*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toDoList"><span class="nav-number">5.</span> <span class="nav-text">toDoList</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/javascript/20191004/8109/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript - localStorage
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2019-10-04 23:22:32" itemprop="dateCreated datePublished" datetime="2019-10-04T23:22:32+08:00">2019-10-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2019-10-05 01:32:49" itemprop="dateModified" datetime="2019-10-05T01:32:49+08:00">2019-10-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>Web storage</code> 為 <code>HTML 5</code> 問世後提供的新技術，提供比 <code>cookie</code> (每條 <code>cookie</code> 的儲存空間為 <code>4K</code>) 更大 (<code>localStorage</code> 為 <code>5M</code>) 更安全的本地端儲存空間，也不會影響到網頁效能</p>
+<span id="more"></span>
+
+<h2 id="Web-Storage"><a href="#Web-Storage" class="headerlink" title="Web Storage"></a>Web Storage</h2><p><code>Web storage</code> 物件分為以下兩種，兩種物件的唯一差異是 “生命週期”，所以以下都已 <code>localStorage</code> 來做介紹</p>
+<ul>
+<li><p><code>window.localStorage</code><br>儲存到這裡的資料會 “永久” 保存於本地端，除非使用者主動使用 <code>JavaScript</code> 語法 或 “網頁瀏覽器功能” 來刪除</p>
+</li>
+<li><p><code>window.sessionStorage</code><br>保存資料於頁面 “尚未關閉” 或使用 “還原” 時，但在頁面關閉時清空儲存在內的所有資料</p>
+</li>
+</ul>
+<h2 id="localStorage-基本操作"><a href="#localStorage-基本操作" class="headerlink" title="localStorage 基本操作"></a>localStorage 基本操作</h2><h3 id="locarStorage-裡的-key-與-value"><a href="#locarStorage-裡的-key-與-value" class="headerlink" title="locarStorage 裡的 key 與 value"></a><code>locarStorage</code> 裡的 <code>key</code> 與 <code>value</code></h3><p>開啟開發人員工具，我們可以從裡面的 <code>Application</code> 找到 <code>localStorage</code>，點開 <code>localStorage</code>，會看到兩個欄位 <code>Key</code> 與 <code>Value</code>，在沒有任何動作前，兩個欄位是空的</p>
+<p><img src="localStorage-key&value.png"></p>
+<ul>
+<li><p>Key</p>
+<p><code>Key</code> 是 <code>localStorage</code> 物件的屬性，也是存入這筆資料的 “名稱”</p>
+</li>
+<li><p>Value</p>
+</li>
+</ul>
+<p>而 <code>Value</code> 是 <code>Key</code> 屬性的值，也是存入這筆資料的 “內容”，特別要注意的是，<code>Key</code> 的型態都是 字串 <code>string</code></p>
+<h3 id="localStorage-操作方法"><a href="#localStorage-操作方法" class="headerlink" title="localStorage 操作方法"></a>localStorage 操作方法</h3><ul>
+<li><p><code>localStorage.setItem(&#39;Key&#39;, &#39;Value&#39;)</code> 存入</p>
+<p>透過這個方法可以將資料存入 <code>localStorage</code></p>
+</li>
+<li><p><code>localStorage.getItem(&#39;Value&#39;)</code> 取出</p>
+<p>透過這個方法可以取出 <code>localStorage</code> 中指定屬性的值</p>
+</li>
+<li><p><code>localStorage.removeItem(&#39;Key&#39;)</code> 刪除</p>
+<p>透過這個方法可以刪除 <code>localStorage</code> 中指定的屬性</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/RzObON?editors=1010">範例程式碼</a></p>
+</li>
+<li><p><code>localStorage.key()</code> 取得屬性</p>
+<p>透過這個方法可以取得指定順序的屬性 <code>key</code>，此順序也是從 <code>0</code> 開始</p>
+</li>
+<li><p><code>localStorage.clear()</code> 清除全部屬性</p>
+<p>這個方法會清除 <code>localStorage</code> 中所有屬性 <code>key</code></p>
+</li>
+</ul>
+<h2 id="JSON-資料編譯"><a href="#JSON-資料編譯" class="headerlink" title="JSON 資料編譯"></a>JSON 資料編譯</h2><h3 id="為什麼我們需要編譯資料"><a href="#為什麼我們需要編譯資料" class="headerlink" title="為什麼我們需要編譯資料 ?"></a>為什麼我們需要編譯資料 ?</h3><p>當我們使用 <code>setItem</code> 將資料儲存在本地端資料庫時，會發現所有儲存的資料 <code>value</code> 都被轉換成 “字串”，原因是 <code>Storage</code> 只會儲存字串的格式，所以會將所有存入的資料使用 <code>toString()</code> 方法強行轉換成字串 ; 如果將物件強行轉換成字串，就會得到 <code>[object, Object]</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> string = <span class="string">&#x27;testString&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> number = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">var</span> array = [<span class="string">&#x27;string&#x27;</span>, <span class="number">123</span>, <span class="literal">true</span>];</span><br><span class="line"><span class="keyword">var</span> object = &#123;<span class="string">&quot;test&quot;</span>: <span class="number">123</span>&#125;</span><br><span class="line"><span class="keyword">var</span> <span class="function"><span class="keyword">function</span> = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;<span class="title">alert</span>(<span class="params">test</span>)&#125;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item1&#x27;</span>, string);</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item2&#x27;</span>, number);</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item3&#x27;</span>, array);</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item4&#x27;</span>, object);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item1&#x27;</span>));   <span class="comment">// testString   (string)</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item2&#x27;</span>));   <span class="comment">// 123   (string)</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item3&#x27;</span>));   <span class="comment">// string, 123, true   (string)</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item4&#x27;</span>));   <span class="comment">// [object, Object]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="編譯資料的方式"><a href="#編譯資料的方式" class="headerlink" title="編譯資料的方式"></a>編譯資料的方式</h3><p>在這裡 <code>JSON</code> 提供了兩種方法來轉換資料的型別</p>
+<ul>
+<li><p><code>JSON.stringify()</code></p>
+<p>將資料轉為 <code>JSON</code> 格式的字串</p>
+</li>
+<li><p><code>JSON.parse()</code></p>
+<p>將資料由 <code>JSON</code> 格式字串轉回原來的內容與型別</p>
+</li>
+</ul>
+<p>同樣的資料我們在存入時使用 <code>stringify()</code> 將資料轉成 <code>JSON</code> 格式字串，取出時使用 <code>parse()</code> 轉回原來的資料型別</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item1&#x27;</span>, <span class="built_in">JSON</span>.stringify(string));</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item2&#x27;</span>, <span class="built_in">JSON</span>.stringify(number));</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item3&#x27;</span>, <span class="built_in">JSON</span>.stringify(array));</span><br><span class="line"><span class="built_in">localStorage</span>.setItem(<span class="string">&#x27;item4&#x27;</span>, <span class="built_in">JSON</span>.stringify(object));</span><br><span class="line">              </span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item1&#x27;</span>)));   testString   (string)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item2&#x27;</span>)));   <span class="number">123</span>   (number)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item3&#x27;</span>)));   [<span class="string">&#x27;string&#x27;</span>, <span class="number">123</span>, <span class="literal">true</span>]   (array)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;item4&#x27;</span>)));   &#123;<span class="string">&quot;test&quot;</span>: <span class="number">123</span>&#125;   (object)</span><br></pre></td></tr></table></figure>
+
+<p><code>return</code> 回傳數值、中斷 <code>function</code> ，不會執行之後的程式碼</p>
+<h2 id="HTML-5-中的-data-屬性"><a href="#HTML-5-中的-data-屬性" class="headerlink" title="HTML 5 中的 data-* 屬性"></a>HTML 5 中的 data-* 屬性</h2><p>在製作網頁時，如果可以自己新增屬性，為 <code>HTML tag</code> 做上記號，就能更靈活的操作網頁。但為了避免大家隨意添加、命名自己需要的屬性，<code>HTML 5</code> 就多了一個 <code>data-*</code> 屬性，制定了一個統一的規則，其中的米字號 <code>*</code> 是一個可以自定義的名稱</p>
+<p>在 <code>*</code> 自定義名稱時，不能使用 英文大寫，可以是任何字串，如下範例</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">data-num</span>=<span class="string">&quot;0&quot;</span> <span class="attr">data-size</span>=<span class="string">&quot;m&quot;</span> <span class="attr">class</span>=<span class="string">&quot;listLi&quot;</span>&gt;</span>卡斯伯<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="在-JS-中選取-data"><a href="#在-JS-中選取-data" class="headerlink" title="在 JS 中選取 data-*"></a>在 JS 中選取 data-*</h3><p>如果是綁定事件來尋找自定義的 <code>data-*</code> 屬性，都會儲存在 <code>target</code> 中的 <code>dataset</code> 物件，物件的屬性就是自定義的 <code>*</code>，屬性的值就是自定義時給定的值了。延續上方的範例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.list li&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkList</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.target.dataset);        <span class="comment">// DOMStringMap &#123;num: &quot;0&quot;, size: &quot;m&quot;&#125;</span></span><br><span class="line">  <span class="built_in">console</span>.log(e.target.dataset.num)     <span class="comment">// 0</span></span><br><span class="line">  <span class="built_in">console</span>.log(e.target.dataset.size);   <span class="comment">// m</span></span><br><span class="line">&#125;;</span><br><span class="line">            </span><br><span class="line">list.addEventListener(<span class="string">&#x27;click&#x27;</span>, checkList, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>dataset</code> 與 <code>array</code> 的運用</strong></p>
+<ul>
+<li><p>先將陣列 <code>array</code> 中的資料帶入 <code>HTML</code></p>
+</li>
+<li><p>點擊時再透過 <code>dataset</code> 取得對應的資料</p>
+<p><a href>範例程式碼</a></p>
+</li>
+</ul>
+<h3 id="在-CSS-中選取-data"><a href="#在-CSS-中選取-data" class="headerlink" title="在 CSS 中選取 data-*"></a>在 CSS 中選取 data-*</h3><p>既然是自定義的屬性 <code>Attribute</code>，黨然也可以在 <code>CSS</code> 中被選取</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">article</span> <span class="attr">class</span>=<span class="string">&quot;article&quot;</span> <span class="attr">data-content</span>=<span class="string">&quot;Hello Everyone&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">data-size</span>=<span class="string">&quot;m&quot;</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">data-size</span>=<span class="string">&quot;xl&quot;</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要在 <code>&lt;article&gt;</code> 中顯示 <code>data-content</code> 的內容</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">atricle<span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="built_in">attr</span>(data-content);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要選取指定的屬性或是屬性的值，也可以搭配 CSS 選擇棄來使用</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">article</span> <span class="selector-tag">img</span><span class="selector-attr">[data-size=<span class="string">&quot;m&quot;</span>]</span>&#123;...&#125;</span><br><span class="line"><span class="selector-tag">article</span> <span class="selector-tag">img</span><span class="selector-attr">[data-size=<span class="string">&quot;xl&quot;</span>]</span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="toDoList"><a href="#toDoList" class="headerlink" title="toDoList"></a>toDoList</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codepen.io/Jerry-Yeh/pen/jjRjJp?editors=1010">範例程式碼</a></p>
+<ol>
+<li>取得輸入框的內容加入到 <code>data</code> 陣列中</li>
+<li>將 <code>data</code> 陣列轉換成 “字串” 儲存到 <code>localStorage</code></li>
+<li>取出 <code>localStorage</code> 的資料並還原其形態，印出到網頁中</li>
+<li>透過 <code>dataset</code> 刪除點選的指定資料</li>
+</ol>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20065504/ironman/1259">重新認識 JavaScript</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/users/20083608/ironman/1354">邁向 JavaScript 勇者之路</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/javascript-learning/">JavaScript 入門篇 - 學徒的試煉</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://ithelp.ithome.com.tw/articles/10195522">JS30-Day15-LocalStorage</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://pjchender.blogspot.com/2017/01/html-5-data-attribute.html">什麼是 HTML 5 中的資料屬性（data-* attribute )</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/javascript/20191004/50136/" rel="prev" title="JavaScript - AJAX">
+                  <i class="fa fa-chevron-left"></i> JavaScript - AJAX
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20191013/50209/" rel="next" title="JavaScript - ES6 - 變數">
+                  JavaScript - ES6 - 變數 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

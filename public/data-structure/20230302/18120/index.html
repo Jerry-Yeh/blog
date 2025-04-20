@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Linked List 是一種包含順序的資料結構，但和 Array 不同的是，沒有 index 來指出特定 Node，因此，如果要尋找 list 中的某個 Node，就需要遍歷整個 list; 因大多數程式語言在宣告 Array 時，都會固定其長度，並在記憶體中做連續性的儲存，Linked List 就是為了解決這種長度固定的問題而存在，避免太小不夠用或太大浪費空間。 為了達到彈性長度的目的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linked List">
+<meta property="og:url" content="https://jerry-yeh.github.io/data-structure/20230302/18120/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="Linked List 是一種包含順序的資料結構，但和 Array 不同的是，沒有 index 來指出特定 Node，因此，如果要尋找 list 中的某個 Node，就需要遍歷整個 list; 因大多數程式語言在宣告 Array 時，都會固定其長度，並在記憶體中做連續性的儲存，Linked List 就是為了解決這種長度固定的問題而存在，避免太小不夠用或太大浪費空間。 為了達到彈性長度的目的，">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/data-structure/20230302/18120/singly-linked-list.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/data-structure/20230302/18120/doubly-linked-list.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/data-structure/20230302/18120/circularly-linked-list.png">
+<meta property="article:published_time" content="2023-03-02T13:42:38.000Z">
+<meta property="article:modified_time" content="2023-03-19T02:38:25.064Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="Cracking the Coding Interview">
+<meta property="article:tag" content="Linked List">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/data-structure/20230302/18120/singly-linked-list.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/data-structure/20230302/18120/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/data-structure/20230302/18120/","path":"data-structure/20230302/18120/","title":"Linked List"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linked List | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Singly-Linked-List"><span class="nav-number">1.</span> <span class="nav-text">Singly Linked List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Doubly-Linked-List"><span class="nav-number">2.</span> <span class="nav-text">Doubly Linked List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Circularly-Linked-List"><span class="nav-number">3.</span> <span class="nav-text">Circularly-Linked-List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript-%E5%AF%A6%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">JavaScript 實作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node"><span class="nav-number">4.1.</span> <span class="nav-text">Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linked-List"><span class="nav-number">4.2.</span> <span class="nav-text">Linked List</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%AC%E6%80%A7-Property"><span class="nav-number">4.2.1.</span> <span class="nav-text">屬性 Property</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-Method"><span class="nav-number">4.2.2.</span> <span class="nav-text">方法 Method</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">時間複雜度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/data-structure/20230302/18120/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linked List
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2023-03-02 21:42:38" itemprop="dateCreated datePublished" datetime="2023-03-02T21:42:38+08:00">2023-03-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2023-03-19 10:38:25" itemprop="dateModified" datetime="2023-03-19T10:38:25+08:00">2023-03-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/data-structure/" itemprop="url" rel="index"><span itemprop="name">Data Structure</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>Linked List 是一種包含順序的資料結構，但和 Array 不同的是，沒有 index 來指出特定 Node，因此，如果要尋找 list 中的某個 Node，就需要遍歷整個 list; 因大多數程式語言在宣告 Array 時，都會固定其長度，並在記憶體中做連續性的儲存，Linked List 就是為了解決這種長度固定的問題而存在，避免太小不夠用或太大浪費空間。</p>
+<p>為了達到彈性長度的目的，在記憶體中儲存時就會不連續，所以每個 Node 都會明確指出下一個 Node，以確保資料之間的鏈結。</p>
+<span id="more"></span>
+
+<p>而 Listed List 又分成三種，分別是 Singly、Doubly Linked List &amp; Circularly Linked List，所有的 Node 都包含 value 與下一個 Node 的資訊 next，Doubly &amp; Circularly Linked List 的 Node 還會額外包含上一個 Node 的資訊 prev</p>
+<h2 id="Singly-Linked-List"><a href="#Singly-Linked-List" class="headerlink" title="Singly Linked List"></a>Singly Linked List</h2><p><img src="singly-linked-list.png"></p>
+<ul>
+<li>每個 Node 會包含 value</li>
+<li>每個 Node 會包含下一個 Node 的指標</li>
+<li>從頭部 head 開始，依序往下讀取至尾部 tail 結束</li>
+</ul>
+<h2 id="Doubly-Linked-List"><a href="#Doubly-Linked-List" class="headerlink" title="Doubly Linked List"></a>Doubly Linked List</h2><p><img src="doubly-linked-list.png"></p>
+<ul>
+<li>每個 Node 會包含 value</li>
+<li>每個 Node 會包含上一個與下一個 Node 的指標</li>
+<li>從頭部 head 開始，依序往下讀取至尾部 tail 結束</li>
+<li>因具備 prev 指標，所以也可以從 tail 開始往前尋找</li>
+</ul>
+<h2 id="Circularly-Linked-List"><a href="#Circularly-Linked-List" class="headerlink" title="Circularly-Linked-List"></a>Circularly-Linked-List</h2><p><img src="circularly-linked-list.png"></p>
+<ul>
+<li>每個 Node 會包含 value</li>
+<li>每個 Node 會包含上一個與下一個 Node 的指標</li>
+<li>從頭部 head 開始，依序往下讀取至尾部 tail，頭尾指標彼此會再接在一起，形成一個循環</li>
+<li>head prev 會指向 tail，tail next 會指向 head</li>
+</ul>
+<h2 id="JavaScript-實作"><a href="#JavaScript-實作" class="headerlink" title="JavaScript 實作"></a>JavaScript 實作</h2><p>在 JavaScript 中，並沒有內建的 Linked List，所以必須透過 Object 來實作，其中包含節點 Node、Linked List 與其所提供的方法 methods</p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>Node 會包含其所代表的資料與指標</p>
+<ul>
+<li><code>value</code>: 資料</li>
+<li><code>next</code>: 指向下一個 Node 的指標</li>
+<li><code>prev</code>: 指向上一個 Node 的指標(Singly Linked List 並未包含)</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">  value: <span class="built_in">any</span>;</span><br><span class="line">  next: Node | <span class="literal">null</span>;</span><br><span class="line">  prev: Node | <span class="literal">null</span>; <span class="comment">// Doubly only</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">value: <span class="built_in">any</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.value = value;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.prev = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h3><p>Linked List 會提供幾項基本屬性與方法供使用者進行操作</p>
+<h4 id="屬性-Property"><a href="#屬性-Property" class="headerlink" title="屬性 Property"></a>屬性 Property</h4><ul>
+<li><code>length</code>: Linked List 的長度</li>
+<li><code>head</code>: 指向第一個 Node，如果 <code>length</code> 為 0，則為 null;如果 <code>length</code> 為 1 則和 <code>tail</code> 指向同一個 Node</li>
+<li><code>tail</code>: 指向最後一個 Node，如果 <code>length</code> 為 0，則為 null;如果 <code>length</code> 為 1 則和 <code>head</code> 指向同一個 Node</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">  length: <span class="built_in">number</span>;</span><br><span class="line">  head: Node | <span class="literal">null</span>;</span><br><span class="line">  tail: Node | <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.length = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.tail = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方法-Method"><a href="#方法-Method" class="headerlink" title="方法 Method"></a>方法 Method</h4><ul>
+<li><p><code>append</code>: 在 <code>tail</code> 插入一個 Node</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">append</span>(<span class="params">value: <span class="built_in">any</span></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> newNode = <span class="keyword">new</span> Node(value);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// Linked List is empty</span></span><br><span class="line">    <span class="built_in">this</span>.head = newNode;</span><br><span class="line">    <span class="built_in">this</span>.tail = newNode;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    newNode.prev = <span class="built_in">this</span>.tail;  <span class="comment">// Doubly only</span></span><br><span class="line">    <span class="built_in">this</span>.tail!.next = newNode;</span><br><span class="line">    <span class="built_in">this</span>.tail = newNode;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.length++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>preppend</code>: 在 <code>head</code> 插入一個 Node</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">preppend</span>(<span class="params">value: <span class="built_in">any</span></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> newNode = <span class="keyword">new</span> Node(value);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// Linked List is empty</span></span><br><span class="line">    <span class="built_in">this</span>.head = newNode;</span><br><span class="line">    <span class="built_in">this</span>.tail = newNode;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    newNode.next = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="built_in">this</span>.head!.prev = newNode;  <span class="comment">// Doubly only</span></span><br><span class="line">    <span class="built_in">this</span>.head = newNode;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.length++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>getNode</code>: 因為 Linked List 不像 Array 可以直接透過 index 到達指定位置，所以需先根據 index 遍歷取得指定位置</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getNode</span>(<span class="params">index: <span class="built_in">number</span></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; <span class="built_in">this</span>.length) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// search Node from head</span></span><br><span class="line">  <span class="keyword">let</span> tempNode = <span class="built_in">this</span>.head;</span><br><span class="line">  <span class="keyword">let</span> tempIdx = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (tempIdx &lt; index) &#123;</span><br><span class="line">    tempNode = tempNode!.next;</span><br><span class="line">    tempIdx++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> tempNode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>insert</code>: 於指定位置插入一個 Node</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">insert</span>(<span class="params">index: <span class="built_in">number</span>, value: <span class="built_in">any</span></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (index &gt;= <span class="built_in">this</span>.length) &#123;</span><br><span class="line">    <span class="built_in">this</span>.append(value);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> newNode = <span class="keyword">new</span> Node(value);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (index &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    newNode.next = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="built_in">this</span>.head = newNode;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> prevNode = <span class="built_in">this</span>.getNode(index - <span class="number">1</span>) <span class="keyword">as</span> Node;</span><br><span class="line">    <span class="keyword">const</span> currNode = prevNode.next <span class="keyword">as</span> Node;</span><br><span class="line">    prevNode.next = newNode;</span><br><span class="line">    newNode.prev = prevNode; <span class="comment">// Doubly only</span></span><br><span class="line">    newNode.next = currNode;</span><br><span class="line">    currNode.prev = newNode; <span class="comment">// Doubly only</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.length++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>remove</code>: 刪除指定 Node</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">remove</span>(<span class="params">index: <span class="built_in">number</span></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= <span class="built_in">this</span>.length || <span class="built_in">this</span>.length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="built_in">this</span>.head!.next;</span><br><span class="line">    <span class="built_in">this</span>.head!.prev = <span class="literal">null</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> prevNode = <span class="built_in">this</span>.getNode(index - <span class="number">1</span>) <span class="keyword">as</span> Node;</span><br><span class="line">    <span class="keyword">const</span> nextNode = <span class="built_in">this</span>.getNode(index + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    prevNode.next = nextNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!nextNode) &#123;</span><br><span class="line">      <span class="built_in">this</span>.tail = prevNode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      nextNode.prev = prevNode;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.length--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>print</code>: 按照 Linked List 印出所有 Node value</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(): <span class="built_in">any</span>[] &#123;</span><br><span class="line">  <span class="keyword">let</span> array: <span class="built_in">any</span>[] = [];</span><br><span class="line">  <span class="keyword">let</span> tempNode = <span class="built_in">this</span>.head;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h2><p>在取得節點的情況下，插入與刪除為 O(1)，但如果沒有取得節點就會是 O(n)，而因為不如 Array 有明確的 index，所以搜尋為 O(n)</p>
+<ul>
+<li>插入 insert、刪除 delete: O(1) or O(n)</li>
+<li>新增/刪除頭部 prepend、新增/刪除尾部 append: O(1)</li>
+<li>存取 &amp; 搜尋 lookup: O(n)</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://crackingthecodinginterview.com/">Cracking the Coding Interview</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://pjchender.dev/dsa/dsa-array-linked-list/">[資料結構] Array and Linked List</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://en.wikipedia.org/wiki/Linked_list">Linked List Wiki</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://chupai.github.io/posts/200427_ds_linkedlist/">JavaScript 學演算法（五）- 鏈結串列 Linked list</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cracking-the-coding-interview/" rel="tag"># Cracking the Coding Interview</a>
+              <a href="/tags/linked-list/" rel="tag"># Linked List</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/data-structure/20230227/65261/" rel="prev" title="Hash Table">
+                  <i class="fa fa-chevron-left"></i> Hash Table
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/storybook/20230306/60961/" rel="next" title="Storybook addons panel not showing">
+                  Storybook addons panel not showing <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

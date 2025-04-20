@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="React 是一個 single-page application，顧名思義就是不論如何切換頁面，都是在單一個 html 檔案內替換其中的內容，而非傳統網頁在切換頁面時，都會透過對 server 發出 request 取得新的 html 檔案再渲染到 browser 上，這麼做得好的不外乎就是為了避免頻繁的在切換頁面時送出 request 以提高網站效能，在 React 社群中，有一個很好用的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Router">
+<meta property="og:url" content="https://jerry-yeh.github.io/react/20220813/36407/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="React 是一個 single-page application，顧名思義就是不論如何切換頁面，都是在單一個 html 檔案內替換其中的內容，而非傳統網頁在切換頁面時，都會透過對 server 發出 request 取得新的 html 檔案再渲染到 browser 上，這麼做得好的不外乎就是為了避免頻繁的在切換頁面時送出 request 以提高網站效能，在 React 社群中，有一個很好用的">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-08-13T02:23:55.000Z">
+<meta property="article:modified_time" content="2023-02-07T23:24:08.045Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="React - The Complete Guide (Incl Hooks, React Router, Redux)">
+<meta property="article:tag" content="React Router">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/react/20220813/36407/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/react/20220813/36407/","path":"react/20220813/36407/","title":"React Router"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React Router | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Routing-amp-Why"><span class="nav-number">1.</span> <span class="nav-text">What is Routing &amp; Why ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Installing-React-Router"><span class="nav-number">2.</span> <span class="nav-text">Installing React Router</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Defining-amp-Using-Routes"><span class="nav-number">3.</span> <span class="nav-text">Defining &amp; Using Routes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-Links"><span class="nav-number">4.</span> <span class="nav-text">Working with Links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-NavLinks"><span class="nav-number">5.</span> <span class="nav-text">Using NavLinks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Not-Found-Page"><span class="nav-number">6.</span> <span class="nav-text">A Not Found Page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implementing-Programmatic-Mavigation"><span class="nav-number">7.</span> <span class="nav-text">Implementing Programmatic Mavigation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/react/20220813/36407/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React Router
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2022-08-13 10:23:55" itemprop="dateCreated datePublished" datetime="2022-08-13T10:23:55+08:00">2022-08-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2023-02-08 07:24:08" itemprop="dateModified" datetime="2023-02-08T07:24:08+08:00">2023-02-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- @format -->
+
+<p>React 是一個 single-page application，顧名思義就是不論如何切換頁面，都是在單一個 html 檔案內替換其中的內容，而非傳統網頁在切換頁面時，都會透過對 server 發出 request 取得新的 html 檔案再渲染到 browser 上，這麼做得好的不外乎就是為了避免頻繁的在切換頁面時送出 request 以提高網站效能，在 React 社群中，有一個很好用的 3rd-part library - React Rotuer 替我們解決了這個問題。</p>
+<span id="more"></span>
+
+<h2 id="What-is-Routing-amp-Why"><a href="#What-is-Routing-amp-Why" class="headerlink" title="What is Routing &amp; Why ?"></a>What is Routing &amp; Why ?</h2><p>在 React 這種 client-side render 的 single-page application 中，即便如何切換頁面，其實都是在同一個 html 檔案內並共用同一個 url，只是再透過 url 上的後綴以辨別當下頁面，傳統 server-side render 的網站的每一個頁面都是一個 html 檔案，所以當使用者切換頁面時，都需要送出 reqeust 向 server 取得 html 再渲染於網頁上，這麼做有一個很明顯的問題就是頻繁的送出 reqeust 可能會造成效能上的消耗已影響使用者體驗。</p>
+<p>而 client-side render 則是透過 JavaScript 在 browser 中處理頁面切換的邏輯，向後端發出的 request 則改為單純的資料交換與操作，因此只會有一個 html 檔案與一個實際上的 url，只是透過 client routing 加上後綴以辨別頁面。</p>
+<h2 id="Installing-React-Router"><a href="#Installing-React-Router" class="headerlink" title="Installing React Router"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.npmjs.com/package/react-router">Installing React Router</a></h2><p>在安裝 React Router 時，比較特別的是，並非直接安裝 react-router，而是安裝 react-router-dom or react-router-native，雖然這篇筆記紀錄的當下已經有了 v6，但接下來的範例會先以 v5 來操作，最後會再分享升級到 v6 的方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i react-router-dom@5</span><br></pre></td></tr></table></figure>
+
+<h2 id="Defining-amp-Using-Routes"><a href="#Defining-amp-Using-Routes" class="headerlink" title="Defining &amp; Using Routes"></a>Defining &amp; Using Routes</h2><p>透過 Route 來控制 component 顯示的情況就會是每個 url 會有對應的 component，如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// our-domain.com/welcome =&gt; Welcome Component</span></span><br><span class="line"><span class="comment">// our-domain.com/products =&gt; Products Component</span></span><br></pre></td></tr></table></figure>
+
+<p>首先，需要在根元件 App.js 中，註冊每個 component 所在的 route;這裡需要特別注意的是，所有 React Router function 的使用都是來自先前所安裝的 react-router-dom 而不是 react-router。</p>
+<p>import <code>Route</code> JSX 後，其中的 <code>path</code> attribute 就是自定義的 route 名稱，內部則放置當切換到這個 route 時，預期顯示的 component</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; Route &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Products <span class="keyword">from</span> <span class="string">&quot;./components/pages/Products&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Welcome <span class="keyword">from</span> <span class="string">&quot;./components/pages/Welcome&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">        &lt;Welcome /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/products&quot;</span>&gt;</span><br><span class="line">        &lt;Products /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在完成 route &amp; component 的對應關係後，還需要到 index.js 中完成最後一個動作上述的註冊才會生效，那就是 import <code>BrowserRotuer</code> JSX 包覆 App</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">&quot;react-dom/client&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserRouter &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./index.css&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> root = ReactDOM.createRoot(<span class="built_in">document</span>.getElementById(<span class="string">&quot;root&quot;</span>));</span><br><span class="line">root.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Working-with-Links"><a href="#Working-with-Links" class="headerlink" title="Working with Links"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://reactrouter.com/docs/en/v6/components/link">Working with Links</a></h2><p>a tag href will leave one single-page and create a new page, it will lose state in our page</p>
+<p>有了 route &amp; component 的定義後，接下來當然就是要嘗試切換 route 來顯示不同的 component，使用原生 html 的 <code>a</code> element 就可以切換頁面的目的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainHeader.js</span></span><br><span class="line"><span class="keyword">const</span> MainHeader = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;a href=<span class="string">&quot;/welcome&quot;</span>&gt;Welcome&lt;/a&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;a href=<span class="string">&quot;/products&quot;</span>&gt;Products&lt;/a&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> MainHeader;</span><br><span class="line"></span><br><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;MainHeader /&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">        &lt;Welcome /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/products&quot;</span>&gt;</span><br><span class="line">        &lt;Products /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>點擊這兩個 <code>a</code> link 後，確實會如我們所預期的切換頁面，但這裡有一個很大的問題是，當我們點擊 <code>a</code> link 後，他預設的行為其實是送出 reqeust 取得新的 html 渲染於網頁上，這明顯違背了 single-page 的設計初衷，進而導致 state 資料的遺失，所以畫面才會閃了一下，這裡可以進一步打開 devtools Network 來確認聳出了 reqeust</p>
+<p>為了解決這個問題，React Router 提供了另一個 JSX <code>Link</code> 這個問題，只要透過 <code>Link</code> 來取代 <code>a</code> element 切換 route，再透過 <code>to</code> 指定目標 route，就可以達到在 single-page 內切換 route 的目的了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Link &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MainHeader = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;Link to=<span class="string">&quot;/welcome&quot;</span>&gt;Welcome&lt;/Link&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;Link to=<span class="string">&quot;/products&quot;</span>&gt;Products&lt;/Link&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> MainHeader;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Using-NavLinks"><a href="#Using-NavLinks" class="headerlink" title="Using NavLinks"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://reactrouter.com/docs/en/v6/components/nav-link">Using NavLinks</a></h2><p>許多 UI 為了讓使用者更明確知道當下所在頁面，會對該切換頁籤加上特別的樣式以做區分，React Router 就提供了另一個 JSX <code>NavLink</code> 來附加客製化的 CSS，只要將 <code>Link</code> 由 <code>NavLink</code> 取代，並透過 <code>activeClassName</code> 就可以加上 CSS</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* MainHeader.module.css */</span></span><br><span class="line"><span class="selector-class">.header</span> &#123;</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.header</span> <span class="selector-tag">a</span><span class="selector-class">.active</span> &#123;</span><br><span class="line">  ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainHeader.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; NavLink &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> classes <span class="keyword">from</span> <span class="string">&quot;./MainHeader.module.css&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MainHeader = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;header className=&#123;classes.header&#125;&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;NavLink activeClassName=&#123;classes.active&#125; to=<span class="string">&quot;/welcome&quot;</span>&gt;</span><br><span class="line">            Welcome</span><br><span class="line">          &lt;/NavLink&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;NavLink activeClassName=&#123;classes.active&#125; to=<span class="string">&quot;/products&quot;</span>&gt;</span><br><span class="line">            Products</span><br><span class="line">          &lt;/NavLink&gt;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> MainHeader;</span><br></pre></td></tr></table></figure>
+
+<h2 id="A-Not-Found-Page"><a href="#A-Not-Found-Page" class="headerlink" title="A Not Found Page"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/-React-The-Complete-Guide-Section20-2/commit/7460b91ee6bf8b8fe3505f84c6fa18c45516f31d">A Not Found Page</a></h2><p>當使用者瀏覽網頁時，可能因為網址輸入錯誤或其他原因導致沒有對應的頁面已顯示，在 React Router 中，<code>Route</code> 中的 <code>path</code> 可以使用 <code>*</code> 代表所有其他的路徑，只要是沒有對應頁面的路徑預設都會被導到此頁面</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Switch&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/&quot;</span> exact&gt;</span><br><span class="line">        &lt;Redirect to=<span class="string">&quot;/quotes&quot;</span> /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/quotes&quot;</span> exact&gt;</span><br><span class="line">        &lt;AllQuotes /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/quotes/:quoteId&quot;</span>&gt;</span><br><span class="line">        &lt;QuotesDetail /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;/new-quote&quot;</span>&gt;</span><br><span class="line">        &lt;NewQuotes /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;*&quot;</span>&gt;</span><br><span class="line">        &#123;<span class="string">&quot; &quot;</span>&#125;</span><br><span class="line">        <span class="comment">// 我代表所有其他頁面</span></span><br><span class="line">        &lt;NotFound /&gt;</span><br><span class="line">      &lt;/Route&gt;</span><br><span class="line">    &lt;/Switch&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Implementing-Programmatic-Mavigation"><a href="#Implementing-Programmatic-Mavigation" class="headerlink" title="Implementing Programmatic Mavigation"></a><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/Jerry-Yeh/-React-The-Complete-Guide-Section20-2/commit/de68c0b5e2f2a4c485968396b3ef52ce1408af35">Implementing Programmatic Mavigation</a></h2><p>在很多使用情境中，頁面的跳轉並非使用者動作執行的當下就發生，而是在觸發條件後，需要完成特定的程式邏輯，如送出資料，才會進行頁面的跳轉，所以頁面跳轉的行為就不直接附加在按鈕上</p>
+<p>React Router 提供了另一個 hook - <code>useHistory()</code> 來解決這個問題，其所回傳的 object 中，有一個 <code>push</code> method 可以指定目標的路徑</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useHistory &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QuoteForm <span class="keyword">from</span> <span class="string">&quot;../components/quotes/QuoteForm&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> NewQuotes = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> history = useHistory();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> addQuoteHandler = <span class="function">(<span class="params">quoteData</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;addQuoteHandler&quot;</span>, quoteData); <span class="comment">// 我是 http request</span></span><br><span class="line"></span><br><span class="line">    history.push(<span class="string">&quot;/quotes&quot;</span>); <span class="comment">// 送出資料後我才跳轉</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">QuoteForm</span> <span class="attr">onAddQuote</span>=<span class="string">&#123;addQuoteHandler&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/">React - The Complete Guide (Incl Hooks, React Router, Redux)</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://reactrouter.com/">React Router</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react-the-complete-guide-incl-hooks-react-router-redux/" rel="tag"># React - The Complete Guide (Incl Hooks, React Router, Redux)</a>
+              <a href="/tags/react-router/" rel="tag"># React Router</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/npm/20220809/40501/" rel="prev" title="NPM config">
+                  <i class="fa fa-chevron-left"></i> NPM config
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/react/20220813/46531/" rel="next" title="Route Params">
+                  Route Params <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

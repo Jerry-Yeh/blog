@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jerry-yeh.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Git 為分散式版本控制系統，最初目的是為更好地管理Linux核心開發而設計">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 入門">
+<meta property="og:url" content="https://jerry-yeh.github.io/git/20190926/a121fcd1/index.html">
+<meta property="og:site_name" content="Justnote">
+<meta property="og:description" content="Git 為分散式版本控制系統，最初目的是為更好地管理Linux核心開發而設計">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://jerry-yeh.github.io/git/20190926/a121fcd1/git-progress.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/git/20190926/a121fcd1/auto-merge.png">
+<meta property="og:image" content="https://jerry-yeh.github.io/git/20190926/a121fcd1/conflict-merge.png">
+<meta property="article:published_time" content="2019-09-25T16:03:23.000Z">
+<meta property="article:modified_time" content="2021-10-04T02:21:26.433Z">
+<meta property="article:author" content="Yeh">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jerry-yeh.github.io/git/20190926/a121fcd1/git-progress.png">
+
+
+<link rel="canonical" href="https://jerry-yeh.github.io/git/20190926/a121fcd1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://jerry-yeh.github.io/git/20190926/a121fcd1/","path":"git/20190926/a121fcd1/","title":"Git 入門"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git 入門 | Justnote</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Justnote</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80" placeholder="搜尋..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Git 簡介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E3%80%8C%E5%88%86%E6%95%A3%E5%BC%8F%E3%80%8D"><span class="nav-number">1.1.</span> <span class="nav-text">什麼是「分散式」?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E3%80%8C%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%B5%B1%E3%80%8D"><span class="nav-number">1.2.</span> <span class="nav-text">什麼是「版本控制系統」 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E5%BF%AB%E3%80%81%E6%AA%94%E6%A1%88%E9%AB%94%E7%A9%8D%E5%B0%8F"><span class="nav-number">1.3.</span> <span class="nav-text">速度快、檔案體積小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B5%82%E7%AB%AF%E6%A9%9F%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">常用的終端機指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E9%8C%84%E5%88%87%E6%8F%9B"><span class="nav-number">2.1.</span> <span class="nav-text">目錄切換</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AA%94%E6%A1%88%E8%88%87%E7%9B%AE%E9%8C%84"><span class="nav-number">2.2.</span> <span class="nav-text">檔案與目錄</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">Git 環境設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%80%85%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">使用者設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%8F%E5%80%8B%E5%B0%88%E6%A1%88%E8%A8%AD%E5%AE%9A%E4%B8%8D%E5%90%8C%E4%BD%9C%E8%80%85"><span class="nav-number">3.2.</span> <span class="nav-text">每個專案設定不同作者</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-%E6%B5%81%E7%A8%8B%E5%9C%96"><span class="nav-number">4.</span> <span class="nav-text">Git 流程圖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-%E5%9F%BA%E7%A4%8E%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">Git 基礎操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E9%81%A0%E7%AB%AF-%E6%9C%AC%E5%9C%B0%E7%AB%AF%E6%95%B8%E6%93%9A%E5%BA%AB"><span class="nav-number">5.1.</span> <span class="nav-text">安裝遠端&#x2F;本地端數據庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A4%8E%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">5.2.</span> <span class="nav-text">基礎操作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitignore-%E5%BF%BD%E7%95%A5%E6%AA%94%E6%A1%88"><span class="nav-number">5.3.</span> <span class="nav-text">.gitignore 忽略檔案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E7%8B%80%E6%85%8B%E9%82%84%E5%8E%9F"><span class="nav-number">5.4.</span> <span class="nav-text">工作狀態還原</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-%E5%88%86%E6%94%AF-branch"><span class="nav-number">6.</span> <span class="nav-text">Git 分支(branch)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HEAD"><span class="nav-number">6.1.</span> <span class="nav-text">HEAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%88%86%E6%94%AF"><span class="nav-number">6.2.</span> <span class="nav-text">建立分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E4%BD%B5%E5%88%86%E6%94%AF"><span class="nav-number">6.3.</span> <span class="nav-text">合併分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B1%BA%E5%90%88%E4%BD%B5%E5%88%86%E6%94%AF%E8%A1%9D%E7%AA%81"><span class="nav-number">6.4.</span> <span class="nav-text">解決合併分支衝突</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%99%E7%B1%A4-tag"><span class="nav-number">7.</span> <span class="nav-text">標籤 (tag)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%AB%E5%AD%98-stash"><span class="nav-number">8.</span> <span class="nav-text">暫存 (stash)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E3%80%81Github-%E5%9C%98%E9%9A%8A%E5%8D%94%E4%BD%9C"><span class="nav-number">9.</span> <span class="nav-text">Git、Github 團隊協作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-%E6%8E%A8%E9%80%81%E6%96%B0%E7%9A%84%E5%88%86%E6%94%AF%E5%88%B0%E9%81%A0%E7%AB%AF%E6%95%B8%E6%93%9A%E5%BA%AB"><span class="nav-number">9.1.</span> <span class="nav-text">9-1 推送新的分支到遠端數據庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89%E9%81%A0%E7%AB%AF%E6%95%B8%E6%93%9A%E5%BA%AB"><span class="nav-number">9.2.</span> <span class="nav-text">下載遠端數據庫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%8F%83%E8%80%83"><span class="nav-number">10.</span> <span class="nav-text">資料參考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yeh</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://jerry-yeh.github.io/git/20190926/a121fcd1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yeh">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Justnote">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git 入門
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2019-09-26 00:03:23" itemprop="dateCreated datePublished" datetime="2019-09-26T00:03:23+08:00">2019-09-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新於</span>
+        <time title="修改時間：2021-10-04 10:21:26" itemprop="dateModified" datetime="2021-10-04T10:21:26+08:00">2021-10-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Git 為分散式版本控制系統，最初目的是為更好地管理Linux核心開發而設計</p>
+<span id="more"></span>
+
+<h2 id="Git-簡介"><a href="#Git-簡介" class="headerlink" title="Git 簡介"></a>Git 簡介</h2><h3 id="什麼是「分散式」"><a href="#什麼是「分散式」" class="headerlink" title="什麼是「分散式」?"></a>什麼是「分散式」?</h3><p>「分散式」版本控制系統也需要一台專用的伺服器，但即使沒有伺服器或網路的情況下也可以在本地端進行版本更新，等待網路或伺服器恢復再上傳更新，不會受到影響，而 Git 大部分也可以在自己電腦完成</p>
+<h3 id="什麼是「版本控制系統」"><a href="#什麼是「版本控制系統」" class="headerlink" title="什麼是「版本控制系統」 ?"></a>什麼是「版本控制系統」 ?</h3><p>「版本控制系統」指的是會幫你紀錄每次檔案的新增、刪除與修改的狀態變化，並同時記錄修改者的名稱與修改時間，因此檔案出錯時可以輕易找出原因，如果檔案損毀也可以回到上一個紀錄重新來過</p>
+<h3 id="速度快、檔案體積小"><a href="#速度快、檔案體積小" class="headerlink" title="速度快、檔案體積小"></a>速度快、檔案體積小</h3><p>過去要記錄每次檔案的版本往往是複製整個新的檔案或是只複製每個版本的差異，因此檔案會隨著不斷的修改與更新而使檔案大小日益增加</p>
+<p>Git 在版本控制上不同的地方在於使用「快照」（snapshot），如同相機拍照般拍下每式的版本內容，在開啟某個版本時，並非拼湊每次的更新差異，而是各個檔案自動搜尋選擇的版本以前各自最新的檔案版本，因此速度上也較快</p>
+<h2 id="常用的終端機指令"><a href="#常用的終端機指令" class="headerlink" title="常用的終端機指令"></a>常用的終端機指令</h2><h3 id="目錄切換"><a href="#目錄切換" class="headerlink" title="目錄切換"></a>目錄切換</h3><p>輸入 <code>cd</code> 加一個空格後，目錄位置可以複製按右鍵貼上，或是直接將目錄拖曳進終端機</p>
+<p>切換到目錄 (絕對路徑)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /目錄</span><br></pre></td></tr></table></figure>
+
+<p>切換到目錄 (相對路徑)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> 目錄</span><br></pre></td></tr></table></figure>
+
+<p>往上一層目錄移動</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+
+<p>切換到使用者的 <code>home</code> 目錄中的 <code>project</code> 裡的 <code>cards</code> 目錄，”~” 表示 <code>home</code> 目錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/project/cards</span><br></pre></td></tr></table></figure>
+
+<p>展開列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="檔案與目錄"><a href="#檔案與目錄" class="headerlink" title="檔案與目錄"></a>檔案與目錄</h3><p>建立目錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir <span class="string">&quot;目錄名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>建立檔案</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ touch <span class="string">&quot;檔案名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>移除檔案名稱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm <span class="string">&quot;檔案名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>刪除所有的 html 檔案</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm *.html </span><br></pre></td></tr></table></figure>
+
+<p>把檔案 a.html 複製一份成 b.html</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp a.html b.html</span><br></pre></td></tr></table></figure>
+
+<p>把檔案 a.html 更名成 b.html</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mv a.html b.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="Git-環境設定"><a href="#Git-環境設定" class="headerlink" title="Git 環境設定"></a>Git 環境設定</h2><h3 id="使用者設定"><a href="#使用者設定" class="headerlink" title="使用者設定"></a>使用者設定</h3><p>設定使用者的名稱與信箱，每台電腦只有第一次需要設定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.email <span class="string">&quot;your email&quot;</span></span><br><span class="line">$ git config --global user.name <span class="string">&quot;your name&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>查詢使用者設定列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+
+<p>輸入以上指令後會出現許多資訊，如要確認使用者資訊，只須尋找以下兩點</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.name = <span class="string">&quot;your name&quot;</span></span><br><span class="line">user.email = <span class="string">&quot;your email&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="每個專案設定不同作者"><a href="#每個專案設定不同作者" class="headerlink" title="每個專案設定不同作者"></a>每個專案設定不同作者</h3><p>前面新增的 <code>--global</code> 參數為全域設定，如需將特定專案設定不同作者，在專案開始前的 <code>git</code> 設定，加上 <code>--local</code> 參數</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --<span class="built_in">local</span> user.email <span class="string">&quot;your email&quot;</span></span><br><span class="line">$ git config --<span class="built_in">local</span> user.name <span class="string">&quot;your name&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>查詢 Git 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git version</span><br></pre></td></tr></table></figure>
+
+<h2 id="Git-流程圖"><a href="#Git-流程圖" class="headerlink" title="Git 流程圖"></a>Git 流程圖</h2><p>基礎的操作方式為先將要追蹤的檔案使用 <code>add</code> 新增索引，接著使用 <code>commit</code> 提交更新紀錄，最後再將更新的紀錄使用 <code>push</code> 上傳至 “遠端數據庫”，更進階的指令後面會再一一介紹</p>
+<p><img src="git-progress.png"></p>
+<h2 id="Git-基礎操作"><a href="#Git-基礎操作" class="headerlink" title="Git 基礎操作"></a>Git 基礎操作</h2><h3 id="安裝遠端-本地端數據庫"><a href="#安裝遠端-本地端數據庫" class="headerlink" title="安裝遠端/本地端數據庫"></a>安裝遠端/本地端數據庫</h3><p>安裝本地端數據庫 : 先使用 <code>cd</code> 指令到要建立數據庫的目錄，再建立數據庫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> </span><br><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+
+<p>安裝遠端數據庫 : 先使用 <code>cd</code> 指令到要建立數據庫的目錄，再建立數據庫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> </span><br><span class="line">$ git <span class="built_in">clone</span> <span class="string">&quot;遠端數據庫網址&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>建立數據庫後會出現 <code>master</code> (版本紀錄的主軸)</p>
+<h3 id="基礎操作流程"><a href="#基礎操作流程" class="headerlink" title="基礎操作流程"></a>基礎操作流程</h3><p>將所有檔案加入索引(暫存區)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add . </span><br><span class="line">$ git add --all </span><br></pre></td></tr></table></figure>
+
+<p><strong>以上兩者的差異為何 ?</strong><br><code>git add .</code> 只會將當下這個目錄與其子目錄加入索引，但這個目錄以外的檔案不會，而 <code>git add--all</code> 就沒有這個問題了，不管在哪執行都會將所有改變加入索引</p>
+<p>將單一檔案加入索引</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add <span class="string">&quot;檔案名稱&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>查詢狀態，包含新增、刪除與修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status </span><br></pre></td></tr></table></figure>
+
+<p>將加入索引的檔案提交更新紀錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">&quot;更新紀錄名稱&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>更新紀錄查詢</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> </span><br></pre></td></tr></table></figure>
+
+<p>推送數據到遠端數據庫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push </span><br></pre></td></tr></table></figure>
+
+<h3 id="gitignore-忽略檔案"><a href="#gitignore-忽略檔案" class="headerlink" title=".gitignore 忽略檔案"></a>.gitignore 忽略檔案</h3><p>新增 .gitignore 檔案</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir .gitginore </span><br></pre></td></tr></table></figure>
+
+<p><strong>開啟 <code>.gitignore</code> 檔案，輸入要忽略的檔案</strong><br>忽略 index.html</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<p>忽略所有 html</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.html</span><br></pre></td></tr></table></figure>
+
+<p>忽略整個 css 資料夾</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">css/</span><br></pre></td></tr></table></figure>
+
+<h3 id="工作狀態還原"><a href="#工作狀態還原" class="headerlink" title="工作狀態還原"></a>工作狀態還原</h3><p>取消所有檔案的索引</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD</span><br></pre></td></tr></table></figure>
+
+<p>取消單一檔案的索引</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD <span class="string">&quot;檔案名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>還原所有檔案至最新的 commit 狀態</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard</span><br></pre></td></tr></table></figure>
+
+<p>還原單一檔案至最新的 commit 狀態</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout <span class="string">&quot;檔案名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Git-分支-branch"><a href="#Git-分支-branch" class="headerlink" title="Git 分支(branch)"></a>Git 分支(branch)</h2><h3 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h3><p><code>HEAD</code> 代表目前所在的位置，預設的位置為 <code>master</code>，藉由切換 <code>HEAD</code>，可以瀏覽其他的 <code>commit</code> 紀錄</p>
+<p>每個 <code>commit</code> 都有自己的代碼，藉由輸入代碼的前四碼或以上可以切換到該 <code>commit</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout <span class="string">&quot;前四碼&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>切換 <code>HEAD</code> 回到 <code>master</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<h3 id="建立分支"><a href="#建立分支" class="headerlink" title="建立分支"></a>建立分支</h3><p>在多人協作或已上線程式時，為避免更新時將 <code>master</code> 改壞，所以會先新增 <code>branch</code> 進行版本更新，確認更新內容無誤後再將 <code>branch</code> 合併回 <code>master</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch <span class="string">&quot;分支名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>分支查詢 : 如果新增一支名為 <code>feature</code> 的分支，使用分支查詢後就會出現 <code>feature</code> 與 <code>master</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">  master</span><br><span class="line">  feature</span><br></pre></td></tr></table></figure>
+
+<h3 id="合併分支"><a href="#合併分支" class="headerlink" title="合併分支"></a>合併分支</h3><p>先回到 <code>master</code> ，再合併分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge <span class="string">&quot;分支名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>master</code> 與分支都有更新，在合併時會出現以下訊息，輸入 <code>:wq!</code> ，即可離開並自動合併，但分支仍保留原先檔案狀態</p>
+<p><img src="auto-merge.png"></p>
+<h3 id="解決合併分支衝突"><a href="#解決合併分支衝突" class="headerlink" title="解決合併分支衝突"></a>解決合併分支衝突</h3><p>如果再合併分支時，<code>master</code> 與分支在同一行出現不同資料時，就會出現衝突而無法自動合併，這時候只能使用手動合併的方式選擇要保留那些資料，以下是 VS code 出現衝突時的介面</p>
+<p><img src="conflict-merge.png"></p>
+<h2 id="標籤-tag"><a href="#標籤-tag" class="headerlink" title="標籤 (tag)"></a>標籤 (tag)</h2><p>為特定的 <code>commit</code> 加上標籤，例如重要的版本，可以使切換版本上更為輕鬆</p>
+<p>新增輕量標籤</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag <span class="string">&quot;標籤名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>新增標示標籤，備註內容外的 “” 需要保留</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -am <span class="string">&quot;備註內容&quot;</span> <span class="string">&quot;標籤名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>查詢標籤</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag</span><br></pre></td></tr></table></figure>
+
+<p>查詢詳細標籤</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -n</span><br></pre></td></tr></table></figure>
+
+<p>切換到標籤的 commit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout <span class="string">&quot;標籤名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="暫存-stash"><a href="#暫存-stash" class="headerlink" title="暫存 (stash)"></a>暫存 (stash)</h2><p>如遇突發狀況時，暫存可將修改的內容先記錄起來，再切換到其他分支作業，作業完後切換回來並還原暫存即可繼續原來的工作</p>
+<p>暫時儲存當前目錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash</span><br></pre></td></tr></table></figure>
+
+<p>還原暫存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash pop</span><br></pre></td></tr></table></figure>
+
+<p>清除最新暫存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash drop</span><br></pre></td></tr></table></figure>
+
+<p>清除全部暫存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash clear</span><br></pre></td></tr></table></figure>
+
+<p>瀏覽暫存列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br></pre></td></tr></table></figure>
+
+<p>如果有多筆暫存資料，輸入瀏覽指令後會出現以下列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stash@&#123;0&#125;: WIP on master: 710851f update</span><br><span class="line">stash@&#123;1&#125;: WIP on master: 710851f update</span><br></pre></td></tr></table></figure>
+
+<p>還原最近的指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash apply</span><br></pre></td></tr></table></figure>
+
+<p>還原第 n 筆暫存內容，n 從 0 開始</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git stash apply stash@&#123;n&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Git、Github-團隊協作"><a href="#Git、Github-團隊協作" class="headerlink" title="Git、Github 團隊協作"></a>Git、Github 團隊協作</h2><h3 id="9-1-推送新的分支到遠端數據庫"><a href="#9-1-推送新的分支到遠端數據庫" class="headerlink" title="9-1 推送新的分支到遠端數據庫"></a>9-1 推送新的分支到遠端數據庫</h3><p>查詢遠端數據庫名稱，預設的名稱為 <code>origin</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">  origin</span><br></pre></td></tr></table></figure>
+
+<p>修改遠端數據庫名稱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rename <span class="string">&quot;原名稱(origin)&quot;</span> <span class="string">&quot;新名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>推送分支到遠端數據庫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push <span class="string">&quot;遠端數據庫名稱(預設為 origin)&quot;</span> <span class="string">&quot;分支名稱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>為什麼不能直接使用 git push ?</strong><br>因為如果沒有指定遠端主機與要推送的分支，電腦無法確定要推送到遠端主機 (github)、正式主機 (terminal)或測試主機 (本地端)，且預設推送的分支為 <code>master</code>，所以要指定分支名稱</p>
+<h3 id="下載遠端數據庫"><a href="#下載遠端數據庫" class="headerlink" title="下載遠端數據庫"></a>下載遠端數據庫</h3><p>如果沒有先從遠端數據庫載下最新版本就開始作業，上傳遠端數據庫時會發生衝突，必須先下載最新本進行合併</p>
+<p>首先介紹 <code>fetch</code> ，<code>fetch</code> 就是當遠端數據庫進度超前本地端進度時，使用這個指令會從線上將本地端沒有的內容抓下來，一樣也有 <code>HEAD</code> 和 <code>master</code>，但會在前面加上 <code>origin</code>(遠端數據庫預設名稱)，變成 <code>origin/HEAD</code> 和 <code>origin/master</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch</span><br></pre></td></tr></table></figure>
+
+<p>接著將抓下來的超前內容合併到本地端分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge</span><br></pre></td></tr></table></figure>
+
+<p><strong>git pull = git fetch + git merge</strong><br>下載遠端數據庫合併到本地端數據庫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+
+<h2 id="資料參考"><a href="#資料參考" class="headerlink" title="資料參考"></a>資料參考</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://backlog.com/git-tutorial/tw/intro/intro1_1.html">連猴子都能懂的 Git 入門指南</a><br><a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitbook.tw/chapters/introduction/about-this-book.html">為你自己學 Git</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/boostrap/20190925/99a4840c/" rel="prev" title="Bootstrap 4 Grid System">
+                  <i class="fa fa-chevron-left"></i> Bootstrap 4 Grid System
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/javascript/20190926/e0d364c/" rel="next" title="JavaScript入門篇 - JavaScript簡介與環境">
+                  JavaScript入門篇 - JavaScript簡介與環境 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yeh</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
